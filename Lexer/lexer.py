@@ -1,4 +1,4 @@
-import ply.lex as lex
+import ply.lex as lex, sys
 
 reserved = {
     'abstract'  :   'ABSTRACT',      
@@ -65,7 +65,8 @@ tokens = [
     'OPT_COMPARE',
     'OPT_AND_OR',
     'OPT_INC_DEC',
-    'OPT_SOME'          #name it differently
+    'OPT_SOME',          #name it differently
+    'IGNORE_WHITESPACE'
 ] + list(reserved.values())
 
 literals =  [ '(', ')', '{' ,'}' ,'[', ']', ';', ',', '.',
@@ -84,7 +85,6 @@ def t_IDENTIFIER(t):
 #exp4 = r'\d+((e|E)(\+|\-)?\d+)?(f|F|d|D)'                     Digits ExponentPartopt FloatTypeSuffix
 
 def t_FLOAT_LITERAL(t):
-    # r'('+ exp1 + r'|' + exp2 + r')'
     r'(\d+(e|E)(\+|\-)?\d+(f|F|d|D)?|\.\d+((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+\.\d*((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+((e|E)(\+|\-)?\d+)?(f|F|d|D))'
     return t
 
@@ -132,7 +132,8 @@ def t_OPT_SOME(t):
     
 #comments
 def t_COMMENT(t):
-    r'\/\/.*'
+    r'(\/\/.*|\/\*(\n|.)*\*\/)'
+    sys.stdout.write("%s" % (t.value))
     pass
     # No return value. Token discarded
 
@@ -140,10 +141,16 @@ def t_COMMENT(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-    print '1\n'
+    global output
+    sys.stdout.write("\t//%s" % (output))
+    sys.stdout.write("%s" % (t.value))
+    output = ""
 
 # A string containing ignored characters (spaces and tabs)
-t_ignore  = ' \t'
+def t_IGNORE_WHITESPACE(t):
+	r'(\s|\t)'
+	sys.stdout.write("%s" % (t.value))
+#t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
@@ -151,16 +158,41 @@ def t_error(t):
     t.lexer.skip(1)
 
 lexer = lex.lex()
-#data  = '3+4 - 9' 
 
+output = ""
 #read input from stdin or a file
 if __name__ == '__main__':
-    lex.runmain()
+#    lex.runmain()
+	# global output 
+    try:
+        filename = sys.argv[1]
+        f = open(filename)
+        data = f.read()
+        f.close()
+    except IndexError:
+        sys.stdout.write("Reading from standard input (type EOF to end):\n")
+        data = sys.stdin.read()
 
-while True:
-    tok = lexer.token()
-    if not tok: break
-    print tok
+    if lexer:
+        _input = lexer.input
+    else:
+        _input = input
+    _input(data)
+    if lexer:
+        _token = lexer.token
+    else:
+        _token = token
+
+    while 1:
+        tok = _token()
+        if not tok: 
+        	print sys.stdout.write("\t//%s" % (output))
+        	break
+        sys.stdout.write("%s" % (tok.value))
+        # global output
+        output = output + " " + tok.type
+        # print output
+#        sys.stdout.write("(%s,%r,%d,%d)\n" % (tok.type, tok.value, tok.lineno,tok.lexpos))
 
 #done
 #IDENTIFIER
@@ -170,7 +202,7 @@ while True:
 #character literal
 #string literal without escape sequences
 #boolean literal
-#comment of the form // not /* */ -    \/\*.*\*\/
+#comment 
 #newline
 
 #"(\w|[^'\\]+|\\(b|t|n|f|r|"|'|\\|[0-9]+))"
