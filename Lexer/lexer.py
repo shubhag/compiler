@@ -66,6 +66,7 @@ tokens = [
     'OPT_AND_OR',
     'OPT_INC_DEC',
     'OPT_SOME',          #name it differently
+    'COMMENT',
     'IGNORE_WHITESPACE'
 ] + list(reserved.values())
 
@@ -133,8 +134,9 @@ def t_OPT_SOME(t):
 #comments
 def t_COMMENT(t):
     r'(\/\/.*|\/\*(\n|.)*\*\/)'
-    sys.stdout.write("%s" % (t.value))
-    pass
+    # sys.stdout.write("%s" % (t.value))
+    # pass
+    return t
     # No return value. Token discarded
 
 # Define a rule so we can track line numbers
@@ -186,10 +188,9 @@ if __name__ == '__main__':
     while 1:
         tok = _token()
         if not tok: 
-        	print sys.stdout.write("\t//%s" % (output))
+        	sys.stdout.write("\t//%s\n" % (output))
         	break
         sys.stdout.write("%s" % (tok.value))
-        # global output
         output = output + " " + tok.type
         # print output
 #        sys.stdout.write("(%s,%r,%d,%d)\n" % (tok.type, tok.value, tok.lineno,tok.lexpos))
