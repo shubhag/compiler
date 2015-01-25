@@ -1,4 +1,5 @@
 import ply.lex as lex, sys
+from ply.lex import TOKEN
 
 reserved = {
     'abstract'  :   'ABSTRACT',      
@@ -85,13 +86,37 @@ def t_IDENTIFIER(t):
 #exp3 = r'\d+\.\d*((e|E)(\+|\-)?\d+)?(f|F|d|D)?'      Digits . Digitsopt ExponentPartopt FloatTypeSuffixopt
 #exp4 = r'\d+((e|E)(\+|\-)?\d+)?(f|F|d|D)'                     Digits ExponentPartopt FloatTypeSuffix
 
+
+
+digits = r'(\d(\d|_)*\d|\d)'
+nonzerodigit = r'(1|2|3|4|5|6|7|8|9)'
+decimal = r'(0|' + nonzerodigit + digits + r'*|' + nonzerodigit + r'_+' + digits + r')(l|L)?' 
+
+hexdigit = r'(0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|A|B|C|D|E|F)'
+hexdigits = r'(' + hexdigit + r'(0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|A|B|C|D|E|F|_)*' + hexdigit + r'|' + hexdigit + r')' 
+hexnumeral =  r'0(x|X)'+ hexdigits + r'(l|L)?'
+
+octaldigit = r'(0|1|2|3|4|5|6|7)'
+octaldigits = r'(' + octaldigit + r'(0|1|2|3|4|5|6|7|_)*' + octaldigit + r'|' + octaldigit + r')' 
+octalnumeral = r'0(' + octaldigits + r'|_+' +  octaldigits + r')' + r'(l|L)?'
+
+binarydigit = r'(0|1)'
+binarydigits = r'(' + binarydigit + r'(0|1|_)*' + binarydigit + r'|' + binarydigit + r')' 
+binarynumeral = r'0(b|B)' + binarydigits + r'(l|L)?'
+
+
+decimalfloat3 = digits + r'(e|E)(\+|\-)?' + digits + r'(f|F|d|D)?'
+
+
 def t_FLOAT_LITERAL(t):
     r'(\d+(e|E)(\+|\-)?\d+(f|F|d|D)?|\.\d+((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+\.\d*((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+((e|E)(\+|\-)?\d+)?(f|F|d|D))'
     return t
 
+integer = r'(' + hexnumeral + r'|' + octalnumeral + r'|' + binarynumeral + r'|' + decimal + r')'
+
+
+@TOKEN(integer)
 def t_INT_LITERAL(t):
-    r'\d+'
-    t.value = int(t.value)
     return t
 
 def t_CHAR_LITERAL(t):
@@ -104,7 +129,6 @@ def t_STRING_LITERAL(t):
 
 def t_BOOL(t):
     r'(true|false)'
-    t.value = bool(t.value)
     return t
 
 def t_NULL(t):
@@ -205,5 +229,3 @@ if __name__ == '__main__':
 #boolean literal
 #comment 
 #newline
-
-#"(\w|[^'\\]+|\\(b|t|n|f|r|"|'|\\|[0-9]+))"

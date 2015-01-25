@@ -6,7 +6,7 @@ f.setSize(300, 300);
 f.getContentPane().add(new HelloJava1( ));
 f.setVisible(true);
 char a = 'a';
-float a = 2f;
+float a = 0b1000_0000_0000_0000_0000_0000_0000_0000l;
 }
 public void paintComponent(java.awt.Graphics g) {
 g.drawString("Hello, Java!", 125, 95);
