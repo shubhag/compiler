@@ -104,12 +104,18 @@ binarydigit = r'(0|1)'
 binarydigits = r'(' + binarydigit + r'(0|1|_)*' + binarydigit + r'|' + binarydigit + r')' 
 binarynumeral = r'0(b|B)' + binarydigits + r'(l|L)?'
 
+exponentpart = r'(e|E)(\+|\-)?' + digits
+floattype = r'(f|F|d|D)?'
+decimalfloat1 = digits + r'\.'+ digits + r'*((e|E)(\+|\-)?\d+)?(f|F|d|D)?'
+decimalfloat2 = r'\.' + digits + r'((e|E)(\+|\-)?\d+)?(f|F|d|D)?'
+decimalfloat3 = digits + exponentpart + r'(f|F|d|D)?'
+decimalfloat4 = digits + r'((e|E)(\+|\-)?\d+)?(f|F|d|D)' 
 
-decimalfloat3 = digits + r'(e|E)(\+|\-)?' + digits + r'(f|F|d|D)?'
+floattype = r'(' + decimalfloat1 + r'|' + decimalfloat2 + r'|' + decimalfloat3 + r'|' + decimalfloat4 + r')'
 
-
+@TOKEN(floattype)
 def t_FLOAT_LITERAL(t):
-    r'(\d+(e|E)(\+|\-)?\d+(f|F|d|D)?|\.\d+((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+\.\d*((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+((e|E)(\+|\-)?\d+)?(f|F|d|D))'
+#    r'(\d+(e|E)(\+|\-)?\d+(f|F|d|D)?|\.\d+((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+\.\d*((e|E)(\+|\-)?\d+)?(f|F|d|D)?|\d+((e|E)(\+|\-)?\d+)?(f|F|d|D))'
     return t
 
 integer = r'(' + hexnumeral + r'|' + octalnumeral + r'|' + binarynumeral + r'|' + decimal + r')'
