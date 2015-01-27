@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import ply.lex as lex, sys
 from ply.lex import TOKEN
 
@@ -125,8 +126,11 @@ integer = r'(' + hexnumeral + r'|' + octalnumeral + r'|' + binarynumeral + r'|' 
 def t_INT_LITERAL(t):
     return t
 
+charliteral = r"'(\\'|[^'/]|\\(b|t|n|f|r|\"|\\|" + octaldigit + r"|"+ octaldigit + r"{2}|[0-3]" + octaldigit + r"{2}))'"  
+
+@TOKEN(charliteral)
 def t_CHAR_LITERAL(t):
-    r"'([^'/]|\\(b|t|n|f|r|\"|'|\\|[0-9]+))'"
+#    r"'(\\'|[^'/]|\\(b|t|n|f|r|\"|\\))'"
     return t
 
 def t_STRING_LITERAL(t):
@@ -186,7 +190,7 @@ def t_IGNORE_WHITESPACE(t):
 
 # Error handling rule
 def t_error(t):
-    print "Illegal character '%s'" % t.value[0]
+    print "\n ERROR:    Illegal character '%s'" % t.value[0]
     t.lexer.skip(1)
 
 lexer = lex.lex()
@@ -224,14 +228,3 @@ if __name__ == '__main__':
         output = output + " " + tok.type
         # print output
 #        sys.stdout.write("(%s,%r,%d,%d)\n" % (tok.type, tok.value, tok.lineno,tok.lexpos))
-
-#done
-#IDENTIFIER
-#keyword
-#integer literal
-#float literal
-#character literal
-#string literal without escape sequences
-#boolean literal
-#comment 
-#newline

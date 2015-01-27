@@ -1,0 +1,8 @@
+To make file executable
+
+->	Just put this in the first line of your script :
+	#!/usr/bin/env python
+->	Make the file executable with
+	chmod +x lexer.py
+->	Execute with
+	./lexer.py testfile
