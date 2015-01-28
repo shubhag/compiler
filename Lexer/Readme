@@ -1,3 +1,7 @@
+To run
+	bin/lexer.py test/testfile
+
+
 To make file executable
 
 ->	Just put this in the first line of your script :
@@ -6,3 +10,6 @@ To make file executable
 	chmod +x lexer.py
 ->	Execute with
 	./lexer.py testfile
+
+If both doesn't work, run
+	python bin/lexer.py test/testfile
