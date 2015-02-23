@@ -168,7 +168,7 @@ def t_OPT_SOME(t):
     
 #comments
 def t_COMMENT(t):
-    r'(\/\/.*|\/\*(\n|.)*\*\/)'
+    r'(\/\/.*|\/\*(.|[\r\n])*?\*\/)'
     # sys.stdout.write("%s" % (t.value))
     # pass
     return t
