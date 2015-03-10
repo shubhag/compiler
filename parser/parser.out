@@ -1,0 +1,240 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DO
+    CONST
+    OPT_SOME
+    DEFAULT
+    VOLATILE
+    VOID
+    ASSERT
+    IMPLEMENTS
+    WHILE
+    PROTECTED
+    PRIVATE
+    CONTINUE
+    OPT_COMPARE
+    OPT_AND_OR
+    NULL
+    FINAL
+    NATIVE
+    COMMENT
+    OPT_EQ
+    IGNORE_WHITESPACE
+    THROWS
+    NEW
+    FLOAT_LITERAL
+    STRICTFP
+    SWITCH
+    TRANSIENT
+    CATCH
+    ABSTRACT
+    SYNCRONIZED
+    CASE
+    GOTO
+    FOR
+    ENUM
+    ELSE
+    TRY
+    FINALLY
+    OPT_INC_DEC
+    IF
+    INSTANCEOF
+    RETURN
+    STRING_LITERAL
+    THIS
+    CHAR_LITERAL
+    PUBLIC
+    BREAK
+    BOOL
+    INT_LITERAL
+    THROW
+
+Grammar
+
+Rule 0     S' -> Identifier
+Rule 1     Identifier -> IDENTIFIER
+Rule 2     QualifiedIdentifier -> QualifiedTdentifier . Identifier
+Rule 3     QualifiedIdentifier -> Identifier
+Rule 4     QualifiedIdentifierList -> QualifiedIdentifierList , QualifiedTdentifier
+Rule 5     QualifiedIdentifierList -> QualifiedTdentifier
+Rule 6     Empty -> <empty>
+Rule 7     Annotationszo -> Annotations
+Rule 8     Annotationszo -> Empty
+Rule 9     ImportDeclarationzm -> ImportDeclarationzm ImportDeclaration
+Rule 10    ImportDeclarationzm -> Empty
+Rule 11    TypeDeclarationzm -> TypeDeclarationzm TypeDeclaration
+Rule 12    TypeDeclarationzm -> Empty
+Rule 13    CompilationUnitFirst -> Annotationszo PACKAGE QualifiedTdentifier ;
+Rule 14    CompilationUnitFirst -> Empty
+Rule 15    CompilationUnit -> CompilationUnitFirst ImportDeclarationzm TypeDeclarationzm
+Rule 16    Staticzo -> STATIC
+Rule 17    Staticzo -> Empty
+Rule 18    DotIdentifierzm -> DotIdentifier . Identifier
+Rule 19    DotIdentifierzm -> Empty
+Rule 20    DotStarzo -> . *
+Rule 21    DotStarzo -> Empty
+Rule 22    ImportDeclaration -> IMPORT Staticzo Identifier DotIdentifierzm DotStarzo
+Rule 23    TypeDeclaration -> ClassOrInterfaceDeclaration
+Rule 24    TypeDeclaration -> ;
+Rule 25    Modifierzm -> Modifierzm Modifier
+Rule 26    Modifierzm -> Empty
+Rule 27    ClassOrInterfaceDeclaration -> Modifierzm ClassDeclaration
+Rule 28    ClassOrInterfaceDeclaration -> Modifierzm InterfaceDeclaration
+Rule 29    ClassDeclaration -> NormalClassDeclaration
+Rule 30    ClassDeclaration -> EnumDeclaration
+Rule 31    InterfaceDeclaration -> NormalInterfaceDeclaration
+Rule 32    InterfaceDeclaration -> AnnotationTypeDeclaration
+Rule 33    ExtendsTypeListzo -> EXTENDS TypeList
+Rule 34    ExtendsTypeListzo -> Empty
+Rule 35    TypeParameterszo -> TypeParameters
+Rule 36    TypeParameterszo -> Empty
+Rule 37    NormalClassDeclaration -> CLASS Identifier TypeParameterszo ExtendsTypeListzo InterfaceBody
+Rule 38    AnnotationTypeDeclaration -> @ INTERFACE Identifier AnnotationTypeBody
+Rule 39    Type -> BasicType ClosedParanzm
+Rule 40    Type -> ReferenceType ClosedParanzm
+Rule 41    ClosedParanzm -> ClosedParanzm [ ]
+Rule 42    ClosedParanzm -> Empty
+Rule 43    BasicType -> BYTE
+Rule 44    BasicType -> SHORT
+Rule 45    BasicType -> CHAR
+Rule 46    BasicType -> INT
+Rule 47    BasicType -> LONG
+Rule 48    BasicType -> FLOAT
+Rule 49    BasicType -> DOUBLE
+Rule 50    BasicType -> BOOLEAN
+Rule 51    TypeArgumentszo -> TypeArguments
+Rule 52    TypeArgumentszo -> Empty
+Rule 53    DotIdentifierTypeArgumentszm -> DotIdentifierTypeArgumentszm . Identifier TypeArgumentszo
+Rule 54    DotIdentifierTypeArgumentszm -> Empty
+Rule 55    ReferenceType -> Identifier TypeArgumentszo DotIdentifierTypeArgumentszm
+Rule 56    CommaTypeArumentzm -> CommaTypeArumentzm , TypeArgument
+Rule 57    CommaTypeArumentzm -> Empty
+Rule 58    ExtendsSuperReferenceType -> EXTENDS ReferenceType
+Rule 59    ExtendsSuperReferenceType -> SUPER ReferenceType
+Rule 60    ExtendsSuperReferenceType -> Empty
+Rule 61    TypeArgument -> ReferenceType
+Rule 62    TypeArgument -> ? ExtendsSuperReferenceType
+
+Terminals, with rules where they appear
+
+*                    : 20
+,                    : 4 56
+.                    : 2 18 20 53
+;                    : 13 24
+?                    : 62
+@                    : 38
+ABSTRACT             : 
+ASSERT               : 
+BOOL                 : 
+BOOLEAN              : 50
+BREAK                : 
+BYTE                 : 43
+CASE                 : 
+CATCH                : 
+CHAR                 : 45
+CHAR_LITERAL         : 
+CLASS                : 37
+COMMENT              : 
+CONST                : 
+CONTINUE             : 
+DEFAULT              : 
+DO                   : 
+DOUBLE               : 49
+ELSE                 : 
+ENUM                 : 
+EXTENDS              : 33 58
+FINAL                : 
+FINALLY              : 
+FLOAT                : 48
+FLOAT_LITERAL        : 
+FOR                  : 
+GOTO                 : 
+IDENTIFIER           : 1
+IF                   : 
+IGNORE_WHITESPACE    : 
+IMPLEMENTS           : 
+IMPORT               : 22
+INSTANCEOF           : 
+INT                  : 46
+INTERFACE            : 38
+INT_LITERAL          : 
+LONG                 : 47
+NATIVE               : 
+NEW                  : 
+NULL                 : 
+OPT_AND_OR           : 
+OPT_COMPARE          : 
+OPT_EQ               : 
+OPT_INC_DEC          : 
+OPT_SOME             : 
+PACKAGE              : 13
+PRIVATE              : 
+PROTECTED            : 
+PUBLIC               : 
+RETURN               : 
+SHORT                : 44
+STATIC               : 16
+STRICTFP             : 
+STRING_LITERAL       : 
+SUPER                : 59
+SWITCH               : 
+SYNCRONIZED          : 
+THIS                 : 
+THROW                : 
+THROWS               : 
+TRANSIENT            : 
+TRY                  : 
+VOID                 : 
+VOLATILE             : 
+WHILE                : 
+[                    : 41
+]                    : 41
+error                : 
+
+Nonterminals, with rules where they appear
+
+AnnotationTypeBody   : 38
+AnnotationTypeDeclaration : 32
+Annotations          : 7
+Annotationszo        : 13
+BasicType            : 39
+ClassDeclaration     : 27
+ClassOrInterfaceDeclaration : 23
+ClosedParanzm        : 39 40 41
+CommaTypeArumentzm   : 56
+CompilationUnit      : 
+CompilationUnitFirst : 15
+DotIdentifier        : 18
+DotIdentifierTypeArgumentszm : 53 55
+DotIdentifierzm      : 22
+DotStarzo            : 22
+Empty                : 8 10 12 14 17 19 21 26 34 36 42 52 54 57 60
+EnumDeclaration      : 30
+ExtendsSuperReferenceType : 62
+ExtendsTypeListzo    : 37
+Identifier           : 2 3 18 22 37 38 53 55 0
+ImportDeclaration    : 9
+ImportDeclarationzm  : 9 15
+InterfaceBody        : 37
+InterfaceDeclaration : 28
+Modifier             : 25
+Modifierzm           : 25 27 28
+NormalClassDeclaration : 29
+NormalInterfaceDeclaration : 31
+QualifiedIdentifier  : 
+QualifiedIdentifierList : 4
+QualifiedTdentifier  : 2 4 5 13
+ReferenceType        : 40 58 59 61
+Staticzo             : 22
+Type                 : 
+TypeArgument         : 56
+TypeArguments        : 51
+TypeArgumentszo      : 53 55
+TypeDeclaration      : 11
+TypeDeclarationzm    : 11 15
+TypeList             : 33
+TypeParameters       : 35
+TypeParameterszo     : 37
+

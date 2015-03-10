@@ -74,7 +74,7 @@ tokens = [
 
 literals =  [ '(', ')', '{' ,'}' ,'[', ']', ';', ',', '.',
             '=', '>', '<', '!', '~', '?', ':',               #operators
-            '+', '-', '*', '/', '&', '|', '^', '%', '@'           
+            '+', '-', '*', '/', '&', '|', '^', '%'           
             ]
 
 def t_NULL(t):
@@ -178,16 +178,11 @@ def t_COMMENT(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-    # global output
-    # sys.stdout.write("\t//%s" % (output))
-    # sys.stdout.write("%s" % (t.value))
-    # output = ""
+
 
 # A string containing ignored characters (spaces and tabs)
 def t_IGNORE_WHITESPACE(t):
 	r'(\s|\t)'
-	# sys.stdout.write("%s" % (t.value))
-#t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
@@ -196,8 +191,7 @@ def t_error(t):
 
 lexer = lex.lex()
 
-# output = ""
-#read input from stdin or a file
+# #read input from stdin or a file
 # if __name__ == '__main__':
 # #    lex.runmain()
 # 	# global output 
@@ -223,155 +217,9 @@ lexer = lex.lex()
 #     while 1:
 #         tok = _token()
 #         if not tok: 
-#         	# sys.stdout.write("\t//%s\n" % (output))
+#         	sys.stdout.write("\t//%s\n" % (output))
 #         	break
-        # sys.stdout.write("%s" % (tok.value))
-        # output = output + " " + tok.type
-        # print output
-#        sys.stdout.write("(%s,%r,%d,%d)\n" % (tok.type, tok.value, tok.lineno,tok.lexpos))
-
-
-
-
-
-def p_identifier(t):
-    'Identifier : IDENTIFIER'
-
-def p_qualified_identifier(t):
-    '''QualifiedIdentifier : QualifiedTdentifier '.' Identifier
-                            | Identifier '''
-
-def p_qualified_identifier_list(t):
-    '''QualifiedIdentifierList : QualifiedIdentifierList ',' QualifiedTdentifier
-                                | QualifiedTdentifier '''
-
-def p_empty(t):
-    'Empty :'
-
-def p_annotationszo(t):
-    '''Annotationszo : Annotations
-                    | Empty'''
-
-def p_importdeclarationzm(t):
-    '''ImportDeclarationzm : ImportDeclarationzm ImportDeclaration 
-                            | Empty '''
-
-def p_typedeclarationzm(t):
-    '''TypeDeclarationzm : TypeDeclarationzm TypeDeclaration
-                            | Empty '''
-
-def p_compilationunit_first(t):
-    '''CompilationUnitFirst : Annotationszo PACKAGE QualifiedTdentifier ';'
-                            | Empty '''
-
-def p_compilationunit(t):
-    'CompilationUnit : CompilationUnitFirst ImportDeclarationzm TypeDeclarationzm '
-
-def p_staticzo(t):
-    '''Staticzo : STATIC 
-                | Empty'''
-
-def p_dotidentifierzm(t):
-    '''DotIdentifierzm : DotIdentifier '.' Identifier 
-                        | Empty '''
-
-def p_dotstarzo(t):
-    '''DotStarzo : '.' '*' 
-                    | Empty'''
-
-def p_importdeclaration(t):
-    'ImportDeclaration : IMPORT Staticzo Identifier DotIdentifierzm DotStarzo ';' '
-
-def p_typedeclaration(t):
-    '''TypeDeclaration : ClassOrInterfaceDeclaration
-                        | ';' '''
-
-def p_modifierzm(t):
-    '''Modifierzm : Modifierzm Modifier 
-                    | Empty '''
-
-def p_classorinterfacedeclaration(t):
-    '''ClassOrInterfaceDeclaration : Modifierzm ClassDeclaration 
-                                    | Modifierzm InterfaceDeclaration '''
-
-def p_classdeclaration(t):
-    '''ClassDeclaration : NormalClassDeclaration 
-                        | EnumDeclaration '''
-
-def p_interfacedeclaration(t):
-    '''InterfaceDeclaration : NormalInterfaceDeclaration
-                            | AnnotationTypeDeclaration '''
-
-def p_extendstypelistzo(t):
-    ''' ExtendsTypeListzo : EXTENDS TypeList 
-                            | Empty '''
-
-def p_typeparameterszo(t):
-    ''' TypeParameterszo : TypeParameters
-                            | Empty '''
-
-def p_normalclassdeclaration(t):
-    ''' NormalClassDeclaration : CLASS Identifier TypeParameterszo ExtendsTypeListzo InterfaceBody'''
-
-
-
-def p_annotationtypedeclaration(t):
-    '''AnnotationTypeDeclaration : '@' INTERFACE Identifier AnnotationTypeBody'''
-
-def p_type(t):
-    ''' Type : BasicType ClosedParanzm 
-                | ReferenceType ClosedParanzm '''
-
-def p_closedparanzm(t):
-    ''' ClosedParanzm : ClosedParanzm '[' ']' 
-                        | Empty '''
-
-def p_basictype(t):
-    '''BasicType : BYTE
-                | SHORT
-                | CHAR
-                | INT
-                | LONG
-                | FLOAT
-                | DOUBLE
-                | BOOLEAN '''
-
-def p_typeargumentszo(t):
-    ''' TypeArgumentszo : TypeArguments 
-                        | Empty '''
-
-def p_dotidentifiertypeargumentszm(t):
-    ''' DotIdentifierTypeArgumentszm :  DotIdentifierTypeArgumentszm '.' Identifier TypeArgumentszo 
-                                        | Empty '''
-
-def p_referencetype(t):
-    'ReferenceType : Identifier TypeArgumentszo DotIdentifierTypeArgumentszm '
-
-def p_commatypeargumentzm(t):
-    '''CommaTypeArumentzm : CommaTypeArumentzm ',' TypeArgument
-                        | Empty''' 
-
-def p_typearguments(t):
-    'TypeArguments : '<' TypeArgument CommaTypeArumentzm '>''
-
-def p_extendssuperreferencetype(t):
-    '''ExtendsSuperReferenceType : EXTENDS ReferenceType 
-                                | SUPER ReferenceType
-                                | Empty'''
-def p_typeargument(t):
-    '''TypeArgument : ReferenceType 
-                    | '?' ExtendsSuperReferenceType '''
-
-def p_error(t):
-    print("Syntax error at '%s'" % t.value)
-
-import ply.yacc as yacc
-yacc.yacc()
-
-
-while 1:
-    try:
-        s = input('calc > ')   # Use raw_input on Python 2
-    except EOFError:
-        break
-    yacc.parse(s)
+#         sys.stdout.write("%s" % (tok.value))
+#         output = output + " " + tok.type
+#         # print output
+# #        sys.stdout.write("(%s,%r,%d,%d)\n" % (tok.type, tok.value, tok.lineno,tok.lexpos))
