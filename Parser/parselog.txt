@@ -215,7 +215,7 @@
    yacc.py: 337:
    yacc.py: 338:State  : 184
    yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { MethodAccess ( STRING_LITERAL . LexToken(),')',4,113)
-   yacc.py: 389:Action : Reduce rule [ComplexPrimaryNoParenthesis -> STRING_LITERAL] with [<str @ 0x7f86584ea490>] and goto state 174
+   yacc.py: 389:Action : Reduce rule [ComplexPrimaryNoParenthesis -> STRING_LITERAL] with [<str @ 0x7ff7034a1490>] and goto state 174
    yacc.py: 423:Result : <NoneType @ 0x936be0> (None)
    yacc.py: 337:
    yacc.py: 338:State  : 126
