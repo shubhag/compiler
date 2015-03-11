@@ -214,7 +214,7 @@ def t_error(t):
     print "\n ERROR:    Illegal character '%s'" % t.value[0]
     t.lexer.skip(1)
 
-lexer = lex.lex()
+lexer = lex.lex(debug=True)
 
 # #read input from stdin or a file
 # if __name__ == '__main__':

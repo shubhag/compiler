@@ -531,9 +531,20 @@ def p_ConstantExpression(p):
 def p_error(p):
     print "Syntax error in input!"
 
-# Build the parser
-parser = yacc.yacc()
 
+# Set up a logging object
+import logging
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
+log = logging.getLogger()
+
+# Build the parser
+parser = yacc.yacc(debug=True)
+#parser.parse(debug=True)
 # while True:
 #    try:
 #        s = raw_input('Input:')
@@ -542,16 +553,18 @@ parser = yacc.yacc()
 #    if not s: continue
 #    result = parser.parse(s)
 #    print result
-while True:
-   try:
-   		filename = sys.argv[1]
+if __name__ == '__main__':
+	try:
+		filename = sys.argv[1]
 		f = open(filename)
 		data = f.read()
 		f.close()
-   except EOFError:
-       break
-   if not data: continue
-   result = parser.parse(data)
-   print result
+	except EOFError:
+		print "asedfgh"
+    	# sys.stdout.write("Reading from standard input (type EOF to end):\n")
+    	# data = sys.stdin.read()
+    	if data:
+    		result = parser.parse(data,debug=log)
+    		print result
 
    
