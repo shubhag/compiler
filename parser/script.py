@@ -34,3 +34,4 @@ with open("parselog3.txt", "r") as f:
 tree_file.write("\n}")
 
 tree_file.close()
+
