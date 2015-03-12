@@ -9,28 +9,14 @@ def p_compilationunit(p):
 def p_typespeciifier(p):
 	'''TypeSpecifier : TypeName
 					| TypeName Dims '''
-# TypeSpecifier
-# 	: TypeName
-# 	| TypeName Dims
-# 	;
 
 def p_typename(p):
 	'''TypeName : PrimitiveType 
 				| QualifiedName '''
 
-# TypeName
-# 	: PrimitiveType
-# 	| QualifiedName
-# 	;
-
 def p_classnamelist(p):
 	'''ClassNameList : QualifiedName
 					| ClassNameList ',' QualifiedName '''
-
-# ClassNameList
-#         : QualifiedName
-#         | ClassNameList ',' QualifiedName
-# 	;
 
 def p_primitivetype(p):
 	'''PrimitiveType : BOOLEAN 
@@ -42,25 +28,10 @@ def p_primitivetype(p):
 					| FLOAT
 					| DOUBLE
 					| VOID '''
-# PrimitiveType
-# 	: BOOLEAN
-# 	| CHAR
-# 	| BYTE
-# 	| SHORT
-# 	| INT
-# 	| LONG
-# 	| FLOAT
-# 	| DOUBLE
-# 	| VOID
-# 	;
 
 def p_semicolons(p):
 	''' SemiColons : ';'
 					| SemiColons ';' '''
-# SemiColons
-# 	: ';'
-#         | SemiColons ';'
-#         ;
 
 def p_programfile(p):
 	'''ProgramFile : PackageStatement ImportStatements TypeDeclarations
@@ -70,16 +41,6 @@ def p_programfile(p):
 					| PackageStatement 
 					| ImportStatements
 					| TypeDeclarations '''
-
-# ProgramFile
-# 	: PackageStatement ImportStatements TypeDeclarations
-# 	| PackageStatement ImportStatements
-# 	| PackageStatement                  TypeDeclarations
-# 	|                  ImportStatements TypeDeclarations
-# 	| PackageStatement
-# 	|                  ImportStatements
-# 	|                                   TypeDeclarations
-# 	;
 
 def p_packagestatement(p):
 	''' PackageStatement : PACKAGE QualifiedName SemiColons'''
