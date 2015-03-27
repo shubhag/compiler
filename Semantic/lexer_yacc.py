@@ -64,8 +64,13 @@ tokens = [
     'BOOL',
     'NULL',
     'OPT_EQ',
-    'OPT_COMPARE',
-    'OPT_AND_OR',
+    'OP_EQ',
+    'OP_LE',
+    'OP_NE',
+    'OP_GE',
+    # 'OPT_COMPARE',
+    'OP_LOR',
+    'OP_LAND',
     'OPT_INC_DEC',
     'OPT_SOME',          #name it differently
     'COMMENT',
@@ -146,17 +151,38 @@ def t_STRING_LITERAL(t):
 #    r'"([^\\"]*)"'
     return t
 
-def t_OPT_COMPARE(t):
-    r'(==|<=|>=|!=)'
+def t_OP_LAND(t):
+    r'&&'
     return t
 
-def t_OPT_AND_OR(t):
-    r'(&&|\|\|)'
+def t_OP_LOR(t):
+    r'\|\|'
     return t
+
 
 def t_OPT_INC_DEC(t):
     r'(\+\+|--)'
     return t
+
+def t_OP_EQ(t):
+    r'=='
+    return t
+
+def t_OP_LE(t):
+    r'<='
+    return t;
+
+def t_OP_GE(t):
+    r'>='
+    return t;
+
+def t_OP_NE(t):
+    r'!='
+    return t
+
+# def t_OPT_COMPARE(t):
+#     r'(==|<=|>=|!=)'
+#     return t
 
 def t_OPT_EQ(t):
     r'(\+=|\-=|\*=|\/=|\&=|\|=|\^=|\%=|<<=|>>=|>>>=)'
@@ -171,7 +197,6 @@ def t_COMMENT(t):
     r'(\/\/.*|\/\*(.|[\r\n])*?\*\/)'
     # sys.stdout.write("%s" % (t.value))
     # pass
-    return t
     # No return value. Token discarded
 
 # Define a rule so we can track line numbers
