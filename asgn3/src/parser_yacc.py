@@ -180,9 +180,17 @@ def p_variabledeclarator(p):
 	else:
 		print "Error"
 	if len(p) == 4:
-		print p[3]
-		if p[0]['type'] == p[3]['type'] :
-			TAC.emit(p[1],p[3]['tempVar'],'','=')
+		if type(p[3]) is not dict:
+			type1 = ST.getIdAttr(p[3], 'type')
+			tempVar1 = p[1]
+			if type1 == 'None':
+				print "Variable declared before use"
+		else:
+			type1 = p[3]['type']
+			tempVar1 = p[3]['tempVar']
+
+		if p[0]['type'] == type1 :
+			TAC.emit(p[1],tempVar1,'','=')
 		else:
 			print "Error in variable declaration"
 
@@ -340,7 +348,7 @@ def p_ExpressionStatement(p):
 
 def p_SelectionStatement(p):
 	'''SelectionStatement : IF '(' Expression ')' M_instr_branch Statement
-							|	IF '(' Expression ')' M_instr_branch Statement ELSE Statement
+							|	IF '(' Expression ')' M_instr_branch Statement N_instr ELSE M_instr_branch Statement
 					        | SWITCH '(' Expression ')' Block '''
 
 	if len(p) == 7 :
@@ -350,8 +358,24 @@ def p_SelectionStatement(p):
 			'beginLoop' : p[6].get('beginLoop' , [] )
 		}
 		TAC.backPatch(p[3].get('trueList', []), p[5].get('instr',[]))
-	elif len(p) == 8 :
-		temp = TAC.merge()
+	
+	elif len(p) == 11 :
+		TAC.backPatch(p[3].get('trueList',[]), p[5].get('instr',[]) )
+		TAC.backPatch(p[3].get('falseList',[]),p[9].get('instr',[]) )
+		temp = TAC.merge(p[6].get('nList',[]),p[7].get('nList',[]))
+		p[0]= {
+			'nList' : TAC.merge(temp, p[10].get('nList',[])),
+			'endOfLoop': TAC.merge(p[10].get('endOfLoop',[]), p[6].get('endOfLoop',[])),
+			'beginLoop': TAC.merge(p[10].get('loopBeginList', []), p[6].get('loopBeginList', []))
+		}
+
+def p_N_instr(p):
+	'''N_instr : '''
+	p[0] = {
+		'nList' : [TAC.getNextInstr()]
+	}
+	TAC.emit('','','','GOTO')
+
 
 def p_branch_if(p):
 	'''M_instr_branch : '''
@@ -360,11 +384,35 @@ def p_branch_if(p):
 	}
 
 def p_IterationStatement(p):
-	'''IterationStatement : WHILE '(' Expression ')' Statement
-							| DO Statement WHILE '(' Expression ')' ';'
-							| FOR '(' ForInit ForExpr ForIncr ')' Statement
-							| FOR '(' ForInit ForExpr         ')' Statement '''
+	'''IterationStatement : WHILE M_instr_branch '(' Expression ')' M_instr_branch Statement
+							| DO M_instr_branch Statement WHILE M_instr_branch '(' Expression ')' ';'
+							| FOR '(' ForInit M_instr ForExpr M_instr ForIncr ')' M_instr Statement '''
+							# | FOR '(' ForInit ForExpr         ')' Statement '''
 
+	if len(p) == 8:
+		TAC.backPatch(p[7].get('nList',[]), p[2].get('instr',[]))
+		TAC.backPatch(p[4].get('trueList',[]), p[6].get('instr', []))
+		p[0] = {
+			'nList' : p[4].get('falseList',[])
+		}
+		TAC.emit('','',p[2]['instr'],'GOTO')
+
+	elif len(p) == 10:
+		TAC.backPatch(p[3].get('nList',[]), p[5].get('instr',[]))
+		TAC.backPatch(p[7].get('trueList',[]), p[2].get('instr',[]))
+		p[0] = {
+			'nList' : p[7].get('falseList',[])
+		}
+		TAC.emit('','',p[2]['instr'],'GOTO')
+
+	elif len(p) == 11:
+		TAC.backPatch(p[5].get('trueList',[]), p[9].get('instr',[]))
+		TAC.backPatch(p[10].get('nList',[]), p[6].get('instr',[]))
+		TAC.backPatch(p[7].get('nList',[]), p[4].get('instr',[]))
+		p[0] = {
+			'nList' : p[5].get('falseList',[])
+		}
+		TAC.emit('','',p[6]['instr'],'GOTO')
 
 def p_forinit(p):
 	'''ForInit : ExpressionStatements ';'
@@ -374,14 +422,34 @@ def p_forinit(p):
 def p_ForExpr(p):
 	'''ForExpr : Expression ';'
 				| ';' '''
+	if p[1] == ';':
+		p[0] = {
+			'trueList' : [TAC.getNextInstr()],
+			'falseList' : []
+		}
+	else:
+		p[0] = p[1]
 
 def p_ForIncr(p):
-	'''ForIncr : ExpressionStatements'''
+	'''ForIncr : ExpressionStatements 
+				|'''
+	print p[0]
+	print "abc"
+	if len(p) == 2:
+		p[0] ={
+			'nList' : p[1].get('nList',[])
+		}
+	else:
+		p[0] ={
+			'nList' : [TAC.getNextInstr()]
+		}
+	TAC.emit('','',p[-3]['instr'],'GOTO')
 
 def p_ExpressionStatements(p):
 	'''ExpressionStatements : ExpressionStatement
 							| ExpressionStatements ',' ExpressionStatement '''
-
+	if len(p) == 2:
+		p[0] = p[1]
 def p_JumpStatement(p):
 	'''JumpStatement : BREAK IDENTIFIER ';'
 					| BREAK            ';'
@@ -474,7 +542,7 @@ def p_boolLit(p):
 		p[0]['trueList'] = [TAC.getNextInstr()]
 	else :
 		p[0]['falseList'] = [TAC.getNextInstr()]
-	TAC.emit('','','','GOTO')
+	TAC.emit('','','','CondGOTO')
 
 def p_arrayaccess(p):
 	''' ArrayAccess : QualifiedName '[' Expression ']'
@@ -556,8 +624,9 @@ def p_PostfixExpression(p):
 
 def p_RealPostfixExpression(p):
 	'''RealPostfixExpression : PostfixExpression OPT_INC_DEC '''
-
-
+	p[0] = p[1]
+	print p[0]
+	print "123"
 def p_UnaryExpression(p):
 	'''UnaryExpression : OPT_INC_DEC UnaryExpression
 						| ArithmeticUnaryOperator CastExpression
@@ -728,8 +797,6 @@ def p_ConditionalAndExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
-		print p[1]
-		print p[3]
 		TAC.backPatch(p[1]['trueList'], p[3]['instr'])
 		p[0] = {
 			'trueList' : p[4].get('trueList', []),
@@ -781,8 +848,6 @@ def p_AssignmentExpression(p):
 			if type2 == 'None':
 				print "Variable declared before use"
 		else:
-			print p[3]
-			print 'kabaad'
 			type2 = p[3]['type']
 			tempVar2 = p[3]['tempVar']
 
