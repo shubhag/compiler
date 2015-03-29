@@ -4,12 +4,12 @@ class symbTbl:
 
 	def __init__(self):
 		mainSymbTbl = {
-				'scope' :	'main',
+				'scope' :	'Main',
 				'type'	:	'function',	
-				'pscope':	'main',		#parent scope
+				'pscope':	'Main',		#parent scope
 				'retype':	'undefined'
 			}
-
+		self.tempCount = 0 
 		self.scopeList = [mainSymbTbl]
 
 	#for error handling
@@ -21,17 +21,22 @@ class symbTbl:
 		return self.scopeList[-1]['scope']		#get the last element of the array by -1
 
 	def lookup_for_identifier(self, identifier):
-		idEntry = self.checkscope_id(identifier, len(self.scope) - 1)
+		idEntry = self.checkscope_id(identifier, len(self.scopeList) - 1)
 		if idEntry!= None : 
 			return True
 		else:
 			return False
 
+	def lookup_for_id(self, identifier):
+		idEntry = self.checkscope_id(identifier, len(self.scopeList) - 1)
+		return idEntry
+
 	#error in scope
 	def checkscope_id(self, identifier, scopeLen):
 		if scopeLen == -1 :
 			return None
-
+		print identifier
+		# print self.scopeList[scopeLen][identifier]
 		tempScope = self.scopeList[scopeLen]
 		if tempScope.has_key(identifier):
 			return tempScope[identifier]
@@ -65,8 +70,9 @@ class symbTbl:
 		else:
 			width = -1
 
-		if tempScope.has_key(identifier):
-			tempScope[identifier] = {
+		if not tempScope.has_key(identifier):
+			tempScope[identifier] = {}
+		tempScope[identifier] = {
 				'width'	:	width,
 				'type'	:	type
 			}	
@@ -86,7 +92,7 @@ class symbTbl:
 		return tempScope[attrName]
 
 	def getIdAttr(self, identifier, attrName):
-		idEntry = self.lookup_for_identifier(identifier)
+		idEntry = self.lookup_for_id(identifier)
 		if idEntry.has_key(attrName):
 			return idEntry[attrName]
 		else:
@@ -97,5 +103,19 @@ class symbTbl:
 		existence = self.scopeList[-1].get(identifier, 0)
 		return existence
 
+	def getTemp(self):
+		temp = "_t" + str(self.tempCount)
+		self.tempCount += 1
+		return temp
+
 	def delScope(self, function):
 		del self.scopeList[-1]
+
+	def addNewScope(self, name, scopeType):
+		tempSymbTbl = {
+				'scope' :	name,
+				'type'	:	scopeType,	
+				'pscope':	self.scopeList[-1]['scope'],		#parent scope
+				'retype':	'undefined'
+			}
+		self.scopeList.append(tempSymbTbl)

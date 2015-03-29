@@ -1,0 +1,707 @@
+   yacc.py: 292:PLY: PARSE DEBUG START
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(PUBLIC,'public',1,0)
+   yacc.py: 366:Action : Shift and goto state 19
+   yacc.py: 337:
+   yacc.py: 338:State  : 19
+   yacc.py: 352:Stack  : PUBLIC . LexToken(CLASS,'class',1,7)
+   yacc.py: 389:Action : Reduce rule [Modifier -> PUBLIC] with ['public'] and goto state 40
+   yacc.py: 423:Result : <str @ 0x7f4eb81d31e0> ('public')
+   yacc.py: 337:
+   yacc.py: 338:State  : 12
+   yacc.py: 352:Stack  : Modifier . LexToken(CLASS,'class',1,7)
+   yacc.py: 389:Action : Reduce rule [Modifiers -> Modifier] with ['public'] and goto state 38
+   yacc.py: 423:Result : <list @ 0x7f4eb819d8c0> (['p', 'u', 'b', 'l', 'i', 'c'])
+   yacc.py: 337:
+   yacc.py: 338:State  : 8
+   yacc.py: 352:Stack  : Modifiers . LexToken(CLASS,'class',1,7)
+   yacc.py: 366:Action : Shift and goto state 6
+   yacc.py: 337:
+   yacc.py: 338:State  : 6
+   yacc.py: 352:Stack  : Modifiers CLASS . LexToken(IDENTIFIER,'HelloWorld',1,13)
+   yacc.py: 389:Action : Reduce rule [ClassWord -> CLASS] with ['class'] and goto state 43
+   yacc.py: 423:Result : <NoneType @ 0x936be0> (None)
+   yacc.py: 337:
+   yacc.py: 338:State  : 24
+   yacc.py: 352:Stack  : Modifiers ClassWord . LexToken(IDENTIFIER,'HelloWorld',1,13)
+   yacc.py: 366:Action : Shift and goto state 37
+   yacc.py: 337:
+   yacc.py: 338:State  : 37
+   yacc.py: 352:Stack  : Modifiers ClassWord IDENTIFIER . LexToken({,'{',1,24)
+   yacc.py: 389:Action : Reduce rule [ClassHeader -> Modifiers ClassWord IDENTIFIER] with [<list @ 0x7f4eb819d8c0>,None,'HelloWorld'] and goto state 36
+   yacc.py: 423:Result : <dict @ 0x7f4eb7791168> ({'class': None, 'id': 'HelloWorld', 'mod ...)
+   yacc.py: 337:
+   yacc.py: 338:State  : 17
+   yacc.py: 352:Stack  : ClassHeader . LexToken({,'{',1,24)
+   yacc.py: 366:Action : Shift and goto state 33
+   yacc.py: 337:
+   yacc.py: 338:State  : 33
+   yacc.py: 352:Stack  : ClassHeader { . LexToken(PUBLIC,'public',3,31)
+   yacc.py: 366:Action : Shift and goto state 19
+   yacc.py: 337:
+   yacc.py: 338:State  : 19
+   yacc.py: 352:Stack  : ClassHeader { PUBLIC . LexToken(STATIC,'static',3,38)
+   yacc.py: 389:Action : Reduce rule [Modifier -> PUBLIC] with ['public'] and goto state 40
+   yacc.py: 423:Result : <str @ 0x7f4eb81d31e0> ('public')
+   yacc.py: 337:
+   yacc.py: 338:State  : 12
+   yacc.py: 352:Stack  : ClassHeader { Modifier . LexToken(STATIC,'static',3,38)
+   yacc.py: 389:Action : Reduce rule [Modifiers -> Modifier] with ['public'] and goto state 38
+   yacc.py: 423:Result : <list @ 0x7f4eb819d908> (['p', 'u', 'b', 'l', 'i', 'c'])
+   yacc.py: 337:
+   yacc.py: 338:State  : 57
+   yacc.py: 352:Stack  : ClassHeader { Modifiers . LexToken(STATIC,'static',3,38)
+   yacc.py: 366:Action : Shift and goto state 3
+   yacc.py: 337:
+   yacc.py: 338:State  : 3
+   yacc.py: 352:Stack  : ClassHeader { Modifiers STATIC . LexToken(VOID,'void',3,45)
+   yacc.py: 389:Action : Reduce rule [Modifier -> STATIC] with ['static'] and goto state 42
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5de0> ('static')
+   yacc.py: 337:
+   yacc.py: 338:State  : 25
+   yacc.py: 352:Stack  : ClassHeader { Modifiers Modifier . LexToken(VOID,'void',3,45)
+   yacc.py: 389:Action : Reduce rule [Modifiers -> Modifiers Modifier] with [<list @ 0x7f4eb819d908>,'static'] and goto state 39
+   yacc.py: 423:Result : <list @ 0x7f4eb819d908> (['p', 'u', 'b', 'l', 'i', 'c', 'static'])
+   yacc.py: 337:
+   yacc.py: 338:State  : 57
+   yacc.py: 352:Stack  : ClassHeader { Modifiers . LexToken(VOID,'void',3,45)
+   yacc.py: 366:Action : Shift and goto state 44
+   yacc.py: 337:
+   yacc.py: 338:State  : 44
+   yacc.py: 352:Stack  : ClassHeader { Modifiers VOID . LexToken(IDENTIFIER,'main',3,50)
+   yacc.py: 389:Action : Reduce rule [PrimitiveType -> VOID] with ['void'] and goto state 16
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5e40> ('void')
+   yacc.py: 337:
+   yacc.py: 338:State  : 46
+   yacc.py: 352:Stack  : ClassHeader { Modifiers PrimitiveType . LexToken(IDENTIFIER,'main',3,50)
+   yacc.py: 389:Action : Reduce rule [TypeName -> PrimitiveType] with ['void'] and goto state 4
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5e40> ('void')
+   yacc.py: 337:
+   yacc.py: 338:State  : 53
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeName . LexToken(IDENTIFIER,'main',3,50)
+   yacc.py: 389:Action : Reduce rule [TypeSpecifier -> TypeName] with ['void'] and goto state 2
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5e40> ('void')
+   yacc.py: 337:
+   yacc.py: 338:State  : 83
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier . LexToken(IDENTIFIER,'main',3,50)
+   yacc.py: 366:Action : Shift and goto state 77
+   yacc.py: 337:
+   yacc.py: 338:State  : 77
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier IDENTIFIER . LexToken((,'(',3,54)
+   yacc.py: 389:Action : Reduce rule [DeclaratorName -> IDENTIFIER] with ['main'] and goto state 72
+   yacc.py: 423:Result : <str @ 0x7f4eb81d31e0> ('main')
+   yacc.py: 337:
+   yacc.py: 338:State  : 75
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName . LexToken((,'(',3,54)
+   yacc.py: 366:Action : Shift and goto state 172
+   yacc.py: 337:
+   yacc.py: 338:State  : 172
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( . LexToken(IDENTIFIER,'String',3,55)
+   yacc.py: 366:Action : Shift and goto state 23
+   yacc.py: 337:
+   yacc.py: 338:State  : 23
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( IDENTIFIER . LexToken([,'[',3,61)
+   yacc.py: 389:Action : Reduce rule [QualifiedName -> IDENTIFIER] with ['String'] and goto state 32
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5e70> ('String')
+   yacc.py: 337:
+   yacc.py: 338:State  : 52
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( QualifiedName . LexToken([,'[',3,61)
+   yacc.py: 389:Action : Reduce rule [TypeName -> QualifiedName] with ['String'] and goto state 5
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5e70> ('String')
+   yacc.py: 337:
+   yacc.py: 338:State  : 53
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeName . LexToken([,'[',3,61)
+   yacc.py: 366:Action : Shift and goto state 79
+   yacc.py: 337:
+   yacc.py: 338:State  : 79
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeName [ . LexToken(],']',3,62)
+   yacc.py: 366:Action : Shift and goto state 178
+   yacc.py: 337:
+   yacc.py: 338:State  : 178
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeName [ ] . LexToken(IDENTIFIER,'args',3,64)
+   yacc.py: 389:Action : Reduce rule [OP_DIM -> [ ]] with ['[',']'] and goto state 188
+   yacc.py: 423:Result : <NoneType @ 0x936be0> (None)
+   yacc.py: 337:
+   yacc.py: 338:State  : 80
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeName OP_DIM . LexToken(IDENTIFIER,'args',3,64)
+   yacc.py: 389:Action : Reduce rule [Dims -> OP_DIM] with [None] and goto state 186
+   yacc.py: 423:Result : <NoneType @ 0x936be0> (None)
+   yacc.py: 337:
+   yacc.py: 338:State  : 81
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeName Dims . LexToken(IDENTIFIER,'args',3,64)
+   yacc.py: 389:Action : Reduce rule [TypeSpecifier -> TypeName Dims] with ['String',None] and goto state 3
+   yacc.py: 423:Result : <NoneType @ 0x936be0> (None)
+   yacc.py: 337:
+   yacc.py: 338:State  : 181
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeSpecifier . LexToken(IDENTIFIER,'args',3,64)
+   yacc.py: 366:Action : Shift and goto state 77
+   yacc.py: 337:
+   yacc.py: 338:State  : 77
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeSpecifier IDENTIFIER . LexToken(),')',3,68)
+   yacc.py: 389:Action : Reduce rule [DeclaratorName -> IDENTIFIER] with ['args'] and goto state 72
+   yacc.py: 423:Result : <str @ 0x7f4eb81e5c00> ('args')
+   yacc.py: 337:
+   yacc.py: 338:State  : 258
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( TypeSpecifier DeclaratorName . LexToken(),')',3,68)
+   yacc.py: 389:Action : Reduce rule [Parameter -> TypeSpecifier DeclaratorName] with [None,'args'] and goto state 71
+   yacc.py: 423:Result : <dict @ 0x7f4eb778cb40> ({'type': None, 'name': 'args'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 180
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( Parameter . LexToken(),')',3,68)
+   yacc.py: 389:Action : Reduce rule [ParameterList -> Parameter] with [<dict @ 0x7f4eb778cb40>] and goto state 69
+   yacc.py: 423:Result : <list @ 0x7f4eb819db00> (['type', 'name'])
+   yacc.py: 337:
+   yacc.py: 338:State  : 255
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( ParameterList . LexToken(),')',3,68)
+   yacc.py: 366:Action : Shift and goto state 319
+   yacc.py: 337:
+   yacc.py: 338:State  : 319
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier DeclaratorName ( ParameterList ) . LexToken({,'{',3,70)
+   yacc.py: 389:Action : Reduce rule [MethodDeclarator -> DeclaratorName ( ParameterList )] with ['main','(',<list @ 0x7f4eb819db00>,')'] and goto state 67
+   yacc.py: 423:Result : <dict @ 0x7f4eb778f910> ({'name': 'main', 'plist': ['type', 'name ...)
+   yacc.py: 337:
+   yacc.py: 338:State  : 185
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator . LexToken({,'{',3,70)
+   yacc.py: 366:Action : Shift and goto state 68
+   yacc.py: 337:
+   yacc.py: 338:State  : 68
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { . LexToken(INT,'int',4,80)
+   yacc.py: 366:Action : Shift and goto state 62
+   yacc.py: 337:
+   yacc.py: 338:State  : 62
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { INT . LexToken(IDENTIFIER,'a',4,84)
+   yacc.py: 389:Action : Reduce rule [PrimitiveType -> INT] with ['int'] and goto state 12
+   yacc.py: 423:Result : <str @ 0x7f4eb98a6350> ('int')
+   yacc.py: 337:
+   yacc.py: 338:State  : 91
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { PrimitiveType . LexToken(IDENTIFIER,'a',4,84)
+   yacc.py: 389:Action : Reduce rule [TypeName -> PrimitiveType] with ['int'] and goto state 4
+   yacc.py: 423:Result : <str @ 0x7f4eb98a6350> ('int')
+   yacc.py: 337:
+   yacc.py: 338:State  : 53
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeName . LexToken(IDENTIFIER,'a',4,84)
+   yacc.py: 389:Action : Reduce rule [TypeSpecifier -> TypeName] with ['int'] and goto state 2
+   yacc.py: 423:Result : <str @ 0x7f4eb98a6350> ('int')
+   yacc.py: 337:
+   yacc.py: 338:State  : 133
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier . LexToken(IDENTIFIER,'a',4,84)
+   yacc.py: 366:Action : Shift and goto state 77
+   yacc.py: 337:
+   yacc.py: 338:State  : 77
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier IDENTIFIER . LexToken(;,';',4,85)
+   yacc.py: 389:Action : Reduce rule [DeclaratorName -> IDENTIFIER] with ['a'] and goto state 72
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 228
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier DeclaratorName . LexToken(;,';',4,85)
+   yacc.py: 389:Action : Reduce rule [VariableDeclarator -> DeclaratorName] with ['a'] and goto state 59
+   yacc.py: 423:Result : <dict @ 0x7f4eb778c168> ({'type': 'int', 'name': 'a'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 78
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier VariableDeclarator . LexToken(;,';',4,85)
+   yacc.py: 389:Action : Reduce rule [VariableDeclarators -> VariableDeclarator] with [<dict @ 0x7f4eb778c168>] and goto state 57
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 227
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier VariableDeclarators . LexToken(;,';',4,85)
+   yacc.py: 366:Action : Shift and goto state 300
+   yacc.py: 337:
+   yacc.py: 338:State  : 300
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier VariableDeclarators ; . LexToken(IF,'if',5,95)
+   yacc.py: 391:Action : Reduce rule [M_instr -> <empty>] with [] and goto state 98
+   yacc.py: 462:Result : <dict @ 0x7f4eb778d398> ({'instr': 0})
+   yacc.py: 337:
+   yacc.py: 338:State  : 339
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { TypeSpecifier VariableDeclarators ; M_instr . LexToken(IF,'if',5,95)
+   yacc.py: 389:Action : Reduce rule [LocalVariableDeclarationStatement -> TypeSpecifier VariableDeclarators ; M_instr] with ['int',{'type': 'int'},';',{'instr': 0}] and goto state 90
+   yacc.py: 423:Result : <dict @ 0x7f4eb778e6e0> ({})
+   yacc.py: 337:
+   yacc.py: 338:State  : 156
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationStatement . LexToken(IF,'if',5,95)
+   yacc.py: 389:Action : Reduce rule [LocalVariableDeclarationOrStatement -> LocalVariableDeclarationStatement] with [{}] and goto state 88
+   yacc.py: 423:Result : <dict @ 0x7f4eb778e6e0> ({})
+   yacc.py: 337:
+   yacc.py: 338:State  : 123
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationOrStatement . LexToken(IF,'if',5,95)
+   yacc.py: 389:Action : Reduce rule [LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement] with [{}] and goto state 86
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d050> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 158
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements . LexToken(IF,'if',5,95)
+   yacc.py: 366:Action : Shift and goto state 164
+   yacc.py: 337:
+   yacc.py: 338:State  : 164
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF . LexToken((,'(',5,97)
+   yacc.py: 366:Action : Shift and goto state 250
+   yacc.py: 337:
+   yacc.py: 338:State  : 250
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( . LexToken(IDENTIFIER,'a',5,98)
+   yacc.py: 366:Action : Shift and goto state 23
+   yacc.py: 337:
+   yacc.py: 338:State  : 23
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( IDENTIFIER . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [QualifiedName -> IDENTIFIER] with ['a'] and goto state 32
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 192
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( QualifiedName . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [PrimaryExpression -> QualifiedName] with ['a'] and goto state 133
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 134
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( PrimaryExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [PostfixExpression -> PrimaryExpression] with ['a'] and goto state 189
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 126
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( PostfixExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [LogicalUnaryExpression -> PostfixExpression] with ['a'] and goto state 195
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 162
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( LogicalUnaryExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [UnaryExpression -> LogicalUnaryExpression] with ['a'] and goto state 194
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 142
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( UnaryExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [CastExpression -> UnaryExpression] with ['a'] and goto state 201
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 151
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( CastExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [MultiplicativeExpression -> CastExpression] with ['a'] and goto state 202
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 107
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( MultiplicativeExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [AdditiveExpression -> MultiplicativeExpression] with ['a'] and goto state 206
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 140
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( AdditiveExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [ShiftExpression -> AdditiveExpression] with ['a'] and goto state 209
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 157
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( ShiftExpression . LexToken(>,'>',5,100)
+   yacc.py: 389:Action : Reduce rule [RelationalExpression -> ShiftExpression] with ['a'] and goto state 211
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 120
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression . LexToken(>,'>',5,100)
+   yacc.py: 366:Action : Shift and goto state 217
+   yacc.py: 337:
+   yacc.py: 338:State  : 217
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > . LexToken(INT_LITERAL,'1',5,102)
+   yacc.py: 366:Action : Shift and goto state 148
+   yacc.py: 337:
+   yacc.py: 338:State  : 148
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > INT_LITERAL . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [Integer_LIT -> INT_LITERAL] with ['1'] and goto state 148
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 95
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > Integer_LIT . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [ComplexPrimary -> Integer_LIT] with [<dict @ 0x7f4eb77917f8>] and goto state 139
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 125
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > ComplexPrimary . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [NotJustName -> ComplexPrimary] with [<dict @ 0x7f4eb77917f8>] and goto state 137
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 159
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > NotJustName . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [PrimaryExpression -> NotJustName] with [<dict @ 0x7f4eb77917f8>] and goto state 134
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 134
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > PrimaryExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [PostfixExpression -> PrimaryExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 189
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 126
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > PostfixExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [LogicalUnaryExpression -> PostfixExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 195
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 162
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > LogicalUnaryExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [UnaryExpression -> LogicalUnaryExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 194
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 201
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > UnaryExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [CastExpression -> UnaryExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 201
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 151
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > CastExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [MultiplicativeExpression -> CastExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 202
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 107
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > MultiplicativeExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [AdditiveExpression -> MultiplicativeExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 206
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 140
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > AdditiveExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [ShiftExpression -> AdditiveExpression] with [<dict @ 0x7f4eb77917f8>] and goto state 209
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'type': 'int', 'tempVar': '_t0'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 289
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression > ShiftExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [RelationalExpression -> RelationalExpression > ShiftExpression] with ['a','>',<dict @ 0x7f4eb77917f8>] and goto state 213
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 120
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( RelationalExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [EqualityExpression -> RelationalExpression] with [<dict @ 0x7f4eb778d398>] and goto state 216
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 105
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( EqualityExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [AndExpression -> EqualityExpression] with [<dict @ 0x7f4eb778d398>] and goto state 219
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 93
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( AndExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [ExclusiveOrExpression -> AndExpression] with [<dict @ 0x7f4eb778d398>] and goto state 221
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 119
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( ExclusiveOrExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [InclusiveOrExpression -> ExclusiveOrExpression] with [<dict @ 0x7f4eb778d398>] and goto state 223
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 143
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( InclusiveOrExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [ConditionalAndExpression -> InclusiveOrExpression] with [<dict @ 0x7f4eb778d398>] and goto state 225
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 99
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( ConditionalAndExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [ConditionalOrExpression -> ConditionalAndExpression] with [<dict @ 0x7f4eb778d398>] and goto state 227
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 137
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( ConditionalOrExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [ConditionalExpression -> ConditionalOrExpression] with [<dict @ 0x7f4eb778d398>] and goto state 230
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 141
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( ConditionalExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [AssignmentExpression -> ConditionalExpression] with [<dict @ 0x7f4eb778d398>] and goto state 232
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 112
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( AssignmentExpression . LexToken(),')',5,103)
+   yacc.py: 389:Action : Reduce rule [Expression -> AssignmentExpression] with [<dict @ 0x7f4eb778d398>] and goto state 236
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d398> ({'trueList': [2], 'falseList': [3]})
+   yacc.py: 337:
+   yacc.py: 338:State  : 317
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression . LexToken(),')',5,103)
+   yacc.py: 366:Action : Shift and goto state 345
+   yacc.py: 337:
+   yacc.py: 338:State  : 345
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) . LexToken({,'{',5,104)
+   yacc.py: 391:Action : Reduce rule [M_instr_branch -> <empty>] with [] and goto state 108
+   yacc.py: 462:Result : <dict @ 0x7f4eb778bc58> ({'instr': 4})
+   yacc.py: 337:
+   yacc.py: 338:State  : 359
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch . LexToken({,'{',5,104)
+   yacc.py: 366:Action : Shift and goto state 68
+   yacc.py: 337:
+   yacc.py: 338:State  : 68
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { . LexToken(IDENTIFIER,'a',6,115)
+   yacc.py: 366:Action : Shift and goto state 96
+   yacc.py: 337:
+   yacc.py: 338:State  : 96
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { IDENTIFIER . LexToken(=,'=',6,117)
+   yacc.py: 389:Action : Reduce rule [QualifiedName -> IDENTIFIER] with ['a'] and goto state 32
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 154
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { QualifiedName . LexToken(=,'=',6,117)
+   yacc.py: 389:Action : Reduce rule [PrimaryExpression -> QualifiedName] with ['a'] and goto state 133
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 134
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { PrimaryExpression . LexToken(=,'=',6,117)
+   yacc.py: 389:Action : Reduce rule [PostfixExpression -> PrimaryExpression] with ['a'] and goto state 189
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 126
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { PostfixExpression . LexToken(=,'=',6,117)
+   yacc.py: 389:Action : Reduce rule [LogicalUnaryExpression -> PostfixExpression] with ['a'] and goto state 195
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 162
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { LogicalUnaryExpression . LexToken(=,'=',6,117)
+   yacc.py: 389:Action : Reduce rule [UnaryExpression -> LogicalUnaryExpression] with ['a'] and goto state 194
+   yacc.py: 423:Result : <str @ 0x7f4eb99db670> ('a')
+   yacc.py: 337:
+   yacc.py: 338:State  : 142
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression . LexToken(=,'=',6,117)
+   yacc.py: 366:Action : Shift and goto state 238
+   yacc.py: 337:
+   yacc.py: 338:State  : 238
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression = . LexToken(INT_LITERAL,'2',6,119)
+   yacc.py: 389:Action : Reduce rule [AssignmentOperator -> =] with ['='] and goto state 234
+   yacc.py: 423:Result : <str @ 0x7f4eb9918fd0> ('=')
+   yacc.py: 337:
+   yacc.py: 338:State  : 236
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator . LexToken(INT_LITERAL,'2',6,119)
+   yacc.py: 366:Action : Shift and goto state 148
+   yacc.py: 337:
+   yacc.py: 338:State  : 148
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator INT_LITERAL . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [Integer_LIT -> INT_LITERAL] with ['2'] and goto state 148
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 95
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator Integer_LIT . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ComplexPrimary -> Integer_LIT] with [<dict @ 0x7f4eb778b5c8>] and goto state 139
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 125
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator ComplexPrimary . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [NotJustName -> ComplexPrimary] with [<dict @ 0x7f4eb778b5c8>] and goto state 137
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 159
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator NotJustName . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [PrimaryExpression -> NotJustName] with [<dict @ 0x7f4eb778b5c8>] and goto state 134
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 134
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator PrimaryExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [PostfixExpression -> PrimaryExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 189
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 126
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator PostfixExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [LogicalUnaryExpression -> PostfixExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 195
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 162
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator LogicalUnaryExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [UnaryExpression -> LogicalUnaryExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 194
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 142
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator UnaryExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [CastExpression -> UnaryExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 201
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 151
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator CastExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [MultiplicativeExpression -> CastExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 202
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 107
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator MultiplicativeExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [AdditiveExpression -> MultiplicativeExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 206
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 140
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator AdditiveExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ShiftExpression -> AdditiveExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 209
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 157
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator ShiftExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [RelationalExpression -> ShiftExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 211
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 120
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator RelationalExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [EqualityExpression -> RelationalExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 216
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 105
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator EqualityExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [AndExpression -> EqualityExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 219
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 93
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator AndExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ExclusiveOrExpression -> AndExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 221
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 119
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator ExclusiveOrExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [InclusiveOrExpression -> ExclusiveOrExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 223
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 143
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator InclusiveOrExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ConditionalAndExpression -> InclusiveOrExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 225
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 99
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator ConditionalAndExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ConditionalOrExpression -> ConditionalAndExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 227
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 137
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator ConditionalOrExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ConditionalExpression -> ConditionalOrExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 230
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 141
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator ConditionalExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [AssignmentExpression -> ConditionalExpression] with [<dict @ 0x7f4eb778b5c8>] and goto state 232
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'type': 'int', 'tempVar': '_t2'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 307
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { UnaryExpression AssignmentOperator AssignmentExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [AssignmentExpression -> UnaryExpression AssignmentOperator AssignmentExpression] with ['a','=',<dict @ 0x7f4eb778b5c8>] and goto state 233
+   yacc.py: 423:Result : <dict @ 0x7f4eb7a26b40> ({'type': 'int', 'tempVar': 'a'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 112
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { AssignmentExpression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [Expression -> AssignmentExpression] with [<dict @ 0x7f4eb7a26b40>] and goto state 236
+   yacc.py: 423:Result : <dict @ 0x7f4eb7a26b40> ({'type': 'int', 'tempVar': 'a'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 139
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { Expression . LexToken(;,';',6,120)
+   yacc.py: 389:Action : Reduce rule [ExpressionStatement -> Expression] with [<dict @ 0x7f4eb7a26b40>] and goto state 103
+   yacc.py: 423:Result : <dict @ 0x7f4eb7a26b40> ({'type': 'int', 'tempVar': 'a'})
+   yacc.py: 337:
+   yacc.py: 338:State  : 90
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { ExpressionStatement . LexToken(;,';',6,120)
+   yacc.py: 366:Action : Shift and goto state 187
+   yacc.py: 337:
+   yacc.py: 338:State  : 187
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { ExpressionStatement ; . LexToken(},'}',7,130)
+   yacc.py: 391:Action : Reduce rule [M_instr -> <empty>] with [] and goto state 98
+   yacc.py: 462:Result : <dict @ 0x7f4eb7a267f8> ({'instr': 6})
+   yacc.py: 337:
+   yacc.py: 338:State  : 262
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { ExpressionStatement ; M_instr . LexToken(},'}',7,130)
+   yacc.py: 389:Action : Reduce rule [Statement -> ExpressionStatement ; M_instr] with [<dict @ 0x7f4eb7a26b40>,';',{'instr': 6}] and goto state 93
+   yacc.py: 423:Result : <dict @ 0x7f4eb7a264b0> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 92
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { Statement . LexToken(},'}',7,130)
+   yacc.py: 389:Action : Reduce rule [LocalVariableDeclarationOrStatement -> Statement] with [<dict @ 0x7f4eb7a264b0>] and goto state 89
+   yacc.py: 423:Result : <dict @ 0x7f4eb7a264b0> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 123
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { LocalVariableDeclarationOrStatement . LexToken(},'}',7,130)
+   yacc.py: 389:Action : Reduce rule [LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement] with [<dict @ 0x7f4eb7a264b0>] and goto state 86
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 158
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { LocalVariableDeclarationsAndStatements . LexToken(},'}',7,130)
+   yacc.py: 366:Action : Shift and goto state 247
+   yacc.py: 337:
+   yacc.py: 338:State  : 247
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch { LocalVariableDeclarationsAndStatements } . LexToken(ELSE,'else',7,132)
+   yacc.py: 389:Action : Reduce rule [Block -> { LocalVariableDeclarationsAndStatements }] with ['{',<dict @ 0x7f4eb778b5c8>,'}'] and goto state 84
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b5c8> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 116
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch Block . LexToken(ELSE,'else',7,132)
+   yacc.py: 391:Action : Reduce rule [M_instr -> <empty>] with [] and goto state 98
+   yacc.py: 462:Result : <dict @ 0x7f4eb778b910> ({'instr': 6})
+   yacc.py: 337:
+   yacc.py: 338:State  : 210
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch Block M_instr . LexToken(ELSE,'else',7,132)
+   yacc.py: 389:Action : Reduce rule [Statement -> Block M_instr] with [<dict @ 0x7f4eb778b5c8>,{'instr': 6}] and goto state 97
+   yacc.py: 423:Result : <dict @ 0x7f4eb77917f8> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 363
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements IF ( Expression ) M_instr_branch Statement . LexToken(ELSE,'else',7,132)
+   yacc.py: 389:Action : Reduce rule [SelectionStatement -> IF ( Expression ) M_instr_branch Statement] with ['if','(',<dict @ 0x7f4eb778d398>,')',{'instr': 4},<dict @ 0x7f4eb77917f8>] and goto state 104
+   yacc.py: 423:Result : <dict @ 0x7f4eb778b280> ({'beginLoop': [], 'endOfLoop': [], 'nLis ...)
+   yacc.py: 337:
+   yacc.py: 338:State  : 111
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements SelectionStatement . LexToken(ELSE,'else',7,132)
+   yacc.py: 391:Action : Reduce rule [M_instr -> <empty>] with [] and goto state 98
+   yacc.py: 462:Result : <dict @ 0x7f4eb778da28> ({'instr': 6})
+   yacc.py: 337:
+   yacc.py: 338:State  : 207
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements SelectionStatement M_instr . LexToken(ELSE,'else',7,132)
+   yacc.py: 389:Action : Reduce rule [Statement -> SelectionStatement M_instr] with [<dict @ 0x7f4eb778b280>,{'instr': 6}] and goto state 94
+   yacc.py: 423:Result : <dict @ 0x7f4eb778d6e0> ({'beginLoop': [], 'endOfLoop': []})
+   yacc.py: 337:
+   yacc.py: 338:State  : 92
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements Statement . LexToken(ELSE,'else',7,132)
+   yacc.py: 493:Error  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements Statement . LexToken(ELSE,'else',7,132)
+   yacc.py: 337:
+   yacc.py: 338:State  : 92
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements Statement . error
+   yacc.py: 493:Error  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements Statement . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 158
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements . error
+   yacc.py: 493:Error  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { LocalVariableDeclarationsAndStatements . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 68
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { . error
+   yacc.py: 493:Error  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator { . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 185
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator . error
+   yacc.py: 493:Error  : ClassHeader { Modifiers TypeSpecifier MethodDeclarator . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 83
+   yacc.py: 352:Stack  : ClassHeader { Modifiers TypeSpecifier . error
+   yacc.py: 493:Error  : ClassHeader { Modifiers TypeSpecifier . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 57
+   yacc.py: 352:Stack  : ClassHeader { Modifiers . error
+   yacc.py: 493:Error  : ClassHeader { Modifiers . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 33
+   yacc.py: 352:Stack  : ClassHeader { . error
+   yacc.py: 493:Error  : ClassHeader { . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 17
+   yacc.py: 352:Stack  : ClassHeader . error
+   yacc.py: 493:Error  : ClassHeader . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . error
+   yacc.py: 493:Error  : . error
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken({,'{',7,136)
+   yacc.py: 493:Error  : . LexToken({,'{',7,136)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(IDENTIFIER,'a',8,147)
+   yacc.py: 493:Error  : . LexToken(IDENTIFIER,'a',8,147)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(=,'=',8,149)
+   yacc.py: 493:Error  : . LexToken(=,'=',8,149)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(INT_LITERAL,'3',8,151)
+   yacc.py: 493:Error  : . LexToken(INT_LITERAL,'3',8,151)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(;,';',8,152)
+   yacc.py: 493:Error  : . LexToken(;,';',8,152)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(},'}',9,162)
+   yacc.py: 493:Error  : . LexToken(},'}',9,162)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(},'}',10,168)
+   yacc.py: 493:Error  : . LexToken(},'}',10,168)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . LexToken(},'}',12,171)
+   yacc.py: 493:Error  : . LexToken(},'}',12,171)
+   yacc.py: 337:
+   yacc.py: 338:State  : 0
+   yacc.py: 352:Stack  : . $end
+   yacc.py: 493:Error  : . $end
