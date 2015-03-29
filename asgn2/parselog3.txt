@@ -184,8 +184,8 @@ AndExpression -> EqualityExpression
 None
 EqualityExpression -> RelationalExpression
 None
-RelationalExpression -> RelationalExpression > ShiftExpression
-None,'>',None
+RelationalExpression -> ShiftExpression
+None
 ShiftExpression -> AdditiveExpression
 None
 AdditiveExpression -> MultiplicativeExpression
@@ -206,28 +206,8 @@ NotJustName -> ComplexPrimary
 None
 ComplexPrimary -> ComplexPrimaryNoParenthesis
 None
-ComplexPrimaryNoParenthesis -> INT_LITERAL
-'1'
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> QualifiedName
-None
-QualifiedName -> IDENTIFIER
-'a'
+ComplexPrimaryNoParenthesis -> BOOL
+'true'
 LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement
 None
 LocalVariableDeclarationOrStatement -> LocalVariableDeclarationStatement

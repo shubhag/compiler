@@ -340,7 +340,7 @@ def p_ExpressionStatement(p):
 
 def p_SelectionStatement(p):
 	'''SelectionStatement : IF '(' Expression ')' M_instr_branch Statement
-							|	IF '(' Expression ')' M_instr_branch Statement ELSE Statement
+							|	IF '(' Expression ')' M_instr_branch Statement N_instr_branch ELSE M_instr_branch Statement
 					        | SWITCH '(' Expression ')' Block '''
 
 	if len(p) == 7 :
@@ -351,7 +351,22 @@ def p_SelectionStatement(p):
 		}
 		TAC.backPatch(p[3].get('trueList', []), p[5].get('instr',[]))
 	elif len(p) == 8 :
-		temp = TAC.merge()
+		TAC.backPatch(p[3].get('trueList',[]), p[5].get('instr',[]) )
+		TAC.backPatch(p[3].get('falseList',[]),p[9].get('instr',[]) )
+		temp = TAC.merge(p[6].get('nList',[]),p[7].get('nList',[]))
+		p[0]= {
+			'nList' : TAC.merge(temp, p[10].get('nList',[])),
+			'endOfLoop': TAC.merge(p[10].get('endOfLoop',[]), p[6].get('endOfLoop',[])),
+			'beginLoop': TAC.merge(p[9].get('loopBeginList', []), p[6].get('loopBeginList', []))
+		}
+
+def p_N_instr_branch(p):
+	'''N_instr_branch : '''
+	p[0] = {
+		'nList' : [TAC.getNextInstr()]
+	}
+	TAC.emit('','','','GOTO')
+
 
 def p_branch_if(p):
 	'''M_instr_branch : '''

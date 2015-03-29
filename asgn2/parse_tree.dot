@@ -197,9 +197,8 @@ digraph "Parse Tree" {
 	AndExpression3 -> {  EqualityExpression3 }
 	RelationalExpression3 [label = "RelationalExpression"] 
 	EqualityExpression3 -> {  RelationalExpression3 }
-	RelationalExpression4 [label = "RelationalExpression"] 
 	ShiftExpression3 [label = "ShiftExpression"] 
-	RelationalExpression3 -> {  RelationalExpression4 ">" ShiftExpression3 }
+	RelationalExpression3 -> {  ShiftExpression3 }
 	AdditiveExpression3 [label = "AdditiveExpression"] 
 	ShiftExpression3 -> {  AdditiveExpression3 }
 	MultiplicativeExpression3 [label = "MultiplicativeExpression"] 
@@ -220,28 +219,8 @@ digraph "Parse Tree" {
 	NotJustName3 -> {  ComplexPrimary3 }
 	ComplexPrimaryNoParenthesis3 [label = "ComplexPrimaryNoParenthesis"] 
 	ComplexPrimary3 -> {  ComplexPrimaryNoParenthesis3 }
-	INT_LITERAL3 [label = "INT_LITERAL"] 
-	ComplexPrimaryNoParenthesis3 -> {  INT_LITERAL3 }
-	ShiftExpression4 [label = "ShiftExpression"] 
-	RelationalExpression4 -> {  ShiftExpression4 }
-	AdditiveExpression4 [label = "AdditiveExpression"] 
-	ShiftExpression4 -> {  AdditiveExpression4 }
-	MultiplicativeExpression4 [label = "MultiplicativeExpression"] 
-	AdditiveExpression4 -> {  MultiplicativeExpression4 }
-	CastExpression4 [label = "CastExpression"] 
-	MultiplicativeExpression4 -> {  CastExpression4 }
-	UnaryExpression6 [label = "UnaryExpression"] 
-	CastExpression4 -> {  UnaryExpression6 }
-	LogicalUnaryExpression6 [label = "LogicalUnaryExpression"] 
-	UnaryExpression6 -> {  LogicalUnaryExpression6 }
-	PostfixExpression6 [label = "PostfixExpression"] 
-	LogicalUnaryExpression6 -> {  PostfixExpression6 }
-	PrimaryExpression6 [label = "PrimaryExpression"] 
-	PostfixExpression6 -> {  PrimaryExpression6 }
-	QualifiedName3 [label = "QualifiedName"] 
-	PrimaryExpression6 -> {  QualifiedName3 }
-	IDENTIFIER3 [label = "IDENTIFIER"] 
-	QualifiedName3 -> {  IDENTIFIER3 }
+	BOOL1 [label = "BOOL"] 
+	ComplexPrimaryNoParenthesis3 -> {  BOOL1 }
 	LocalVariableDeclarationOrStatement4 [label = "LocalVariableDeclarationOrStatement"] 
 	LocalVariableDeclarationsAndStatements4 -> {  LocalVariableDeclarationOrStatement4 }
 	LocalVariableDeclarationStatement1 [label = "LocalVariableDeclarationStatement"] 
@@ -253,8 +232,8 @@ digraph "Parse Tree" {
 	VariableDeclarators1 -> {  VariableDeclarator1 }
 	DeclaratorName1 [label = "DeclaratorName"] 
 	VariableDeclarator1 -> {  DeclaratorName1 }
-	IDENTIFIER4 [label = "IDENTIFIER"] 
-	DeclaratorName1 -> {  IDENTIFIER4 }
+	IDENTIFIER3 [label = "IDENTIFIER"] 
+	DeclaratorName1 -> {  IDENTIFIER3 }
 	TypeName1 [label = "TypeName"] 
 	TypeSpecifier2 -> {  TypeName1 }
 	PrimitiveType1 [label = "PrimitiveType"] 
@@ -269,20 +248,20 @@ digraph "Parse Tree" {
 	TypeSpecifier3 [label = "TypeSpecifier"] 
 	DeclaratorName3 [label = "DeclaratorName"] 
 	Parameter1 -> {  TypeSpecifier3 DeclaratorName3 }
-	IDENTIFIER5 [label = "IDENTIFIER"] 
-	DeclaratorName3 -> {  IDENTIFIER5 }
+	IDENTIFIER4 [label = "IDENTIFIER"] 
+	DeclaratorName3 -> {  IDENTIFIER4 }
 	TypeName2 [label = "TypeName"] 
 	Dims1 [label = "Dims"] 
 	TypeSpecifier3 -> {  TypeName2 Dims1 }
 	OP_DIM1 [label = "OP_DIM"] 
 	Dims1 -> {  OP_DIM1 }
 	OP_DIM1 -> {  "[" "]" }
-	QualifiedName4 [label = "QualifiedName"] 
-	TypeName2 -> {  QualifiedName4 }
+	QualifiedName3 [label = "QualifiedName"] 
+	TypeName2 -> {  QualifiedName3 }
+	IDENTIFIER5 [label = "IDENTIFIER"] 
+	QualifiedName3 -> {  IDENTIFIER5 }
 	IDENTIFIER6 [label = "IDENTIFIER"] 
-	QualifiedName4 -> {  IDENTIFIER6 }
-	IDENTIFIER7 [label = "IDENTIFIER"] 
-	DeclaratorName3 -> {  IDENTIFIER7 }
+	DeclaratorName3 -> {  IDENTIFIER6 }
 	TypeName3 [label = "TypeName"] 
 	TypeSpecifier3 -> {  TypeName3 }
 	PrimitiveType2 [label = "PrimitiveType"] 
@@ -300,8 +279,8 @@ digraph "Parse Tree" {
 	Modifier2 -> {  PUBLIC1 }
 	Modifiers3 [label = "Modifiers"] 
 	ClassWord1 [label = "ClassWord"] 
-	IDENTIFIER8 [label = "IDENTIFIER"] 
-	ClassHeader1 -> {  Modifiers3 ClassWord1 IDENTIFIER8 }
+	IDENTIFIER7 [label = "IDENTIFIER"] 
+	ClassHeader1 -> {  Modifiers3 ClassWord1 IDENTIFIER7 }
 	CLASS1 [label = "CLASS"] 
 	ClassWord1 -> {  CLASS1 }
 	Modifier3 [label = "Modifier"] 

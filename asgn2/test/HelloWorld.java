@@ -1,13 +1,12 @@
 public class HelloWorld {
 
     public static void main(String[] args) {
-          int a;
-        if(a > 1){
+        int a;
+        if(true){
         	a = 2;
-        } else{
+        } else {
         	a = 3;
         }
-        
     }
 
 }
