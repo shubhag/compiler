@@ -345,10 +345,12 @@ def p_LabelStatement(p):
 def p_ExpressionStatement(p):
 	'''ExpressionStatement : Expression '''
 	p[0] = p[1]	
+	print p[0]
+	print "345"
 
 def p_SelectionStatement(p):
 	'''SelectionStatement : IF '(' Expression ')' M_instr_branch Statement
-							|	IF '(' Expression ')' M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+							|	IF '(' Expression ')' M_instr_branch Statement  ELSE N_instr M_instr_branch Statement
 					        | SWITCH '(' Expression ')' Block '''
 
 	if len(p) == 7 :
@@ -362,7 +364,7 @@ def p_SelectionStatement(p):
 	elif len(p) == 11 :
 		TAC.backPatch(p[3].get('trueList',[]), p[5].get('instr',[]) )
 		TAC.backPatch(p[3].get('falseList',[]),p[9].get('instr',[]) )
-		temp = TAC.merge(p[6].get('nList',[]),p[7].get('nList',[]))
+		temp = TAC.merge(p[6].get('nList',[]),p[8].get('nList',[]))
 		p[0]= {
 			'nList' : TAC.merge(temp, p[10].get('nList',[])),
 			'endOfLoop': TAC.merge(p[10].get('endOfLoop',[]), p[6].get('endOfLoop',[])),
@@ -433,9 +435,10 @@ def p_ForExpr(p):
 def p_ForIncr(p):
 	'''ForIncr : ExpressionStatements 
 				|'''
-	print p[0]
-	print "abc"
+
 	if len(p) == 2:
+		print p[0]
+		print "chal"
 		p[0] ={
 			'nList' : p[1].get('nList',[])
 		}
@@ -624,9 +627,16 @@ def p_PostfixExpression(p):
 
 def p_RealPostfixExpression(p):
 	'''RealPostfixExpression : PostfixExpression OPT_INC_DEC '''
-	p[0] = p[1]
-	print p[0]
-	print "123"
+	temp1 = ST.getTemp()
+	TAC.emit(temp1, 1,'','=')
+	temp2 = ST.getTemp()
+	TAC.emit(temp2, temp1, p[1],p[2][0])
+	TAC.emit(p[1],temp2,'','=')
+	p[0] = {
+			'trueList' : [TAC.getNextInstr()],
+			'falseList' : [TAC.getNextInstr() + 1]
+		}
+
 def p_UnaryExpression(p):
 	'''UnaryExpression : OPT_INC_DEC UnaryExpression
 						| ArithmeticUnaryOperator CastExpression
@@ -747,6 +757,8 @@ def p_RelationalExpression(p):
 							| RelationalExpression OP_GE ShiftExpression '''
 	if len(p) == 2:
 		p[0] = p[1]
+		print p[0]
+		print "761"
 	else: 
 		temp = ST.getTemp()
 		if type(p[1]) is not dict:
@@ -772,6 +784,26 @@ def p_EqualityExpression(p):
 						    | EqualityExpression OP_NE RelationalExpression '''
 	if len(p) == 2:
 		p[0] = p[1]
+	else: 
+		temp = ST.getTemp()
+		if type(p[1]) is not dict:
+			temp1 = p[1]
+		else:
+			temp1 = p[1]['tempVar']
+
+		if type(p[3]) is not dict:
+			temp2 = p[3]
+		else:
+			temp2 = p[3]['tempVar']
+
+		TAC.emit(temp, temp1,temp2,p[2])
+		p[0] = {
+			'trueList' : [TAC.getNextInstr()],
+			'falseList' : [TAC.getNextInstr() + 1]
+		}
+		TAC.emit('IF',temp,'','GOTO')
+		TAC.emit('','','','GOTO')
+
 
 def p_AndExpression(p):
 	'''AndExpression : EqualityExpression
@@ -824,9 +856,38 @@ def p_m_operator(p):
 
 def p_ConditionalExpression(p):
 	'''ConditionalExpression : ConditionalOrExpression
-							| ConditionalOrExpression '?' Expression ':' ConditionalExpression'''
+							| ConditionalOrExpression '?' M_instr Expression  ':' M_instr ConditionalExpression M_instr'''
 	if len(p) == 2:
 		p[0] = p[1]
+	else:
+		tempVar2 = ST.getTemp()
+		if type(p[4]) is not dict:
+			temp2 = p[4]
+			type2 = ST.getIdAttr(p[4], 'type')
+		else:
+			temp2 = p[4]['tempVar']
+			type2 = p[4]['type']
+
+		tempVar3 = ST.getTemp()
+		if type(p[7]) is not dict:
+			temp3 = p[7]
+			type3 = ST.getIdAttr(p[7], 'type')
+		else:
+			temp3 = p[7]['tempVar']
+			type3 = p[7]['type']
+
+		print p[1].get('trueList',[]) , "truelist"
+
+		tempVar = ST.getTemp()
+
+		TAC.backPatch(p[1].get('trueList',[]), p[3].get('instr',[]) )
+		TAC.emit(tempVar,tempVar2,'','=')
+		nextIns = TAC.getNextInstr()
+		TAC.emit('','','','GOTO')
+		TAC.backPatch(p[1].get('falseList',[]), TAC.getNextInstr() )
+		TAC.emit(tempVar,tempVar3,'','=')
+		TAC.backPatch([ nextIns ], TAC.getNextInstr()+1 )
+		p[0] = {'type':type2,'tempVar': tempVar }
 
 def p_AssignmentExpression(p):
 	'''AssignmentExpression : ConditionalExpression

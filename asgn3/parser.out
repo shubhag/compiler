@@ -129,7 +129,7 @@ Rule 101   LabelStatement -> CASE ConstantExpression :
 Rule 102   LabelStatement -> DEFAULT :
 Rule 103   ExpressionStatement -> Expression
 Rule 104   SelectionStatement -> IF ( Expression ) M_instr_branch Statement
-Rule 105   SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+Rule 105   SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
 Rule 106   SelectionStatement -> SWITCH ( Expression ) Block
 Rule 107   N_instr -> <empty>
 Rule 108   M_instr_branch -> <empty>
@@ -255,7 +255,7 @@ Rule 227   ConditionalOrExpression -> ConditionalAndExpression
 Rule 228   ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression
 Rule 229   M_OP -> <empty>
 Rule 230   ConditionalExpression -> ConditionalOrExpression
-Rule 231   ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression
+Rule 231   ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
 Rule 232   AssignmentExpression -> ConditionalExpression
 Rule 233   AssignmentExpression -> UnaryExpression AssignmentOperator AssignmentExpression
 Rule 234   AssignmentOperator -> =
@@ -423,7 +423,7 @@ LocalVariableDeclarationsAndStatements : 84 87
 LogicalUnaryExpression : 194
 LogicalUnaryOperator : 196
 M_OP                 : 226 228
-M_instr              : 90 91 92 93 94 95 96 97 111 111 111
+M_instr              : 90 91 92 93 94 95 96 97 111 111 111 231 231 231
 M_instr_branch       : 104 105 105 109 109 110 110
 MethodAccess         : 160 161
 MethodBody           : 65 66
@@ -1859,7 +1859,7 @@ state 68
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -1890,7 +1890,7 @@ state 68
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -2601,7 +2601,7 @@ state 94
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -2744,14 +2744,14 @@ state 94
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 191
@@ -2915,12 +2915,12 @@ state 99
 
     ?               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
     OP_LOR          reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
-    )               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
-    }               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
-    ,               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
-    ]               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
     ;               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
+    )               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
     :               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
+    ,               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
+    }               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
+    ]               reduce using rule 227 (ConditionalOrExpression -> ConditionalAndExpression .)
     OP_LAND         shift and go to state 194
 
 
@@ -3028,7 +3028,7 @@ state 102
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -3172,14 +3172,14 @@ state 102
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 198
@@ -3225,9 +3225,9 @@ state 103
     OP_LOR          reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
     }               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
     ,               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
+    :               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
     ;               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
     )               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
-    :               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
     ]               reduce using rule 190 (PostfixExpression -> RealPostfixExpression .)
     .               shift and go to state 199
 
@@ -3619,12 +3619,12 @@ state 112
 
     (236) Expression -> AssignmentExpression .
 
+    ;               reduce using rule 236 (Expression -> AssignmentExpression .)
     )               reduce using rule 236 (Expression -> AssignmentExpression .)
     ,               reduce using rule 236 (Expression -> AssignmentExpression .)
-    ;               reduce using rule 236 (Expression -> AssignmentExpression .)
-    :               reduce using rule 236 (Expression -> AssignmentExpression .)
     }               reduce using rule 236 (Expression -> AssignmentExpression .)
     ]               reduce using rule 236 (Expression -> AssignmentExpression .)
+    :               reduce using rule 236 (Expression -> AssignmentExpression .)
 
 
 state 113
@@ -3874,8 +3874,8 @@ state 117
     OP_LAND         reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
     ?               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
     OP_LOR          reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
-    ;               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
     )               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
+    ;               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
     ,               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
     :               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
     }               reduce using rule 172 (PlainNewAllocationExpression -> ArrayAllocationExpression .)
@@ -3926,11 +3926,11 @@ state 120
     ?               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     OP_LOR          reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     ;               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
+    :               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     ]               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     }               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     ,               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     )               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
-    :               reduce using rule 216 (EqualityExpression -> RelationalExpression .)
     <               shift and go to state 214
     >               shift and go to state 217
     OP_LE           shift and go to state 215
@@ -4159,8 +4159,8 @@ state 127
     OP_LAND         reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
     ?               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
     OP_LOR          reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
-    ;               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
     )               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
+    ;               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
     ,               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
     :               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
     }               reduce using rule 173 (PlainNewAllocationExpression -> ClassAllocationExpression .)
@@ -4346,9 +4346,9 @@ state 134
     OP_LOR          reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
     }               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
     ,               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
+    :               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
     ;               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
     )               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
-    :               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
     ]               reduce using rule 189 (PostfixExpression -> PrimaryExpression .)
 
 
@@ -4357,7 +4357,7 @@ state 135
     (101) LabelStatement -> CASE . ConstantExpression :
     (237) ConstantExpression -> . ConditionalExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (227) ConditionalOrExpression -> . ConditionalAndExpression
     (228) ConditionalOrExpression -> . ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression
     (225) ConditionalAndExpression -> . InclusiveOrExpression
@@ -4500,13 +4500,13 @@ state 135
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     ComplexPrimary                 shift and go to state 125
+    MethodCall                     shift and go to state 109
     Char_LIT                       shift and go to state 161
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
@@ -4534,7 +4534,7 @@ state 136
 state 137
 
     (230) ConditionalExpression -> ConditionalOrExpression .
-    (231) ConditionalExpression -> ConditionalOrExpression . ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> ConditionalOrExpression . ? M_instr Expression : M_instr ConditionalExpression M_instr
     (228) ConditionalOrExpression -> ConditionalOrExpression . OP_LOR M_OP ConditionalAndExpression
 
     ;               reduce using rule 230 (ConditionalExpression -> ConditionalOrExpression .)
@@ -4660,8 +4660,8 @@ state 142
     ,               reduce using rule 201 (CastExpression -> UnaryExpression .)
     ;               reduce using rule 201 (CastExpression -> UnaryExpression .)
     ]               reduce using rule 201 (CastExpression -> UnaryExpression .)
-    )               reduce using rule 201 (CastExpression -> UnaryExpression .)
     :               reduce using rule 201 (CastExpression -> UnaryExpression .)
+    )               reduce using rule 201 (CastExpression -> UnaryExpression .)
     =               shift and go to state 238
     OPT_EQ          shift and go to state 237
 
@@ -4675,10 +4675,10 @@ state 143
     OP_LAND         reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     ?               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     OP_LOR          reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
-    ;               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
-    )               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     :               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
+    ;               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     ,               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
+    )               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     }               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     ]               reduce using rule 225 (ConditionalAndExpression -> InclusiveOrExpression .)
     |               shift and go to state 239
@@ -4826,10 +4826,10 @@ state 148
     OP_LAND         reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     ?               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     OP_LOR          reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
+    :               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     )               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     ;               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     ,               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
-    :               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     }               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
     ]               reduce using rule 148 (Integer_LIT -> INT_LITERAL .)
 
@@ -5146,8 +5146,8 @@ state 157
     )               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
     ,               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
     ;               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
-    }               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
     :               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
+    }               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
     ]               reduce using rule 211 (RelationalExpression -> ShiftExpression .)
     OPT_SOME        shift and go to state 245
 
@@ -5174,7 +5174,7 @@ state 158
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -5205,7 +5205,7 @@ state 158
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -5414,10 +5414,10 @@ state 159
     OP_LAND         reduce using rule 134 (PrimaryExpression -> NotJustName .)
     ?               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     OP_LOR          reduce using rule 134 (PrimaryExpression -> NotJustName .)
+    :               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     ;               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     ,               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     )               reduce using rule 134 (PrimaryExpression -> NotJustName .)
-    :               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     }               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     ]               reduce using rule 134 (PrimaryExpression -> NotJustName .)
     .               shift and go to state 248
@@ -5656,7 +5656,7 @@ state 163
 state 164
 
     (104) SelectionStatement -> IF . ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> IF . ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> IF . ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
 
     (               shift and go to state 250
 
@@ -5668,6 +5668,8 @@ state 165
     [               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     .               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     OPT_INC_DEC     reduce using rule 151 (String_LIT -> STRING_LITERAL .)
+    =               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
+    OPT_EQ          reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     *               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     /               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     %               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
@@ -5686,14 +5688,12 @@ state 165
     OP_LAND         reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     ?               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     OP_LOR          reduce using rule 151 (String_LIT -> STRING_LITERAL .)
-    ;               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
-    )               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     :               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
+    ;               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     ,               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
+    )               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     }               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
     ]               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
-    =               reduce using rule 151 (String_LIT -> STRING_LITERAL .)
-    OPT_EQ          reduce using rule 151 (String_LIT -> STRING_LITERAL .)
 
 
 state 166
@@ -5789,7 +5789,7 @@ state 168
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -5932,14 +5932,14 @@ state 168
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 251
@@ -6082,7 +6082,7 @@ state 173
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -6226,14 +6226,14 @@ state 173
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 257
@@ -6723,6 +6723,8 @@ state 192
     (164) MethodAccess -> QualifiedName .
 
     OPT_INC_DEC     reduce using rule 133 (PrimaryExpression -> QualifiedName .)
+    =               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
+    OPT_EQ          reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     *               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     /               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     %               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
@@ -6741,14 +6743,12 @@ state 192
     OP_LAND         reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     ?               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     OP_LOR          reduce using rule 133 (PrimaryExpression -> QualifiedName .)
+    :               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     ;               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     )               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
-    :               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     ,               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     }               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     ]               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
-    =               reduce using rule 133 (PrimaryExpression -> QualifiedName .)
-    OPT_EQ          reduce using rule 133 (PrimaryExpression -> QualifiedName .)
     .               shift and go to state 243
     [               shift and go to state 244
     (               reduce using rule 164 (MethodAccess -> QualifiedName .)
@@ -6837,7 +6837,6 @@ state 195
 
     (91) Statement -> EmptyStatement M_instr .
 
-    ELSE            reduce using rule 91 (Statement -> EmptyStatement M_instr .)
     }               reduce using rule 91 (Statement -> EmptyStatement M_instr .)
     ;               reduce using rule 91 (Statement -> EmptyStatement M_instr .)
     IDENTIFIER      reduce using rule 91 (Statement -> EmptyStatement M_instr .)
@@ -6877,13 +6876,13 @@ state 195
     STRING_LITERAL  reduce using rule 91 (Statement -> EmptyStatement M_instr .)
     BOOL            reduce using rule 91 (Statement -> EmptyStatement M_instr .)
     NEW             reduce using rule 91 (Statement -> EmptyStatement M_instr .)
+    ELSE            reduce using rule 91 (Statement -> EmptyStatement M_instr .)
 
 
 state 196
 
     (92) Statement -> LabelStatement M_instr .
 
-    ELSE            reduce using rule 92 (Statement -> LabelStatement M_instr .)
     }               reduce using rule 92 (Statement -> LabelStatement M_instr .)
     ;               reduce using rule 92 (Statement -> LabelStatement M_instr .)
     IDENTIFIER      reduce using rule 92 (Statement -> LabelStatement M_instr .)
@@ -6923,6 +6922,7 @@ state 196
     STRING_LITERAL  reduce using rule 92 (Statement -> LabelStatement M_instr .)
     BOOL            reduce using rule 92 (Statement -> LabelStatement M_instr .)
     NEW             reduce using rule 92 (Statement -> LabelStatement M_instr .)
+    ELSE            reduce using rule 92 (Statement -> LabelStatement M_instr .)
 
 
 state 197
@@ -7739,7 +7739,6 @@ state 207
 
     (94) Statement -> SelectionStatement M_instr .
 
-    ELSE            reduce using rule 94 (Statement -> SelectionStatement M_instr .)
     }               reduce using rule 94 (Statement -> SelectionStatement M_instr .)
     ;               reduce using rule 94 (Statement -> SelectionStatement M_instr .)
     IDENTIFIER      reduce using rule 94 (Statement -> SelectionStatement M_instr .)
@@ -7779,6 +7778,7 @@ state 207
     STRING_LITERAL  reduce using rule 94 (Statement -> SelectionStatement M_instr .)
     BOOL            reduce using rule 94 (Statement -> SelectionStatement M_instr .)
     NEW             reduce using rule 94 (Statement -> SelectionStatement M_instr .)
+    ELSE            reduce using rule 94 (Statement -> SelectionStatement M_instr .)
 
 
 state 208
@@ -7810,7 +7810,7 @@ state 208
     (32) QualifiedName -> . IDENTIFIER
     (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -8010,7 +8010,6 @@ state 210
 
     (97) Statement -> Block M_instr .
 
-    ELSE            reduce using rule 97 (Statement -> Block M_instr .)
     }               reduce using rule 97 (Statement -> Block M_instr .)
     ;               reduce using rule 97 (Statement -> Block M_instr .)
     IDENTIFIER      reduce using rule 97 (Statement -> Block M_instr .)
@@ -8050,6 +8049,7 @@ state 210
     STRING_LITERAL  reduce using rule 97 (Statement -> Block M_instr .)
     BOOL            reduce using rule 97 (Statement -> Block M_instr .)
     NEW             reduce using rule 97 (Statement -> Block M_instr .)
+    ELSE            reduce using rule 97 (Statement -> Block M_instr .)
 
 
 state 211
@@ -8064,7 +8064,7 @@ state 211
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -8209,14 +8209,14 @@ state 211
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     ArrayInitializers              shift and go to state 280
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
@@ -8245,7 +8245,7 @@ state 212
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -8391,14 +8391,14 @@ state 212
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 283
@@ -9198,7 +9198,7 @@ state 220
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -9341,14 +9341,14 @@ state 220
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 291
@@ -9541,7 +9541,6 @@ state 224
 
     (96) Statement -> JumpStatement M_instr .
 
-    ELSE            reduce using rule 96 (Statement -> JumpStatement M_instr .)
     }               reduce using rule 96 (Statement -> JumpStatement M_instr .)
     ;               reduce using rule 96 (Statement -> JumpStatement M_instr .)
     IDENTIFIER      reduce using rule 96 (Statement -> JumpStatement M_instr .)
@@ -9581,6 +9580,7 @@ state 224
     STRING_LITERAL  reduce using rule 96 (Statement -> JumpStatement M_instr .)
     BOOL            reduce using rule 96 (Statement -> JumpStatement M_instr .)
     NEW             reduce using rule 96 (Statement -> JumpStatement M_instr .)
+    ELSE            reduce using rule 96 (Statement -> JumpStatement M_instr .)
 
 
 state 225
@@ -9656,7 +9656,7 @@ state 231
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -9799,14 +9799,14 @@ state 231
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 302
@@ -9859,178 +9859,36 @@ state 232
 
 state 233
 
-    (231) ConditionalExpression -> ConditionalOrExpression ? . Expression : ConditionalExpression
-    (236) Expression -> . AssignmentExpression
-    (232) AssignmentExpression -> . ConditionalExpression
-    (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
-    (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
-    (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
-    (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
-    (194) UnaryExpression -> . LogicalUnaryExpression
-    (227) ConditionalOrExpression -> . ConditionalAndExpression
-    (228) ConditionalOrExpression -> . ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression
-    (199) ArithmeticUnaryOperator -> . +
-    (200) ArithmeticUnaryOperator -> . -
-    (195) LogicalUnaryExpression -> . PostfixExpression
-    (196) LogicalUnaryExpression -> . LogicalUnaryOperator UnaryExpression
-    (225) ConditionalAndExpression -> . InclusiveOrExpression
-    (226) ConditionalAndExpression -> . ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression
-    (189) PostfixExpression -> . PrimaryExpression
-    (190) PostfixExpression -> . RealPostfixExpression
-    (197) LogicalUnaryOperator -> . ~
-    (198) LogicalUnaryOperator -> . !
-    (223) InclusiveOrExpression -> . ExclusiveOrExpression
-    (224) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (133) PrimaryExpression -> . QualifiedName
-    (134) PrimaryExpression -> . NotJustName
-    (191) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (221) ExclusiveOrExpression -> . AndExpression
-    (222) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
-    (135) NotJustName -> . SpecialName
-    (136) NotJustName -> . NewAllocationExpression
-    (137) NotJustName -> . ComplexPrimary
-    (219) AndExpression -> . EqualityExpression
-    (220) AndExpression -> . AndExpression & EqualityExpression
-    (165) SpecialName -> . THIS
-    (166) SpecialName -> . SUPER
-    (167) SpecialName -> . NULL
-    (170) NewAllocationExpression -> . PlainNewAllocationExpression
-    (171) NewAllocationExpression -> . QualifiedName . PlainNewAllocationExpression
-    (138) ComplexPrimary -> . ComplexPrimaryNoParenthesis
-    (139) ComplexPrimary -> . Integer_LIT
-    (140) ComplexPrimary -> . Float_LIT
-    (141) ComplexPrimary -> . Char_LIT
-    (142) ComplexPrimary -> . String_LIT
-    (143) ComplexPrimary -> . Bool_LIT
-    (144) ComplexPrimary -> . ( Expression )
-    (216) EqualityExpression -> . RelationalExpression
-    (217) EqualityExpression -> . EqualityExpression OP_EQ RelationalExpression
-    (218) EqualityExpression -> . EqualityExpression OP_NE RelationalExpression
-    (172) PlainNewAllocationExpression -> . ArrayAllocationExpression
-    (173) PlainNewAllocationExpression -> . ClassAllocationExpression
-    (174) PlainNewAllocationExpression -> . ArrayAllocationExpression { }
-    (175) PlainNewAllocationExpression -> . ClassAllocationExpression { }
-    (176) PlainNewAllocationExpression -> . ArrayAllocationExpression { ArrayInitializers }
-    (177) PlainNewAllocationExpression -> . ClassAllocationExpression { FieldDeclarations }
-    (145) ComplexPrimaryNoParenthesis -> . ArrayAccess
-    (146) ComplexPrimaryNoParenthesis -> . FieldAccess
-    (147) ComplexPrimaryNoParenthesis -> . MethodCall
-    (148) Integer_LIT -> . INT_LITERAL
-    (149) Float_LIT -> . FLOAT_LITERAL
-    (150) Char_LIT -> . CHAR_LITERAL
-    (151) String_LIT -> . STRING_LITERAL
-    (152) Bool_LIT -> . BOOL
-    (211) RelationalExpression -> . ShiftExpression
-    (212) RelationalExpression -> . RelationalExpression < ShiftExpression
-    (213) RelationalExpression -> . RelationalExpression > ShiftExpression
-    (214) RelationalExpression -> . RelationalExpression OP_LE ShiftExpression
-    (215) RelationalExpression -> . RelationalExpression OP_GE ShiftExpression
-    (180) ArrayAllocationExpression -> . NEW TypeName DimExprs Dims
-    (181) ArrayAllocationExpression -> . NEW TypeName DimExprs
-    (182) ArrayAllocationExpression -> . NEW TypeName Dims
-    (178) ClassAllocationExpression -> . NEW TypeName ( ArgumentList )
-    (179) ClassAllocationExpression -> . NEW TypeName ( )
-    (153) ArrayAccess -> . QualifiedName [ Expression ]
-    (154) ArrayAccess -> . ComplexPrimary [ Expression ]
-    (155) FieldAccess -> . NotJustName . IDENTIFIER
-    (156) FieldAccess -> . RealPostfixExpression . IDENTIFIER
-    (157) FieldAccess -> . QualifiedName . THIS
-    (158) FieldAccess -> . QualifiedName . CLASS
-    (159) FieldAccess -> . PrimitiveType . CLASS
-    (160) MethodCall -> . MethodAccess ( ArgumentList )
-    (161) MethodCall -> . MethodAccess ( )
-    (209) ShiftExpression -> . AdditiveExpression
-    (210) ShiftExpression -> . ShiftExpression OPT_SOME AdditiveExpression
-    (8) PrimitiveType -> . BOOLEAN
-    (9) PrimitiveType -> . CHAR
-    (10) PrimitiveType -> . BYTE
-    (11) PrimitiveType -> . SHORT
-    (12) PrimitiveType -> . INT
-    (13) PrimitiveType -> . LONG
-    (14) PrimitiveType -> . FLOAT
-    (15) PrimitiveType -> . DOUBLE
-    (16) PrimitiveType -> . VOID
-    (162) MethodAccess -> . ComplexPrimaryNoParenthesis
-    (163) MethodAccess -> . SpecialName
-    (164) MethodAccess -> . QualifiedName
-    (206) AdditiveExpression -> . MultiplicativeExpression
-    (207) AdditiveExpression -> . AdditiveExpression + MultiplicativeExpression
-    (208) AdditiveExpression -> . AdditiveExpression - MultiplicativeExpression
-    (202) MultiplicativeExpression -> . CastExpression
-    (203) MultiplicativeExpression -> . MultiplicativeExpression * CastExpression
-    (204) MultiplicativeExpression -> . MultiplicativeExpression / CastExpression
-    (205) MultiplicativeExpression -> . MultiplicativeExpression % CastExpression
-    (201) CastExpression -> . UnaryExpression
+    (231) ConditionalExpression -> ConditionalOrExpression ? . M_instr Expression : M_instr ConditionalExpression M_instr
+    (98) M_instr -> .
 
-    OPT_INC_DEC     shift and go to state 114
-    +               shift and go to state 108
-    -               shift and go to state 155
-    ~               shift and go to state 149
-    !               shift and go to state 153
-    IDENTIFIER      shift and go to state 23
-    THIS            shift and go to state 97
-    SUPER           shift and go to state 166
-    NULL            shift and go to state 152
-    (               shift and go to state 94
-    INT_LITERAL     shift and go to state 148
-    FLOAT_LITERAL   shift and go to state 132
-    CHAR_LITERAL    shift and go to state 98
-    STRING_LITERAL  shift and go to state 165
-    BOOL            shift and go to state 146
-    NEW             shift and go to state 131
-    BOOLEAN         shift and go to state 65
-    CHAR            shift and go to state 56
-    BYTE            shift and go to state 66
-    SHORT           shift and go to state 41
-    INT             shift and go to state 62
-    LONG            shift and go to state 49
-    FLOAT           shift and go to state 64
-    DOUBLE          shift and go to state 63
-    VOID            shift and go to state 44
+    OPT_INC_DEC     reduce using rule 98 (M_instr -> .)
+    +               reduce using rule 98 (M_instr -> .)
+    -               reduce using rule 98 (M_instr -> .)
+    ~               reduce using rule 98 (M_instr -> .)
+    !               reduce using rule 98 (M_instr -> .)
+    IDENTIFIER      reduce using rule 98 (M_instr -> .)
+    THIS            reduce using rule 98 (M_instr -> .)
+    SUPER           reduce using rule 98 (M_instr -> .)
+    NULL            reduce using rule 98 (M_instr -> .)
+    (               reduce using rule 98 (M_instr -> .)
+    INT_LITERAL     reduce using rule 98 (M_instr -> .)
+    FLOAT_LITERAL   reduce using rule 98 (M_instr -> .)
+    CHAR_LITERAL    reduce using rule 98 (M_instr -> .)
+    STRING_LITERAL  reduce using rule 98 (M_instr -> .)
+    BOOL            reduce using rule 98 (M_instr -> .)
+    NEW             reduce using rule 98 (M_instr -> .)
+    BOOLEAN         reduce using rule 98 (M_instr -> .)
+    CHAR            reduce using rule 98 (M_instr -> .)
+    BYTE            reduce using rule 98 (M_instr -> .)
+    SHORT           reduce using rule 98 (M_instr -> .)
+    INT             reduce using rule 98 (M_instr -> .)
+    LONG            reduce using rule 98 (M_instr -> .)
+    FLOAT           reduce using rule 98 (M_instr -> .)
+    DOUBLE          reduce using rule 98 (M_instr -> .)
+    VOID            reduce using rule 98 (M_instr -> .)
 
-    PostfixExpression              shift and go to state 126
-    ComplexPrimary                 shift and go to state 125
-    Bool_LIT                       shift and go to state 89
-    PrimaryExpression              shift and go to state 134
-    PrimitiveType                  shift and go to state 190
-    Float_LIT                      shift and go to state 144
-    RealPostfixExpression          shift and go to state 103
-    ArithmeticUnaryOperator        shift and go to state 104
-    AndExpression                  shift and go to state 93
-    ArrayAccess                    shift and go to state 115
-    CastExpression                 shift and go to state 151
-    EqualityExpression             shift and go to state 105
-    LogicalUnaryOperator           shift and go to state 160
-    ComplexPrimaryNoParenthesis    shift and go to state 106
-    MultiplicativeExpression       shift and go to state 107
-    ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
-    ConditionalOrExpression        shift and go to state 137
-    ShiftExpression                shift and go to state 157
-    AssignmentExpression           shift and go to state 112
-    NewAllocationExpression        shift and go to state 138
-    NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
-    Char_LIT                       shift and go to state 161
-    LogicalUnaryExpression         shift and go to state 162
-    String_LIT                     shift and go to state 163
-    Expression                     shift and go to state 304
-    AdditiveExpression             shift and go to state 140
-    ArrayAllocationExpression      shift and go to state 117
-    ConditionalExpression          shift and go to state 141
-    UnaryExpression                shift and go to state 142
-    InclusiveOrExpression          shift and go to state 143
-    MethodAccess                   shift and go to state 118
-    ExclusiveOrExpression          shift and go to state 119
-    ConditionalAndExpression       shift and go to state 99
-    RelationalExpression           shift and go to state 120
-    PlainNewAllocationExpression   shift and go to state 121
-    FieldAccess                    shift and go to state 147
-    SpecialName                    shift and go to state 124
-    Integer_LIT                    shift and go to state 95
+    M_instr                        shift and go to state 304
 
 state 234
 
@@ -10308,7 +10166,7 @@ state 236
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -10451,14 +10309,14 @@ state 236
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 307
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     AdditiveExpression             shift and go to state 140
@@ -10764,7 +10622,7 @@ state 242
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -10782,7 +10640,7 @@ state 242
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -11005,7 +10863,7 @@ state 244
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -11450,12 +11308,12 @@ state 249
 state 250
 
     (104) SelectionStatement -> IF ( . Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> IF ( . Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> IF ( . Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (236) Expression -> . AssignmentExpression
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -11597,15 +11455,15 @@ state 250
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     ArithmeticUnaryOperator        shift and go to state 104
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 317
@@ -11634,7 +11492,6 @@ state 252
 
     (95) Statement -> IterationStatement M_instr .
 
-    ELSE            reduce using rule 95 (Statement -> IterationStatement M_instr .)
     }               reduce using rule 95 (Statement -> IterationStatement M_instr .)
     ;               reduce using rule 95 (Statement -> IterationStatement M_instr .)
     IDENTIFIER      reduce using rule 95 (Statement -> IterationStatement M_instr .)
@@ -11674,6 +11531,7 @@ state 252
     STRING_LITERAL  reduce using rule 95 (Statement -> IterationStatement M_instr .)
     BOOL            reduce using rule 95 (Statement -> IterationStatement M_instr .)
     NEW             reduce using rule 95 (Statement -> IterationStatement M_instr .)
+    ELSE            reduce using rule 95 (Statement -> IterationStatement M_instr .)
 
 
 state 253
@@ -11802,7 +11660,6 @@ state 262
 
     (93) Statement -> ExpressionStatement ; M_instr .
 
-    ELSE            reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
     }               reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
     ;               reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
     IDENTIFIER      reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
@@ -11842,6 +11699,7 @@ state 262
     STRING_LITERAL  reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
     BOOL            reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
     NEW             reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
+    ELSE            reduce using rule 93 (Statement -> ExpressionStatement ; M_instr .)
 
 
 state 263
@@ -11873,10 +11731,10 @@ state 263
     OP_LOR          reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
     )               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
     (               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
-    :               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
-    }               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
-    ,               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
     ;               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
+    :               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
+    ,               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
+    }               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
     ]               reduce using rule 159 (FieldAccess -> PrimitiveType . CLASS .)
 
 
@@ -12173,10 +12031,10 @@ state 268
     OP_LOR          reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
     )               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
     (               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
-    :               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
-    }               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
-    ,               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
     ;               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
+    :               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
+    ,               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
+    }               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
     ]               reduce using rule 156 (FieldAccess -> RealPostfixExpression . IDENTIFIER .)
 
 
@@ -12197,11 +12055,11 @@ state 269
     ?               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     OP_LOR          reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     ;               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
+    :               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     ]               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     }               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     ,               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     )               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
-    :               reduce using rule 218 (EqualityExpression -> EqualityExpression OP_NE RelationalExpression .)
     <               shift and go to state 214
     >               shift and go to state 217
     OP_LE           shift and go to state 215
@@ -12225,11 +12083,11 @@ state 270
     ?               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     OP_LOR          reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     ;               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
+    :               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     ]               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     }               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     ,               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     )               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
-    :               reduce using rule 217 (EqualityExpression -> EqualityExpression OP_EQ RelationalExpression .)
     <               shift and go to state 214
     >               shift and go to state 217
     OP_LE           shift and go to state 215
@@ -12468,8 +12326,8 @@ state 279
     OP_LAND         reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
     ?               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
     OP_LOR          reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
-    ;               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
     )               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
+    ;               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
     ,               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
     :               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
     }               reduce using rule 174 (PlainNewAllocationExpression -> ArrayAllocationExpression { } .)
@@ -12586,8 +12444,8 @@ state 286
     )               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
     ,               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
     ;               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
-    }               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
     :               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
+    }               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
     ]               reduce using rule 212 (RelationalExpression -> RelationalExpression < ShiftExpression .)
     OPT_SOME        shift and go to state 245
 
@@ -12612,8 +12470,8 @@ state 287
     )               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
     ,               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
     ;               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
-    }               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
     :               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
+    }               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
     ]               reduce using rule 214 (RelationalExpression -> RelationalExpression OP_LE ShiftExpression .)
     OPT_SOME        shift and go to state 245
 
@@ -12638,8 +12496,8 @@ state 288
     )               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
     ,               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
     ;               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
-    }               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
     :               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
+    }               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
     ]               reduce using rule 215 (RelationalExpression -> RelationalExpression OP_GE ShiftExpression .)
     OPT_SOME        shift and go to state 245
 
@@ -12664,8 +12522,8 @@ state 289
     )               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
     ,               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
     ;               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
-    }               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
     :               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
+    }               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
     ]               reduce using rule 213 (RelationalExpression -> RelationalExpression > ShiftExpression .)
     OPT_SOME        shift and go to state 245
 
@@ -12837,8 +12695,8 @@ state 293
     OP_LAND         reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
     ?               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
     OP_LOR          reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
-    ;               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
     )               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
+    ;               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
     ,               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
     :               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
     }               reduce using rule 175 (PlainNewAllocationExpression -> ClassAllocationExpression { } .)
@@ -12852,7 +12710,7 @@ state 294
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -12994,15 +12852,15 @@ state 294
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     ArithmeticUnaryOperator        shift and go to state 104
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 331
@@ -13030,7 +12888,7 @@ state 295
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -13175,14 +13033,14 @@ state 295
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 283
@@ -13292,7 +13150,7 @@ state 298
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -13436,14 +13294,14 @@ state 298
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 336
@@ -13763,10 +13621,178 @@ state 303
 
 state 304
 
-    (231) ConditionalExpression -> ConditionalOrExpression ? Expression . : ConditionalExpression
+    (231) ConditionalExpression -> ConditionalOrExpression ? M_instr . Expression : M_instr ConditionalExpression M_instr
+    (236) Expression -> . AssignmentExpression
+    (232) AssignmentExpression -> . ConditionalExpression
+    (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
+    (230) ConditionalExpression -> . ConditionalOrExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
+    (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
+    (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
+    (194) UnaryExpression -> . LogicalUnaryExpression
+    (227) ConditionalOrExpression -> . ConditionalAndExpression
+    (228) ConditionalOrExpression -> . ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression
+    (199) ArithmeticUnaryOperator -> . +
+    (200) ArithmeticUnaryOperator -> . -
+    (195) LogicalUnaryExpression -> . PostfixExpression
+    (196) LogicalUnaryExpression -> . LogicalUnaryOperator UnaryExpression
+    (225) ConditionalAndExpression -> . InclusiveOrExpression
+    (226) ConditionalAndExpression -> . ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression
+    (189) PostfixExpression -> . PrimaryExpression
+    (190) PostfixExpression -> . RealPostfixExpression
+    (197) LogicalUnaryOperator -> . ~
+    (198) LogicalUnaryOperator -> . !
+    (223) InclusiveOrExpression -> . ExclusiveOrExpression
+    (224) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
+    (133) PrimaryExpression -> . QualifiedName
+    (134) PrimaryExpression -> . NotJustName
+    (191) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
+    (221) ExclusiveOrExpression -> . AndExpression
+    (222) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
+    (135) NotJustName -> . SpecialName
+    (136) NotJustName -> . NewAllocationExpression
+    (137) NotJustName -> . ComplexPrimary
+    (219) AndExpression -> . EqualityExpression
+    (220) AndExpression -> . AndExpression & EqualityExpression
+    (165) SpecialName -> . THIS
+    (166) SpecialName -> . SUPER
+    (167) SpecialName -> . NULL
+    (170) NewAllocationExpression -> . PlainNewAllocationExpression
+    (171) NewAllocationExpression -> . QualifiedName . PlainNewAllocationExpression
+    (138) ComplexPrimary -> . ComplexPrimaryNoParenthesis
+    (139) ComplexPrimary -> . Integer_LIT
+    (140) ComplexPrimary -> . Float_LIT
+    (141) ComplexPrimary -> . Char_LIT
+    (142) ComplexPrimary -> . String_LIT
+    (143) ComplexPrimary -> . Bool_LIT
+    (144) ComplexPrimary -> . ( Expression )
+    (216) EqualityExpression -> . RelationalExpression
+    (217) EqualityExpression -> . EqualityExpression OP_EQ RelationalExpression
+    (218) EqualityExpression -> . EqualityExpression OP_NE RelationalExpression
+    (172) PlainNewAllocationExpression -> . ArrayAllocationExpression
+    (173) PlainNewAllocationExpression -> . ClassAllocationExpression
+    (174) PlainNewAllocationExpression -> . ArrayAllocationExpression { }
+    (175) PlainNewAllocationExpression -> . ClassAllocationExpression { }
+    (176) PlainNewAllocationExpression -> . ArrayAllocationExpression { ArrayInitializers }
+    (177) PlainNewAllocationExpression -> . ClassAllocationExpression { FieldDeclarations }
+    (145) ComplexPrimaryNoParenthesis -> . ArrayAccess
+    (146) ComplexPrimaryNoParenthesis -> . FieldAccess
+    (147) ComplexPrimaryNoParenthesis -> . MethodCall
+    (148) Integer_LIT -> . INT_LITERAL
+    (149) Float_LIT -> . FLOAT_LITERAL
+    (150) Char_LIT -> . CHAR_LITERAL
+    (151) String_LIT -> . STRING_LITERAL
+    (152) Bool_LIT -> . BOOL
+    (211) RelationalExpression -> . ShiftExpression
+    (212) RelationalExpression -> . RelationalExpression < ShiftExpression
+    (213) RelationalExpression -> . RelationalExpression > ShiftExpression
+    (214) RelationalExpression -> . RelationalExpression OP_LE ShiftExpression
+    (215) RelationalExpression -> . RelationalExpression OP_GE ShiftExpression
+    (180) ArrayAllocationExpression -> . NEW TypeName DimExprs Dims
+    (181) ArrayAllocationExpression -> . NEW TypeName DimExprs
+    (182) ArrayAllocationExpression -> . NEW TypeName Dims
+    (178) ClassAllocationExpression -> . NEW TypeName ( ArgumentList )
+    (179) ClassAllocationExpression -> . NEW TypeName ( )
+    (153) ArrayAccess -> . QualifiedName [ Expression ]
+    (154) ArrayAccess -> . ComplexPrimary [ Expression ]
+    (155) FieldAccess -> . NotJustName . IDENTIFIER
+    (156) FieldAccess -> . RealPostfixExpression . IDENTIFIER
+    (157) FieldAccess -> . QualifiedName . THIS
+    (158) FieldAccess -> . QualifiedName . CLASS
+    (159) FieldAccess -> . PrimitiveType . CLASS
+    (160) MethodCall -> . MethodAccess ( ArgumentList )
+    (161) MethodCall -> . MethodAccess ( )
+    (209) ShiftExpression -> . AdditiveExpression
+    (210) ShiftExpression -> . ShiftExpression OPT_SOME AdditiveExpression
+    (8) PrimitiveType -> . BOOLEAN
+    (9) PrimitiveType -> . CHAR
+    (10) PrimitiveType -> . BYTE
+    (11) PrimitiveType -> . SHORT
+    (12) PrimitiveType -> . INT
+    (13) PrimitiveType -> . LONG
+    (14) PrimitiveType -> . FLOAT
+    (15) PrimitiveType -> . DOUBLE
+    (16) PrimitiveType -> . VOID
+    (162) MethodAccess -> . ComplexPrimaryNoParenthesis
+    (163) MethodAccess -> . SpecialName
+    (164) MethodAccess -> . QualifiedName
+    (206) AdditiveExpression -> . MultiplicativeExpression
+    (207) AdditiveExpression -> . AdditiveExpression + MultiplicativeExpression
+    (208) AdditiveExpression -> . AdditiveExpression - MultiplicativeExpression
+    (202) MultiplicativeExpression -> . CastExpression
+    (203) MultiplicativeExpression -> . MultiplicativeExpression * CastExpression
+    (204) MultiplicativeExpression -> . MultiplicativeExpression / CastExpression
+    (205) MultiplicativeExpression -> . MultiplicativeExpression % CastExpression
+    (201) CastExpression -> . UnaryExpression
 
-    :               shift and go to state 340
+    OPT_INC_DEC     shift and go to state 114
+    +               shift and go to state 108
+    -               shift and go to state 155
+    ~               shift and go to state 149
+    !               shift and go to state 153
+    IDENTIFIER      shift and go to state 23
+    THIS            shift and go to state 97
+    SUPER           shift and go to state 166
+    NULL            shift and go to state 152
+    (               shift and go to state 94
+    INT_LITERAL     shift and go to state 148
+    FLOAT_LITERAL   shift and go to state 132
+    CHAR_LITERAL    shift and go to state 98
+    STRING_LITERAL  shift and go to state 165
+    BOOL            shift and go to state 146
+    NEW             shift and go to state 131
+    BOOLEAN         shift and go to state 65
+    CHAR            shift and go to state 56
+    BYTE            shift and go to state 66
+    SHORT           shift and go to state 41
+    INT             shift and go to state 62
+    LONG            shift and go to state 49
+    FLOAT           shift and go to state 64
+    DOUBLE          shift and go to state 63
+    VOID            shift and go to state 44
 
+    PostfixExpression              shift and go to state 126
+    ComplexPrimary                 shift and go to state 125
+    Bool_LIT                       shift and go to state 89
+    PrimaryExpression              shift and go to state 134
+    PrimitiveType                  shift and go to state 190
+    Float_LIT                      shift and go to state 144
+    RealPostfixExpression          shift and go to state 103
+    ArithmeticUnaryOperator        shift and go to state 104
+    AndExpression                  shift and go to state 93
+    ArrayAccess                    shift and go to state 115
+    CastExpression                 shift and go to state 151
+    EqualityExpression             shift and go to state 105
+    LogicalUnaryOperator           shift and go to state 160
+    ComplexPrimaryNoParenthesis    shift and go to state 106
+    MultiplicativeExpression       shift and go to state 107
+    ClassAllocationExpression      shift and go to state 127
+    QualifiedName                  shift and go to state 192
+    ConditionalOrExpression        shift and go to state 137
+    ShiftExpression                shift and go to state 157
+    AssignmentExpression           shift and go to state 112
+    NewAllocationExpression        shift and go to state 138
+    NotJustName                    shift and go to state 159
+    Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
+    LogicalUnaryExpression         shift and go to state 162
+    String_LIT                     shift and go to state 163
+    Expression                     shift and go to state 340
+    AdditiveExpression             shift and go to state 140
+    ArrayAllocationExpression      shift and go to state 117
+    ConditionalExpression          shift and go to state 141
+    UnaryExpression                shift and go to state 142
+    InclusiveOrExpression          shift and go to state 143
+    MethodAccess                   shift and go to state 118
+    ExclusiveOrExpression          shift and go to state 119
+    ConditionalAndExpression       shift and go to state 99
+    RelationalExpression           shift and go to state 120
+    PlainNewAllocationExpression   shift and go to state 121
+    FieldAccess                    shift and go to state 147
+    SpecialName                    shift and go to state 124
+    Integer_LIT                    shift and go to state 95
 
 state 305
 
@@ -13946,10 +13972,10 @@ state 311
     OP_LOR          reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
     )               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
     (               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
-    :               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
-    }               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
-    ,               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
     ;               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
+    :               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
+    ,               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
+    }               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
     ]               reduce using rule 157 (FieldAccess -> QualifiedName . THIS .)
 
 
@@ -14016,10 +14042,10 @@ state 313
     OP_LOR          reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
     )               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
     (               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
-    :               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
-    }               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
-    ,               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
     ;               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
+    :               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
+    ,               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
+    }               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
     ]               reduce using rule 158 (FieldAccess -> QualifiedName . CLASS .)
 
 
@@ -14088,17 +14114,17 @@ state 316
     OP_LOR          reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
     )               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
     (               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
-    :               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
-    }               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
-    ,               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
     ;               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
+    :               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
+    ,               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
+    }               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
     ]               reduce using rule 155 (FieldAccess -> NotJustName . IDENTIFIER .)
 
 
 state 317
 
     (104) SelectionStatement -> IF ( Expression . ) M_instr_branch Statement
-    (105) SelectionStatement -> IF ( Expression . ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> IF ( Expression . ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
 
     )               shift and go to state 343
 
@@ -14173,10 +14199,10 @@ state 321
     OP_LAND         reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     ?               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     OP_LOR          reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
-    ;               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
-    )               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     :               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
+    ;               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     ,               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
+    )               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     }               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     ]               reduce using rule 226 (ConditionalAndExpression -> ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression .)
     |               shift and go to state 239
@@ -14191,7 +14217,7 @@ state 322
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -14401,7 +14427,7 @@ state 324
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -14546,14 +14572,14 @@ state 324
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 139
@@ -14579,7 +14605,7 @@ state 325
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -14725,14 +14751,14 @@ state 325
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 257
@@ -14776,8 +14802,8 @@ state 326
     OP_LAND         reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
     ?               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
     OP_LOR          reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
-    ;               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
     )               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
+    ;               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
     ,               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
     :               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
     }               reduce using rule 176 (PlainNewAllocationExpression -> ArrayAllocationExpression { ArrayInitializers } .)
@@ -14827,7 +14853,7 @@ state 328
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -14970,14 +14996,14 @@ state 328
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
     Expression                     shift and go to state 349
@@ -15022,10 +15048,10 @@ state 329
     OP_LAND         reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     ?               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     OP_LOR          reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
-    ;               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
-    (               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     ]               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
+    (               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     )               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
+    ;               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     }               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     ,               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
     :               reduce using rule 154 (ArrayAccess -> ComplexPrimary [ Expression ] .)
@@ -15057,8 +15083,8 @@ state 330
     OP_LAND         reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
     ?               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
     OP_LOR          reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
-    ;               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
     )               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
+    ;               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
     ,               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
     :               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
     }               reduce using rule 177 (PlainNewAllocationExpression -> ClassAllocationExpression { FieldDeclarations } .)
@@ -15260,184 +15286,21 @@ state 339
 
     ?               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
     OP_LOR          reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
-    )               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
-    }               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
-    ,               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
-    ]               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
     ;               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
+    )               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
     :               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
+    ,               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
+    }               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
+    ]               reduce using rule 228 (ConditionalOrExpression -> ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression .)
     OP_LAND         shift and go to state 194
 
 
 state 340
 
-    (231) ConditionalExpression -> ConditionalOrExpression ? Expression : . ConditionalExpression
-    (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
-    (227) ConditionalOrExpression -> . ConditionalAndExpression
-    (228) ConditionalOrExpression -> . ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression
-    (225) ConditionalAndExpression -> . InclusiveOrExpression
-    (226) ConditionalAndExpression -> . ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression
-    (223) InclusiveOrExpression -> . ExclusiveOrExpression
-    (224) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (221) ExclusiveOrExpression -> . AndExpression
-    (222) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (219) AndExpression -> . EqualityExpression
-    (220) AndExpression -> . AndExpression & EqualityExpression
-    (216) EqualityExpression -> . RelationalExpression
-    (217) EqualityExpression -> . EqualityExpression OP_EQ RelationalExpression
-    (218) EqualityExpression -> . EqualityExpression OP_NE RelationalExpression
-    (211) RelationalExpression -> . ShiftExpression
-    (212) RelationalExpression -> . RelationalExpression < ShiftExpression
-    (213) RelationalExpression -> . RelationalExpression > ShiftExpression
-    (214) RelationalExpression -> . RelationalExpression OP_LE ShiftExpression
-    (215) RelationalExpression -> . RelationalExpression OP_GE ShiftExpression
-    (209) ShiftExpression -> . AdditiveExpression
-    (210) ShiftExpression -> . ShiftExpression OPT_SOME AdditiveExpression
-    (206) AdditiveExpression -> . MultiplicativeExpression
-    (207) AdditiveExpression -> . AdditiveExpression + MultiplicativeExpression
-    (208) AdditiveExpression -> . AdditiveExpression - MultiplicativeExpression
-    (202) MultiplicativeExpression -> . CastExpression
-    (203) MultiplicativeExpression -> . MultiplicativeExpression * CastExpression
-    (204) MultiplicativeExpression -> . MultiplicativeExpression / CastExpression
-    (205) MultiplicativeExpression -> . MultiplicativeExpression % CastExpression
-    (201) CastExpression -> . UnaryExpression
-    (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
-    (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
-    (194) UnaryExpression -> . LogicalUnaryExpression
-    (199) ArithmeticUnaryOperator -> . +
-    (200) ArithmeticUnaryOperator -> . -
-    (195) LogicalUnaryExpression -> . PostfixExpression
-    (196) LogicalUnaryExpression -> . LogicalUnaryOperator UnaryExpression
-    (189) PostfixExpression -> . PrimaryExpression
-    (190) PostfixExpression -> . RealPostfixExpression
-    (197) LogicalUnaryOperator -> . ~
-    (198) LogicalUnaryOperator -> . !
-    (133) PrimaryExpression -> . QualifiedName
-    (134) PrimaryExpression -> . NotJustName
-    (191) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
-    (135) NotJustName -> . SpecialName
-    (136) NotJustName -> . NewAllocationExpression
-    (137) NotJustName -> . ComplexPrimary
-    (165) SpecialName -> . THIS
-    (166) SpecialName -> . SUPER
-    (167) SpecialName -> . NULL
-    (170) NewAllocationExpression -> . PlainNewAllocationExpression
-    (171) NewAllocationExpression -> . QualifiedName . PlainNewAllocationExpression
-    (138) ComplexPrimary -> . ComplexPrimaryNoParenthesis
-    (139) ComplexPrimary -> . Integer_LIT
-    (140) ComplexPrimary -> . Float_LIT
-    (141) ComplexPrimary -> . Char_LIT
-    (142) ComplexPrimary -> . String_LIT
-    (143) ComplexPrimary -> . Bool_LIT
-    (144) ComplexPrimary -> . ( Expression )
-    (172) PlainNewAllocationExpression -> . ArrayAllocationExpression
-    (173) PlainNewAllocationExpression -> . ClassAllocationExpression
-    (174) PlainNewAllocationExpression -> . ArrayAllocationExpression { }
-    (175) PlainNewAllocationExpression -> . ClassAllocationExpression { }
-    (176) PlainNewAllocationExpression -> . ArrayAllocationExpression { ArrayInitializers }
-    (177) PlainNewAllocationExpression -> . ClassAllocationExpression { FieldDeclarations }
-    (145) ComplexPrimaryNoParenthesis -> . ArrayAccess
-    (146) ComplexPrimaryNoParenthesis -> . FieldAccess
-    (147) ComplexPrimaryNoParenthesis -> . MethodCall
-    (148) Integer_LIT -> . INT_LITERAL
-    (149) Float_LIT -> . FLOAT_LITERAL
-    (150) Char_LIT -> . CHAR_LITERAL
-    (151) String_LIT -> . STRING_LITERAL
-    (152) Bool_LIT -> . BOOL
-    (180) ArrayAllocationExpression -> . NEW TypeName DimExprs Dims
-    (181) ArrayAllocationExpression -> . NEW TypeName DimExprs
-    (182) ArrayAllocationExpression -> . NEW TypeName Dims
-    (178) ClassAllocationExpression -> . NEW TypeName ( ArgumentList )
-    (179) ClassAllocationExpression -> . NEW TypeName ( )
-    (153) ArrayAccess -> . QualifiedName [ Expression ]
-    (154) ArrayAccess -> . ComplexPrimary [ Expression ]
-    (155) FieldAccess -> . NotJustName . IDENTIFIER
-    (156) FieldAccess -> . RealPostfixExpression . IDENTIFIER
-    (157) FieldAccess -> . QualifiedName . THIS
-    (158) FieldAccess -> . QualifiedName . CLASS
-    (159) FieldAccess -> . PrimitiveType . CLASS
-    (160) MethodCall -> . MethodAccess ( ArgumentList )
-    (161) MethodCall -> . MethodAccess ( )
-    (8) PrimitiveType -> . BOOLEAN
-    (9) PrimitiveType -> . CHAR
-    (10) PrimitiveType -> . BYTE
-    (11) PrimitiveType -> . SHORT
-    (12) PrimitiveType -> . INT
-    (13) PrimitiveType -> . LONG
-    (14) PrimitiveType -> . FLOAT
-    (15) PrimitiveType -> . DOUBLE
-    (16) PrimitiveType -> . VOID
-    (162) MethodAccess -> . ComplexPrimaryNoParenthesis
-    (163) MethodAccess -> . SpecialName
-    (164) MethodAccess -> . QualifiedName
+    (231) ConditionalExpression -> ConditionalOrExpression ? M_instr Expression . : M_instr ConditionalExpression M_instr
 
-    OPT_INC_DEC     shift and go to state 114
-    +               shift and go to state 108
-    -               shift and go to state 155
-    ~               shift and go to state 149
-    !               shift and go to state 153
-    IDENTIFIER      shift and go to state 23
-    THIS            shift and go to state 97
-    SUPER           shift and go to state 166
-    NULL            shift and go to state 152
-    (               shift and go to state 94
-    INT_LITERAL     shift and go to state 148
-    FLOAT_LITERAL   shift and go to state 132
-    CHAR_LITERAL    shift and go to state 98
-    STRING_LITERAL  shift and go to state 165
-    BOOL            shift and go to state 146
-    NEW             shift and go to state 131
-    BOOLEAN         shift and go to state 65
-    CHAR            shift and go to state 56
-    BYTE            shift and go to state 66
-    SHORT           shift and go to state 41
-    INT             shift and go to state 62
-    LONG            shift and go to state 49
-    FLOAT           shift and go to state 64
-    DOUBLE          shift and go to state 63
-    VOID            shift and go to state 44
+    :               shift and go to state 354
 
-    PostfixExpression              shift and go to state 126
-    ComplexPrimary                 shift and go to state 125
-    Bool_LIT                       shift and go to state 89
-    CastExpression                 shift and go to state 151
-    PrimitiveType                  shift and go to state 190
-    Float_LIT                      shift and go to state 144
-    RealPostfixExpression          shift and go to state 103
-    ArithmeticUnaryOperator        shift and go to state 104
-    AndExpression                  shift and go to state 93
-    ArrayAccess                    shift and go to state 115
-    PrimaryExpression              shift and go to state 134
-    EqualityExpression             shift and go to state 105
-    LogicalUnaryOperator           shift and go to state 160
-    ComplexPrimaryNoParenthesis    shift and go to state 106
-    MultiplicativeExpression       shift and go to state 107
-    ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
-    ConditionalOrExpression        shift and go to state 137
-    ShiftExpression                shift and go to state 157
-    NewAllocationExpression        shift and go to state 138
-    NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
-    Char_LIT                       shift and go to state 161
-    LogicalUnaryExpression         shift and go to state 162
-    String_LIT                     shift and go to state 163
-    AdditiveExpression             shift and go to state 140
-    ArrayAllocationExpression      shift and go to state 117
-    ConditionalExpression          shift and go to state 354
-    UnaryExpression                shift and go to state 201
-    InclusiveOrExpression          shift and go to state 143
-    FieldAccess                    shift and go to state 147
-    ExclusiveOrExpression          shift and go to state 119
-    ConditionalAndExpression       shift and go to state 99
-    RelationalExpression           shift and go to state 120
-    PlainNewAllocationExpression   shift and go to state 121
-    MethodAccess                   shift and go to state 118
-    SpecialName                    shift and go to state 124
-    Integer_LIT                    shift and go to state 95
 
 state 341
 
@@ -15475,10 +15338,10 @@ state 342
     OP_LAND         reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     ?               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     OP_LOR          reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
-    ;               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
-    (               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     ]               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
+    (               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     )               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
+    ;               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     }               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     ,               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
     :               reduce using rule 153 (ArrayAccess -> QualifiedName [ Expression ] .)
@@ -15487,7 +15350,7 @@ state 342
 state 343
 
     (104) SelectionStatement -> IF ( Expression ) . M_instr_branch Statement
-    (105) SelectionStatement -> IF ( Expression ) . M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> IF ( Expression ) . M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (108) M_instr_branch -> .
 
     ;               reduce using rule 108 (M_instr_branch -> .)
@@ -15750,7 +15613,6 @@ state 353
 
     (106) SelectionStatement -> SWITCH ( Expression ) Block .
 
-    ELSE            reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
     }               reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
     ;               reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
     IDENTIFIER      reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
@@ -15790,31 +15652,53 @@ state 353
     STRING_LITERAL  reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
     BOOL            reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
     NEW             reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
+    ELSE            reduce using rule 106 (SelectionStatement -> SWITCH ( Expression ) Block .)
 
 
 state 354
 
-    (231) ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .
+    (231) ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : . M_instr ConditionalExpression M_instr
+    (98) M_instr -> .
 
-    ;               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .)
-    )               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .)
-    ,               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .)
-    :               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .)
-    ]               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .)
-    }               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? Expression : ConditionalExpression .)
+    OPT_INC_DEC     reduce using rule 98 (M_instr -> .)
+    +               reduce using rule 98 (M_instr -> .)
+    -               reduce using rule 98 (M_instr -> .)
+    ~               reduce using rule 98 (M_instr -> .)
+    !               reduce using rule 98 (M_instr -> .)
+    IDENTIFIER      reduce using rule 98 (M_instr -> .)
+    THIS            reduce using rule 98 (M_instr -> .)
+    SUPER           reduce using rule 98 (M_instr -> .)
+    NULL            reduce using rule 98 (M_instr -> .)
+    (               reduce using rule 98 (M_instr -> .)
+    INT_LITERAL     reduce using rule 98 (M_instr -> .)
+    FLOAT_LITERAL   reduce using rule 98 (M_instr -> .)
+    CHAR_LITERAL    reduce using rule 98 (M_instr -> .)
+    STRING_LITERAL  reduce using rule 98 (M_instr -> .)
+    BOOL            reduce using rule 98 (M_instr -> .)
+    NEW             reduce using rule 98 (M_instr -> .)
+    BOOLEAN         reduce using rule 98 (M_instr -> .)
+    CHAR            reduce using rule 98 (M_instr -> .)
+    BYTE            reduce using rule 98 (M_instr -> .)
+    SHORT           reduce using rule 98 (M_instr -> .)
+    INT             reduce using rule 98 (M_instr -> .)
+    LONG            reduce using rule 98 (M_instr -> .)
+    FLOAT           reduce using rule 98 (M_instr -> .)
+    DOUBLE          reduce using rule 98 (M_instr -> .)
+    VOID            reduce using rule 98 (M_instr -> .)
 
+    M_instr                        shift and go to state 360
 
 state 355
 
     (110) IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch . ( Expression ) ;
 
-    (               shift and go to state 360
+    (               shift and go to state 361
 
 
 state 356
 
     (104) SelectionStatement -> IF ( Expression ) M_instr_branch . Statement
-    (105) SelectionStatement -> IF ( Expression ) M_instr_branch . Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> IF ( Expression ) M_instr_branch . Statement ELSE N_instr M_instr_branch Statement
     (91) Statement -> . EmptyStatement M_instr
     (92) Statement -> . LabelStatement M_instr
     (93) Statement -> . ExpressionStatement ; M_instr
@@ -15828,7 +15712,7 @@ state 356
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -15846,7 +15730,7 @@ state 356
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -15995,7 +15879,7 @@ state 356
     JumpStatement                  shift and go to state 129
     Float_LIT                      shift and go to state 144
     RealPostfixExpression          shift and go to state 103
-    Statement                      shift and go to state 361
+    Statement                      shift and go to state 362
     AndExpression                  shift and go to state 93
     ArrayAccess                    shift and go to state 115
     CastExpression                 shift and go to state 151
@@ -16047,7 +15931,7 @@ state 357
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -16210,9 +16094,9 @@ state 357
     ConditionalExpression          shift and go to state 141
     InclusiveOrExpression          shift and go to state 143
     MethodAccess                   shift and go to state 118
-    ExpressionStatements           shift and go to state 363
+    ExpressionStatements           shift and go to state 364
     ConditionalAndExpression       shift and go to state 99
-    ForIncr                        shift and go to state 362
+    ForIncr                        shift and go to state 363
     RelationalExpression           shift and go to state 120
     PlainNewAllocationExpression   shift and go to state 121
     FieldAccess                    shift and go to state 147
@@ -16267,7 +16151,7 @@ state 359
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -16285,7 +16169,7 @@ state 359
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -16434,7 +16318,7 @@ state 359
     JumpStatement                  shift and go to state 129
     Float_LIT                      shift and go to state 144
     RealPostfixExpression          shift and go to state 103
-    Statement                      shift and go to state 364
+    Statement                      shift and go to state 365
     AndExpression                  shift and go to state 93
     ArrayAccess                    shift and go to state 115
     CastExpression                 shift and go to state 151
@@ -16476,12 +16360,182 @@ state 359
 
 state 360
 
+    (231) ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr . ConditionalExpression M_instr
+    (230) ConditionalExpression -> . ConditionalOrExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
+    (227) ConditionalOrExpression -> . ConditionalAndExpression
+    (228) ConditionalOrExpression -> . ConditionalOrExpression OP_LOR M_OP ConditionalAndExpression
+    (225) ConditionalAndExpression -> . InclusiveOrExpression
+    (226) ConditionalAndExpression -> . ConditionalAndExpression OP_LAND M_OP InclusiveOrExpression
+    (223) InclusiveOrExpression -> . ExclusiveOrExpression
+    (224) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
+    (221) ExclusiveOrExpression -> . AndExpression
+    (222) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
+    (219) AndExpression -> . EqualityExpression
+    (220) AndExpression -> . AndExpression & EqualityExpression
+    (216) EqualityExpression -> . RelationalExpression
+    (217) EqualityExpression -> . EqualityExpression OP_EQ RelationalExpression
+    (218) EqualityExpression -> . EqualityExpression OP_NE RelationalExpression
+    (211) RelationalExpression -> . ShiftExpression
+    (212) RelationalExpression -> . RelationalExpression < ShiftExpression
+    (213) RelationalExpression -> . RelationalExpression > ShiftExpression
+    (214) RelationalExpression -> . RelationalExpression OP_LE ShiftExpression
+    (215) RelationalExpression -> . RelationalExpression OP_GE ShiftExpression
+    (209) ShiftExpression -> . AdditiveExpression
+    (210) ShiftExpression -> . ShiftExpression OPT_SOME AdditiveExpression
+    (206) AdditiveExpression -> . MultiplicativeExpression
+    (207) AdditiveExpression -> . AdditiveExpression + MultiplicativeExpression
+    (208) AdditiveExpression -> . AdditiveExpression - MultiplicativeExpression
+    (202) MultiplicativeExpression -> . CastExpression
+    (203) MultiplicativeExpression -> . MultiplicativeExpression * CastExpression
+    (204) MultiplicativeExpression -> . MultiplicativeExpression / CastExpression
+    (205) MultiplicativeExpression -> . MultiplicativeExpression % CastExpression
+    (201) CastExpression -> . UnaryExpression
+    (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
+    (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
+    (194) UnaryExpression -> . LogicalUnaryExpression
+    (199) ArithmeticUnaryOperator -> . +
+    (200) ArithmeticUnaryOperator -> . -
+    (195) LogicalUnaryExpression -> . PostfixExpression
+    (196) LogicalUnaryExpression -> . LogicalUnaryOperator UnaryExpression
+    (189) PostfixExpression -> . PrimaryExpression
+    (190) PostfixExpression -> . RealPostfixExpression
+    (197) LogicalUnaryOperator -> . ~
+    (198) LogicalUnaryOperator -> . !
+    (133) PrimaryExpression -> . QualifiedName
+    (134) PrimaryExpression -> . NotJustName
+    (191) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
+    (135) NotJustName -> . SpecialName
+    (136) NotJustName -> . NewAllocationExpression
+    (137) NotJustName -> . ComplexPrimary
+    (165) SpecialName -> . THIS
+    (166) SpecialName -> . SUPER
+    (167) SpecialName -> . NULL
+    (170) NewAllocationExpression -> . PlainNewAllocationExpression
+    (171) NewAllocationExpression -> . QualifiedName . PlainNewAllocationExpression
+    (138) ComplexPrimary -> . ComplexPrimaryNoParenthesis
+    (139) ComplexPrimary -> . Integer_LIT
+    (140) ComplexPrimary -> . Float_LIT
+    (141) ComplexPrimary -> . Char_LIT
+    (142) ComplexPrimary -> . String_LIT
+    (143) ComplexPrimary -> . Bool_LIT
+    (144) ComplexPrimary -> . ( Expression )
+    (172) PlainNewAllocationExpression -> . ArrayAllocationExpression
+    (173) PlainNewAllocationExpression -> . ClassAllocationExpression
+    (174) PlainNewAllocationExpression -> . ArrayAllocationExpression { }
+    (175) PlainNewAllocationExpression -> . ClassAllocationExpression { }
+    (176) PlainNewAllocationExpression -> . ArrayAllocationExpression { ArrayInitializers }
+    (177) PlainNewAllocationExpression -> . ClassAllocationExpression { FieldDeclarations }
+    (145) ComplexPrimaryNoParenthesis -> . ArrayAccess
+    (146) ComplexPrimaryNoParenthesis -> . FieldAccess
+    (147) ComplexPrimaryNoParenthesis -> . MethodCall
+    (148) Integer_LIT -> . INT_LITERAL
+    (149) Float_LIT -> . FLOAT_LITERAL
+    (150) Char_LIT -> . CHAR_LITERAL
+    (151) String_LIT -> . STRING_LITERAL
+    (152) Bool_LIT -> . BOOL
+    (180) ArrayAllocationExpression -> . NEW TypeName DimExprs Dims
+    (181) ArrayAllocationExpression -> . NEW TypeName DimExprs
+    (182) ArrayAllocationExpression -> . NEW TypeName Dims
+    (178) ClassAllocationExpression -> . NEW TypeName ( ArgumentList )
+    (179) ClassAllocationExpression -> . NEW TypeName ( )
+    (153) ArrayAccess -> . QualifiedName [ Expression ]
+    (154) ArrayAccess -> . ComplexPrimary [ Expression ]
+    (155) FieldAccess -> . NotJustName . IDENTIFIER
+    (156) FieldAccess -> . RealPostfixExpression . IDENTIFIER
+    (157) FieldAccess -> . QualifiedName . THIS
+    (158) FieldAccess -> . QualifiedName . CLASS
+    (159) FieldAccess -> . PrimitiveType . CLASS
+    (160) MethodCall -> . MethodAccess ( ArgumentList )
+    (161) MethodCall -> . MethodAccess ( )
+    (8) PrimitiveType -> . BOOLEAN
+    (9) PrimitiveType -> . CHAR
+    (10) PrimitiveType -> . BYTE
+    (11) PrimitiveType -> . SHORT
+    (12) PrimitiveType -> . INT
+    (13) PrimitiveType -> . LONG
+    (14) PrimitiveType -> . FLOAT
+    (15) PrimitiveType -> . DOUBLE
+    (16) PrimitiveType -> . VOID
+    (162) MethodAccess -> . ComplexPrimaryNoParenthesis
+    (163) MethodAccess -> . SpecialName
+    (164) MethodAccess -> . QualifiedName
+
+    OPT_INC_DEC     shift and go to state 114
+    +               shift and go to state 108
+    -               shift and go to state 155
+    ~               shift and go to state 149
+    !               shift and go to state 153
+    IDENTIFIER      shift and go to state 23
+    THIS            shift and go to state 97
+    SUPER           shift and go to state 166
+    NULL            shift and go to state 152
+    (               shift and go to state 94
+    INT_LITERAL     shift and go to state 148
+    FLOAT_LITERAL   shift and go to state 132
+    CHAR_LITERAL    shift and go to state 98
+    STRING_LITERAL  shift and go to state 165
+    BOOL            shift and go to state 146
+    NEW             shift and go to state 131
+    BOOLEAN         shift and go to state 65
+    CHAR            shift and go to state 56
+    BYTE            shift and go to state 66
+    SHORT           shift and go to state 41
+    INT             shift and go to state 62
+    LONG            shift and go to state 49
+    FLOAT           shift and go to state 64
+    DOUBLE          shift and go to state 63
+    VOID            shift and go to state 44
+
+    PostfixExpression              shift and go to state 126
+    ComplexPrimary                 shift and go to state 125
+    Bool_LIT                       shift and go to state 89
+    CastExpression                 shift and go to state 151
+    PrimitiveType                  shift and go to state 190
+    Float_LIT                      shift and go to state 144
+    RealPostfixExpression          shift and go to state 103
+    ArithmeticUnaryOperator        shift and go to state 104
+    AndExpression                  shift and go to state 93
+    ArrayAccess                    shift and go to state 115
+    PrimaryExpression              shift and go to state 134
+    EqualityExpression             shift and go to state 105
+    LogicalUnaryOperator           shift and go to state 160
+    ComplexPrimaryNoParenthesis    shift and go to state 106
+    MultiplicativeExpression       shift and go to state 107
+    ClassAllocationExpression      shift and go to state 127
+    QualifiedName                  shift and go to state 192
+    ConditionalOrExpression        shift and go to state 137
+    ShiftExpression                shift and go to state 157
+    NewAllocationExpression        shift and go to state 138
+    NotJustName                    shift and go to state 159
+    Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
+    LogicalUnaryExpression         shift and go to state 162
+    String_LIT                     shift and go to state 163
+    AdditiveExpression             shift and go to state 140
+    ArrayAllocationExpression      shift and go to state 117
+    ConditionalExpression          shift and go to state 366
+    UnaryExpression                shift and go to state 201
+    InclusiveOrExpression          shift and go to state 143
+    FieldAccess                    shift and go to state 147
+    ExclusiveOrExpression          shift and go to state 119
+    ConditionalAndExpression       shift and go to state 99
+    RelationalExpression           shift and go to state 120
+    PlainNewAllocationExpression   shift and go to state 121
+    MethodAccess                   shift and go to state 118
+    SpecialName                    shift and go to state 124
+    Integer_LIT                    shift and go to state 95
+
+state 361
+
     (110) IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( . Expression ) ;
     (236) Expression -> . AssignmentExpression
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -16623,18 +16677,18 @@ state 360
     ComplexPrimaryNoParenthesis    shift and go to state 106
     MultiplicativeExpression       shift and go to state 107
     ClassAllocationExpression      shift and go to state 127
-    MethodCall                     shift and go to state 109
+    QualifiedName                  shift and go to state 192
     ConditionalOrExpression        shift and go to state 137
     ShiftExpression                shift and go to state 157
     ArithmeticUnaryOperator        shift and go to state 104
     AssignmentExpression           shift and go to state 112
     NewAllocationExpression        shift and go to state 138
     NotJustName                    shift and go to state 159
-    QualifiedName                  shift and go to state 192
     Char_LIT                       shift and go to state 161
+    MethodCall                     shift and go to state 109
     LogicalUnaryExpression         shift and go to state 162
     String_LIT                     shift and go to state 163
-    Expression                     shift and go to state 365
+    Expression                     shift and go to state 367
     AdditiveExpression             shift and go to state 140
     ArrayAllocationExpression      shift and go to state 117
     ConditionalExpression          shift and go to state 141
@@ -16649,14 +16703,12 @@ state 360
     SpecialName                    shift and go to state 124
     Integer_LIT                    shift and go to state 95
 
-state 361
+state 362
 
     (104) SelectionStatement -> IF ( Expression ) M_instr_branch Statement .
-    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement . N_instr ELSE M_instr_branch Statement
-    (107) N_instr -> .
+    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement . ELSE N_instr M_instr_branch Statement
 
-  ! reduce/reduce conflict for ELSE resolved using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
-    ELSE            reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
+  ! shift/reduce conflict for ELSE resolved as shift
     }               reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
     ;               reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
     IDENTIFIER      reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
@@ -16696,19 +16748,19 @@ state 361
     STRING_LITERAL  reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
     BOOL            reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
     NEW             reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .)
+    ELSE            shift and go to state 368
 
-  ! ELSE            [ reduce using rule 107 (N_instr -> .) ]
-
-    N_instr                        shift and go to state 366
-
-state 362
-
-    (111) IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr . ) M_instr Statement
-
-    )               shift and go to state 367
+  ! ELSE            [ reduce using rule 104 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement .) ]
 
 
 state 363
+
+    (111) IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr . ) M_instr Statement
+
+    )               shift and go to state 369
+
+
+state 364
 
     (117) ForIncr -> ExpressionStatements .
     (120) ExpressionStatements -> ExpressionStatements . , ExpressionStatement
@@ -16717,10 +16769,11 @@ state 363
     ,               shift and go to state 324
 
 
-state 364
+state 365
 
     (109) IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .
 
+    ELSE            reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
     }               reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
     ;               reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
     IDENTIFIER      reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
@@ -16760,24 +16813,76 @@ state 364
     STRING_LITERAL  reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
     BOOL            reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
     NEW             reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
-    ELSE            reduce using rule 109 (IterationStatement -> WHILE M_instr_branch ( Expression ) M_instr_branch Statement .)
-
-
-state 365
-
-    (110) IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression . ) ;
-
-    )               shift and go to state 368
 
 
 state 366
 
-    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr . ELSE M_instr_branch Statement
+    (231) ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression . M_instr
+    (98) M_instr -> .
 
-    ELSE            shift and go to state 369
+    ;               reduce using rule 98 (M_instr -> .)
+    )               reduce using rule 98 (M_instr -> .)
+    :               reduce using rule 98 (M_instr -> .)
+    ,               reduce using rule 98 (M_instr -> .)
+    }               reduce using rule 98 (M_instr -> .)
+    ]               reduce using rule 98 (M_instr -> .)
 
+    M_instr                        shift and go to state 370
 
 state 367
+
+    (110) IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression . ) ;
+
+    )               shift and go to state 371
+
+
+state 368
+
+    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE . N_instr M_instr_branch Statement
+    (107) N_instr -> .
+
+    ;               reduce using rule 107 (N_instr -> .)
+    IDENTIFIER      reduce using rule 107 (N_instr -> .)
+    CASE            reduce using rule 107 (N_instr -> .)
+    DEFAULT         reduce using rule 107 (N_instr -> .)
+    IF              reduce using rule 107 (N_instr -> .)
+    SWITCH          reduce using rule 107 (N_instr -> .)
+    WHILE           reduce using rule 107 (N_instr -> .)
+    DO              reduce using rule 107 (N_instr -> .)
+    FOR             reduce using rule 107 (N_instr -> .)
+    BREAK           reduce using rule 107 (N_instr -> .)
+    CONTINUE        reduce using rule 107 (N_instr -> .)
+    RETURN          reduce using rule 107 (N_instr -> .)
+    THROW           reduce using rule 107 (N_instr -> .)
+    {               reduce using rule 107 (N_instr -> .)
+    OPT_INC_DEC     reduce using rule 107 (N_instr -> .)
+    +               reduce using rule 107 (N_instr -> .)
+    -               reduce using rule 107 (N_instr -> .)
+    ~               reduce using rule 107 (N_instr -> .)
+    !               reduce using rule 107 (N_instr -> .)
+    THIS            reduce using rule 107 (N_instr -> .)
+    SUPER           reduce using rule 107 (N_instr -> .)
+    NULL            reduce using rule 107 (N_instr -> .)
+    (               reduce using rule 107 (N_instr -> .)
+    INT_LITERAL     reduce using rule 107 (N_instr -> .)
+    FLOAT_LITERAL   reduce using rule 107 (N_instr -> .)
+    CHAR_LITERAL    reduce using rule 107 (N_instr -> .)
+    STRING_LITERAL  reduce using rule 107 (N_instr -> .)
+    BOOL            reduce using rule 107 (N_instr -> .)
+    NEW             reduce using rule 107 (N_instr -> .)
+    BOOLEAN         reduce using rule 107 (N_instr -> .)
+    CHAR            reduce using rule 107 (N_instr -> .)
+    BYTE            reduce using rule 107 (N_instr -> .)
+    SHORT           reduce using rule 107 (N_instr -> .)
+    INT             reduce using rule 107 (N_instr -> .)
+    LONG            reduce using rule 107 (N_instr -> .)
+    FLOAT           reduce using rule 107 (N_instr -> .)
+    DOUBLE          reduce using rule 107 (N_instr -> .)
+    VOID            reduce using rule 107 (N_instr -> .)
+
+    N_instr                        shift and go to state 372
+
+state 369
 
     (111) IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) . M_instr Statement
     (98) M_instr -> .
@@ -16821,18 +16926,30 @@ state 367
     DOUBLE          reduce using rule 98 (M_instr -> .)
     VOID            reduce using rule 98 (M_instr -> .)
 
-    M_instr                        shift and go to state 370
+    M_instr                        shift and go to state 373
 
-state 368
+state 370
+
+    (231) ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .
+
+    ;               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .)
+    )               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .)
+    ,               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .)
+    :               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .)
+    ]               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .)
+    }               reduce using rule 231 (ConditionalExpression -> ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr .)
+
+
+state 371
 
     (110) IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) . ;
 
-    ;               shift and go to state 371
+    ;               shift and go to state 374
 
 
-state 369
+state 372
 
-    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE . M_instr_branch Statement
+    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr . M_instr_branch Statement
     (108) M_instr_branch -> .
 
     ;               reduce using rule 108 (M_instr_branch -> .)
@@ -16874,9 +16991,9 @@ state 369
     DOUBLE          reduce using rule 108 (M_instr_branch -> .)
     VOID            reduce using rule 108 (M_instr_branch -> .)
 
-    M_instr_branch                 shift and go to state 372
+    M_instr_branch                 shift and go to state 375
 
-state 370
+state 373
 
     (111) IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr . Statement
     (91) Statement -> . EmptyStatement M_instr
@@ -16892,7 +17009,7 @@ state 370
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -16910,7 +17027,7 @@ state 370
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -17059,7 +17176,7 @@ state 370
     JumpStatement                  shift and go to state 129
     Float_LIT                      shift and go to state 144
     RealPostfixExpression          shift and go to state 103
-    Statement                      shift and go to state 373
+    Statement                      shift and go to state 376
     AndExpression                  shift and go to state 93
     ArrayAccess                    shift and go to state 115
     CastExpression                 shift and go to state 151
@@ -17099,10 +17216,11 @@ state 370
     IterationStatement             shift and go to state 169
     Integer_LIT                    shift and go to state 95
 
-state 371
+state 374
 
     (110) IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .
 
+    ELSE            reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
     }               reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
     ;               reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
     IDENTIFIER      reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
@@ -17142,12 +17260,11 @@ state 371
     STRING_LITERAL  reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
     BOOL            reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
     NEW             reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
-    ELSE            reduce using rule 110 (IterationStatement -> DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ; .)
 
 
-state 372
+state 375
 
-    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch . Statement
+    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch . Statement
     (91) Statement -> . EmptyStatement M_instr
     (92) Statement -> . LabelStatement M_instr
     (93) Statement -> . ExpressionStatement ; M_instr
@@ -17161,7 +17278,7 @@ state 372
     (102) LabelStatement -> . DEFAULT :
     (103) ExpressionStatement -> . Expression
     (104) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement
-    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement
+    (105) SelectionStatement -> . IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement
     (106) SelectionStatement -> . SWITCH ( Expression ) Block
     (109) IterationStatement -> . WHILE M_instr_branch ( Expression ) M_instr_branch Statement
     (110) IterationStatement -> . DO M_instr_branch Statement WHILE M_instr_branch ( Expression ) ;
@@ -17179,7 +17296,7 @@ state 372
     (232) AssignmentExpression -> . ConditionalExpression
     (233) AssignmentExpression -> . UnaryExpression AssignmentOperator AssignmentExpression
     (230) ConditionalExpression -> . ConditionalOrExpression
-    (231) ConditionalExpression -> . ConditionalOrExpression ? Expression : ConditionalExpression
+    (231) ConditionalExpression -> . ConditionalOrExpression ? M_instr Expression : M_instr ConditionalExpression M_instr
     (192) UnaryExpression -> . OPT_INC_DEC UnaryExpression
     (193) UnaryExpression -> . ArithmeticUnaryOperator CastExpression
     (194) UnaryExpression -> . LogicalUnaryExpression
@@ -17328,7 +17445,7 @@ state 372
     JumpStatement                  shift and go to state 129
     Float_LIT                      shift and go to state 144
     RealPostfixExpression          shift and go to state 103
-    Statement                      shift and go to state 374
+    Statement                      shift and go to state 377
     AndExpression                  shift and go to state 93
     ArrayAccess                    shift and go to state 115
     CastExpression                 shift and go to state 151
@@ -17368,10 +17485,11 @@ state 372
     IterationStatement             shift and go to state 169
     Integer_LIT                    shift and go to state 95
 
-state 373
+state 376
 
     (111) IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .
 
+    ELSE            reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
     }               reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
     ;               reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
     IDENTIFIER      reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
@@ -17411,58 +17529,55 @@ state 373
     STRING_LITERAL  reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
     BOOL            reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
     NEW             reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
-    ELSE            reduce using rule 111 (IterationStatement -> FOR ( ForInit M_instr ForExpr M_instr ForIncr ) M_instr Statement .)
 
 
-state 374
+state 377
 
-    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .
+    (105) SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .
 
-    ELSE            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    }               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    ;               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    IDENTIFIER      reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    CASE            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    DEFAULT         reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    IF              reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    SWITCH          reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    WHILE           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    DO              reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    FOR             reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    BREAK           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    CONTINUE        reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    RETURN          reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    THROW           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    {               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    BOOLEAN         reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    CHAR            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    BYTE            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    SHORT           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    INT             reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    LONG            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    FLOAT           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    DOUBLE          reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    VOID            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    OPT_INC_DEC     reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    +               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    -               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    ~               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    !               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    THIS            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    SUPER           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    NULL            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    (               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    INT_LITERAL     reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    FLOAT_LITERAL   reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    CHAR_LITERAL    reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    STRING_LITERAL  reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    BOOL            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
-    NEW             reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement N_instr ELSE M_instr_branch Statement .)
+    }               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    ;               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    IDENTIFIER      reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    CASE            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    DEFAULT         reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    IF              reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    SWITCH          reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    WHILE           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    DO              reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    FOR             reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    BREAK           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    CONTINUE        reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    RETURN          reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    THROW           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    {               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    BOOLEAN         reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    CHAR            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    BYTE            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    SHORT           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    INT             reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    LONG            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    FLOAT           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    DOUBLE          reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    VOID            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    OPT_INC_DEC     reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    +               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    -               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    ~               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    !               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    THIS            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    SUPER           reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    NULL            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    (               reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    INT_LITERAL     reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    FLOAT_LITERAL   reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    CHAR_LITERAL    reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    STRING_LITERAL  reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    BOOL            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    NEW             reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
+    ELSE            reduce using rule 105 (SelectionStatement -> IF ( Expression ) M_instr_branch Statement ELSE N_instr M_instr_branch Statement .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for [ in state 154 resolved as shift
-WARNING: reduce/reduce conflict in state 361 resolved using rule (SelectionStatement -> IF ( Expression ) M_instr_branch Statement)
-WARNING: rejected rule (N_instr -> <empty>) in state 361
-WARNING: Rule (N_instr -> <empty>) is never reduced
+WARNING: shift/reduce conflict for ELSE in state 362 resolved as shift
