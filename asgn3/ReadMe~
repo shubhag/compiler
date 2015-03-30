@@ -1,8 +1,0 @@
-ReadMe ------------------------------------
-
-To run the program do the following
-
-1 -- cd asgn2
-2 -- make
-3 -- python bin/parser_yacc.py test/test1.java -- this will generate the .ps file of the parse_tree
-4 -- make clean -- to clean 
