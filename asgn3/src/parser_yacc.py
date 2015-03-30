@@ -856,38 +856,58 @@ def p_m_operator(p):
 
 def p_ConditionalExpression(p):
 	'''ConditionalExpression : ConditionalOrExpression
-							| ConditionalOrExpression '?' M_instr Expression  ':' M_instr ConditionalExpression M_instr'''
+							| ConditionalOrExpression '?' M_instr Expression Mark ':' M_instr ConditionalExpression M_instr'''
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
-		tempVar2 = ST.getTemp()
-		if type(p[4]) is not dict:
-			temp2 = p[4]
-			type2 = ST.getIdAttr(p[4], 'type')
-		else:
-			temp2 = p[4]['tempVar']
-			type2 = p[4]['type']
+		# tempVar2 = ST.getTemp()
+		# if type(p[4]) is not dict:
+		# 	temp2 = p[4]
+		# 	type2 = ST.getIdAttr(p[4], 'type')
+		# else:
+		# 	temp2 = p[4]['tempVar']
+		# 	type2 = p[4]['type']
 
-		tempVar3 = ST.getTemp()
-		if type(p[7]) is not dict:
-			temp3 = p[7]
-			type3 = ST.getIdAttr(p[7], 'type')
+		# tempVar3 = ST.getTemp()
+		if type(p[8]) is not dict:
+			temp3 = p[8]
+			type3 = ST.getIdAttr(p[8], 'type')
 		else:
-			temp3 = p[7]['tempVar']
-			type3 = p[7]['type']
+			temp3 = p[8]['tempVar']
+			type3 = p[8]['type']
 
 		print p[1].get('trueList',[]) , "truelist"
 
-		tempVar = ST.getTemp()
+		# tempVar = ST.getTemp()
 
 		TAC.backPatch(p[1].get('trueList',[]), p[3].get('instr',[]) )
-		TAC.emit(tempVar,tempVar2,'','=')
+		# TAC.emit(tempVar,temp2,'','=')
+		
+		TAC.emit(p[5]['temp'],temp3,'','=')
 		nextIns = TAC.getNextInstr()
-		TAC.emit('','','','GOTO')
-		TAC.backPatch(p[1].get('falseList',[]), TAC.getNextInstr() )
-		TAC.emit(tempVar,tempVar3,'','=')
-		TAC.backPatch([ nextIns ], TAC.getNextInstr()+1 )
-		p[0] = {'type':type2,'tempVar': tempVar }
+		
+		TAC.backPatch(p[1].get('falseList',[]), p[7].get('instr',[]) )
+		
+		TAC.backPatch(p[5]['instr'], nextIns  )
+		p[0] = {'type':type3,'tempVar': p[5]['temp'] }
+
+def p_mark(p):
+	''' Mark : '''
+	
+	tempVar = ST.getTemp()
+	if type(p[-1]) is not dict:
+			temp = p[-1]
+			typeVar = ST.getIdAttr(p[-1], 'type')
+	else:
+		temp = p[-1]['tempVar']
+		typeVar = p[-1]['type']
+	TAC.emit(tempVar,temp,'','=')
+	instr = TAC.getNextInstr()
+	TAC.emit('','','','GOTO')
+	p[0] = {
+		'instr' : [ instr ],
+		'temp' : tempVar
+	}
 
 def p_AssignmentExpression(p):
 	'''AssignmentExpression : ConditionalExpression

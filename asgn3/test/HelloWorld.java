@@ -5,8 +5,9 @@ public class HelloWorld {
        // if(a == 1){
        // 		a = 5;
        // }
-    	int a;
-    a = ( a == 1) ? 2 : 3 ;
+    	int a,b;
+    // a = ( a == 1) ? 2 : 1 ;
+    	a = ( a == 1) ? a : b ;
     	// int a = 5;
     	// do{a = 6;}while(a<5);
     	// int x = 30;
