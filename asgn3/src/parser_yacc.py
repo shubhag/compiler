@@ -860,15 +860,6 @@ def p_ConditionalExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
-		# tempVar2 = ST.getTemp()
-		# if type(p[4]) is not dict:
-		# 	temp2 = p[4]
-		# 	type2 = ST.getIdAttr(p[4], 'type')
-		# else:
-		# 	temp2 = p[4]['tempVar']
-		# 	type2 = p[4]['type']
-
-		# tempVar3 = ST.getTemp()
 		if type(p[8]) is not dict:
 			temp3 = p[8]
 			type3 = ST.getIdAttr(p[8], 'type')
@@ -876,13 +867,7 @@ def p_ConditionalExpression(p):
 			temp3 = p[8]['tempVar']
 			type3 = p[8]['type']
 
-		print p[1].get('trueList',[]) , "truelist"
-
-		# tempVar = ST.getTemp()
-
-		TAC.backPatch(p[1].get('trueList',[]), p[3].get('instr',[]) )
-		# TAC.emit(tempVar,temp2,'','=')
-		
+		TAC.backPatch(p[1].get('trueList',[]), p[3].get('instr',[]) )		
 		TAC.emit(p[5]['temp'],temp3,'','=')
 		nextIns = TAC.getNextInstr()
 		
