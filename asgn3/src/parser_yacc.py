@@ -220,13 +220,18 @@ def p_methoddeclaration(p):
 def p_methoddeclarator(p):
 	'''MethodDeclarator : DeclaratorName '(' ParameterList ')'
 						| DeclaratorName '(' ')' '''
+
+	funcName = ST.addNewScope(p[1], 'function' )
+	TAC.generateFuncTac(funcName)
 	if len(p) == 4 : 
 		p[0] = { 'name': p[1], 'plist': [] }
+		ST.addArgList(p[1], None )
 	else:
 		p[0] = {'name': p[1], 'plist': p[3]}
-
-	funcName = ST.addNewScope(p[0]['name'], 'function' )
-	TAC.generateFuncTac(funcName)
+		ST.addArgList(p[1], p[3] )
+		for parameter in p[3] :
+			ST.addNewIdentifier(parameter['name'], parameter['type'])
+	
 
 def p_parameterlist(p):
 	''' ParameterList : Parameter
@@ -236,7 +241,7 @@ def p_parameterlist(p):
 		p[1].append(p[3])
 		p[0] = p[1] 
 	else:
-		p[0] = list(p[1])
+		p[0] =[ p[1] ]
 
 def p_parameter(p):
 	'''Parameter : TypeSpecifier DeclaratorName'''
@@ -252,10 +257,17 @@ def p_declaratorname(p):
 
 
 def p_methodbody(p):
-	'''MethodBody : Block
+	'''MethodBody : '{' LocalVariableDeclarationsAndStatements '}'
+				| '{' '}' 
 					| ';' '''
-
-	p[0] = p[1]
+	if len(p) == 3 :
+		p[0] = {}
+	elif len(p) == 4 :
+		p[0] = p[2]
+	else :
+		p[0] = {}
+	ST.change_scope()
+	TAC.emit('','','','JUMPBACK')
 
 def p_constructdeclarator(p):
 	''' ConstructorDeclaration : Modifiers ConstructorDeclarator        Block
@@ -276,16 +288,23 @@ def p_extends(p):
 				| Extends ',' TypeName '''
 
 def p_block(p):
-	'''Block : '{' LocalVariableDeclarationsAndStatements '}'
-				| '{' '}' '''
+	'''Block : Lparen LocalVariableDeclarationsAndStatements Rparen
+				| Lparen Rparen '''
 
 	if len(p) == 3 :
 		p[0] = {}
 	else:
 		p[0] = p[2]
+	# ST.change_scope()
+
+def p_lparen(p):
+	''' Lparen : '{' '''
+	temp = ST.getTemp()
+	ST.addNewScope(temp, 'if')
+
+def p_rparen(p):
+	''' Rparen : '}' '''
 	ST.change_scope()
-
-
 
 def p_LocalVariableDeclarationsAndStatements(p):
 	'''LocalVariableDeclarationsAndStatements : LocalVariableDeclarationOrStatement 
@@ -614,7 +633,22 @@ def p_MethodCall(p):
 
 	if len(p) == 5:
 		if p[1] == "System.out.println":
-			TAC.emit('PRINT',p[3]['tempVar'],p[3]['type'],'')
+			print p[3], True
+			TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
+		else:
+			funcName = ST.getFuncName(p[1])
+			a = 0
+			for params in  p[3]['expr']:
+				if type(params) is not dict:
+					typei = ST.getIdAttr(params, 'type')
+					TAC.emit(params,'','','PARAM')
+				else:
+					TAC.emit(params['tempVar'],'','','PARAM')
+				a += 1
+			TAC.emit(funcName,len(p[3]['expr']),'','CALL')
+	else:
+		funcName = ST.getFuncName(p[1])
+		TAC.emit(funcName,0,'','CALL')
 
 def p_MethodAccess(p):
 	'''MethodAccess : ComplexPrimaryNoParenthesis
@@ -631,9 +665,12 @@ def p_ArgumentList(p):
 	'''ArgumentList : Expression
 					| ArgumentList ',' Expression '''
 
+	p[0] = {}
 	if len(p) == 2 :
-		p[0] = p[1]
-
+		p[0]['expr'] =[ p[1] ]
+	else:
+		p[1]['expr'].append(p[3])
+		p[0]['expr'] = p[1]['expr']
 def p_NewAllocationExpression(p):
 	'''NewAllocationExpression : PlainNewAllocationExpression
         						| QualifiedName '.' PlainNewAllocationExpression '''

@@ -6,6 +6,7 @@ public class HelloWorld {
     	// switch(a)
      //    {
      //    }
+    	hell();
     }
 
 }

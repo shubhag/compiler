@@ -18,8 +18,64 @@ MethodDeclaration -> Modifiers TypeSpecifier MethodDeclarator MethodBody
 None,None,None,None
 MethodBody -> Block
 None
-Block -> { }
-'{','}'
+Block -> { LocalVariableDeclarationsAndStatements }
+'{',None,'}'
+LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement
+None
+LocalVariableDeclarationOrStatement -> Statement
+None
+Statement -> ExpressionStatement ;
+None,';'
+ExpressionStatement -> Expression
+None
+Expression -> AssignmentExpression
+None
+AssignmentExpression -> ConditionalExpression
+None
+ConditionalExpression -> ConditionalOrExpression
+None
+ConditionalOrExpression -> ConditionalAndExpression
+None
+ConditionalAndExpression -> InclusiveOrExpression
+None
+InclusiveOrExpression -> ExclusiveOrExpression
+None
+ExclusiveOrExpression -> AndExpression
+None
+AndExpression -> EqualityExpression
+None
+EqualityExpression -> RelationalExpression
+None
+RelationalExpression -> ShiftExpression
+None
+ShiftExpression -> AdditiveExpression
+None
+AdditiveExpression -> MultiplicativeExpression
+None
+MultiplicativeExpression -> CastExpression
+None
+CastExpression -> UnaryExpression
+None
+UnaryExpression -> LogicalUnaryExpression
+None
+LogicalUnaryExpression -> PostfixExpression
+None
+PostfixExpression -> PrimaryExpression
+None
+PrimaryExpression -> NotJustName
+None
+NotJustName -> ComplexPrimary
+None
+ComplexPrimary -> ComplexPrimaryNoParenthesis
+None
+ComplexPrimaryNoParenthesis -> MethodCall
+None
+MethodCall -> MethodAccess ( )
+None,'(',')'
+MethodAccess -> QualifiedName
+None
+QualifiedName -> IDENTIFIER
+'hell'
 MethodDeclarator -> DeclaratorName ( ParameterList )
 None,'(',None,')'
 ParameterList -> Parameter

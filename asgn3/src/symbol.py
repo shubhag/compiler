@@ -21,6 +21,18 @@ class symbTbl:
 	def printSymbTbl(self):
 		pprint.pprint(self.mainSymbTbl)
 
+	def getFuncName(self,funcName):
+		function = self.mainSymbTbl['Main']['functions']
+		if function.has_key(funcName):
+			return function[funcName]['name']
+
+	def addArgList(self, funcName, arguments):
+		function = self.mainSymbTbl['Main']['functions']
+		if function.has_key(funcName):
+			if arguments == None:
+				function[funcName]['arglist'] = {}
+			else:
+				function[funcName]['arglist'] = arguments
 	#to get the current scope name 
 	def getCurrScopeName(self):
 		return self.currScope
@@ -42,7 +54,7 @@ class symbTbl:
 	def checkscope_id(self, identifier, currScope):
 		if currScope == None:
 			return None
-		tempScope = self.mainSymbTbl[currScope]
+		tempScope = self.mainSymbTbl[currScope]['identifier']
 		if tempScope.has_key(identifier):
 			return tempScope[identifier]
 		else:
@@ -54,17 +66,19 @@ class symbTbl:
 			'scope'	: pScope + "." + funcName,
 			'type'	: functype,
 			'pscope' : pScope,
-			'retype' : 'undefined'
+			'retype' : 'undefined',
+			'identifier' : {}
 		}
 		self.mainSymbTbl[pScope + "." + funcName] = newSymbTbl
 		self.currScope = pScope + "." + funcName
 		if functype == 'function':
 			self.currFunc = pScope + "." + funcName
+			self.mainSymbTbl['Main']['functions'][funcName] = { 'name' : pScope + "." + funcName }
 		return self.currScope
 		# TAC.generateFuncTac(self.currFunc)
 
 	def addNewIdentifier(self, identifier,type):
-		tempScope = self.mainSymbTbl[self.currScope]
+		tempScope = self.mainSymbTbl[self.currScope]['identifier']
 		width = 0 
 		
 		if type in ['bool', 'char']:
@@ -116,10 +130,10 @@ class symbTbl:
 		return existence
 
 	def change_scope(self):
-		print self.currScope, self.currFunc, True 
-		if self.currScope == self.currFunc :
-			self.currScope = self.mainSymbTbl[self.currScope]['pscope']
-			return self.currScope
+		# print self.currScope, self.currFunc, True 
+		# if self.currScope == self.currFunc :
+		self.currScope = self.mainSymbTbl[self.currScope]['pscope']
+		return self.currScope
 
 	def getTemp(self):
 		temp = "_t" + str(self.tempCount)

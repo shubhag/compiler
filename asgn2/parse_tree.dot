@@ -23,7 +23,64 @@ digraph "Parse Tree" {
 	MethodDeclaration1 -> {  Modifiers1 TypeSpecifier1 MethodDeclarator1 MethodBody1 }
 	Block1 [label = "Block"] 
 	MethodBody1 -> {  Block1 }
-	Block1 -> {  "{" "}" }
+	LocalVariableDeclarationsAndStatements1 [label = "LocalVariableDeclarationsAndStatements"] 
+	Block1 -> {  "{" LocalVariableDeclarationsAndStatements1 "}" }
+	LocalVariableDeclarationOrStatement1 [label = "LocalVariableDeclarationOrStatement"] 
+	LocalVariableDeclarationsAndStatements1 -> {  LocalVariableDeclarationOrStatement1 }
+	Statement1 [label = "Statement"] 
+	LocalVariableDeclarationOrStatement1 -> {  Statement1 }
+	ExpressionStatement1 [label = "ExpressionStatement"] 
+	Statement1 -> {  ExpressionStatement1 ";" }
+	Expression1 [label = "Expression"] 
+	ExpressionStatement1 -> {  Expression1 }
+	AssignmentExpression1 [label = "AssignmentExpression"] 
+	Expression1 -> {  AssignmentExpression1 }
+	ConditionalExpression1 [label = "ConditionalExpression"] 
+	AssignmentExpression1 -> {  ConditionalExpression1 }
+	ConditionalOrExpression1 [label = "ConditionalOrExpression"] 
+	ConditionalExpression1 -> {  ConditionalOrExpression1 }
+	ConditionalAndExpression1 [label = "ConditionalAndExpression"] 
+	ConditionalOrExpression1 -> {  ConditionalAndExpression1 }
+	InclusiveOrExpression1 [label = "InclusiveOrExpression"] 
+	ConditionalAndExpression1 -> {  InclusiveOrExpression1 }
+	ExclusiveOrExpression1 [label = "ExclusiveOrExpression"] 
+	InclusiveOrExpression1 -> {  ExclusiveOrExpression1 }
+	AndExpression1 [label = "AndExpression"] 
+	ExclusiveOrExpression1 -> {  AndExpression1 }
+	EqualityExpression1 [label = "EqualityExpression"] 
+	AndExpression1 -> {  EqualityExpression1 }
+	RelationalExpression1 [label = "RelationalExpression"] 
+	EqualityExpression1 -> {  RelationalExpression1 }
+	ShiftExpression1 [label = "ShiftExpression"] 
+	RelationalExpression1 -> {  ShiftExpression1 }
+	AdditiveExpression1 [label = "AdditiveExpression"] 
+	ShiftExpression1 -> {  AdditiveExpression1 }
+	MultiplicativeExpression1 [label = "MultiplicativeExpression"] 
+	AdditiveExpression1 -> {  MultiplicativeExpression1 }
+	CastExpression1 [label = "CastExpression"] 
+	MultiplicativeExpression1 -> {  CastExpression1 }
+	UnaryExpression1 [label = "UnaryExpression"] 
+	CastExpression1 -> {  UnaryExpression1 }
+	LogicalUnaryExpression1 [label = "LogicalUnaryExpression"] 
+	UnaryExpression1 -> {  LogicalUnaryExpression1 }
+	PostfixExpression1 [label = "PostfixExpression"] 
+	LogicalUnaryExpression1 -> {  PostfixExpression1 }
+	PrimaryExpression1 [label = "PrimaryExpression"] 
+	PostfixExpression1 -> {  PrimaryExpression1 }
+	NotJustName1 [label = "NotJustName"] 
+	PrimaryExpression1 -> {  NotJustName1 }
+	ComplexPrimary1 [label = "ComplexPrimary"] 
+	NotJustName1 -> {  ComplexPrimary1 }
+	ComplexPrimaryNoParenthesis1 [label = "ComplexPrimaryNoParenthesis"] 
+	ComplexPrimary1 -> {  ComplexPrimaryNoParenthesis1 }
+	MethodCall1 [label = "MethodCall"] 
+	ComplexPrimaryNoParenthesis1 -> {  MethodCall1 }
+	MethodAccess1 [label = "MethodAccess"] 
+	MethodCall1 -> {  MethodAccess1 "(" ")" }
+	QualifiedName1 [label = "QualifiedName"] 
+	MethodAccess1 -> {  QualifiedName1 }
+	IDENTIFIER1 [label = "IDENTIFIER"] 
+	QualifiedName1 -> {  IDENTIFIER1 }
 	DeclaratorName1 [label = "DeclaratorName"] 
 	ParameterList1 [label = "ParameterList"] 
 	MethodDeclarator1 -> {  DeclaratorName1 "(" ParameterList1 ")" }
@@ -32,20 +89,20 @@ digraph "Parse Tree" {
 	TypeSpecifier2 [label = "TypeSpecifier"] 
 	DeclaratorName2 [label = "DeclaratorName"] 
 	Parameter1 -> {  TypeSpecifier2 DeclaratorName2 }
-	IDENTIFIER1 [label = "IDENTIFIER"] 
-	DeclaratorName2 -> {  IDENTIFIER1 }
+	IDENTIFIER2 [label = "IDENTIFIER"] 
+	DeclaratorName2 -> {  IDENTIFIER2 }
 	TypeName1 [label = "TypeName"] 
 	Dims1 [label = "Dims"] 
 	TypeSpecifier2 -> {  TypeName1 Dims1 }
 	OP_DIM1 [label = "OP_DIM"] 
 	Dims1 -> {  OP_DIM1 }
 	OP_DIM1 -> {  "[" "]" }
-	QualifiedName1 [label = "QualifiedName"] 
-	TypeName1 -> {  QualifiedName1 }
-	IDENTIFIER2 [label = "IDENTIFIER"] 
-	QualifiedName1 -> {  IDENTIFIER2 }
+	QualifiedName2 [label = "QualifiedName"] 
+	TypeName1 -> {  QualifiedName2 }
 	IDENTIFIER3 [label = "IDENTIFIER"] 
-	DeclaratorName2 -> {  IDENTIFIER3 }
+	QualifiedName2 -> {  IDENTIFIER3 }
+	IDENTIFIER4 [label = "IDENTIFIER"] 
+	DeclaratorName2 -> {  IDENTIFIER4 }
 	TypeName2 [label = "TypeName"] 
 	TypeSpecifier2 -> {  TypeName2 }
 	PrimitiveType1 [label = "PrimitiveType"] 
@@ -63,8 +120,8 @@ digraph "Parse Tree" {
 	Modifier2 -> {  PUBLIC1 }
 	Modifiers3 [label = "Modifiers"] 
 	ClassWord1 [label = "ClassWord"] 
-	IDENTIFIER4 [label = "IDENTIFIER"] 
-	ClassHeader1 -> {  Modifiers3 ClassWord1 IDENTIFIER4 }
+	IDENTIFIER5 [label = "IDENTIFIER"] 
+	ClassHeader1 -> {  Modifiers3 ClassWord1 IDENTIFIER5 }
 	CLASS1 [label = "CLASS"] 
 	ClassWord1 -> {  CLASS1 }
 	Modifier3 [label = "Modifier"] 
