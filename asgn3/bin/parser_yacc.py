@@ -99,8 +99,7 @@ def p_classheader(p):
 	else:
 		p[0] = {'mod': p[1], 'id':p[3], 'class': p[2] }
 
-	funcName = ST.addNewScope(p[0]['id'], 'class')
-	TAC.generateFuncTac(funcName)
+	ST.addNewScope(p[0]['id'], 'class')
 	# TAC.genNewTacFunc()
 def p_modifiers(p):
 	''' Modifiers : Modifier
@@ -225,8 +224,8 @@ def p_methoddeclarator(p):
 	else:
 		p[0] = {'name': p[1], 'plist': p[3]}
 
-	funcName = ST.addNewScope(p[0]['name'], 'function' )
-	TAC.generateFuncTac(funcName)
+	ST.addNewScope(p[0]['name'], 'function' )
+	TAC.genNewTacFunc(p[0]['name'])
 
 def p_parameterlist(p):
 	''' ParameterList : Parameter
@@ -283,9 +282,6 @@ def p_block(p):
 		p[0] = {}
 	else:
 		p[0] = p[2]
-	ST.change_scope()
-
-
 
 def p_LocalVariableDeclarationsAndStatements(p):
 	'''LocalVariableDeclarationsAndStatements : LocalVariableDeclarationOrStatement 

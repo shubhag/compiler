@@ -13,10 +13,10 @@ class threeAddressCode:
 		self.ST.printSymbTbl()
 
 	def getNextInstr(self):
-		return self.nextInstr[self.ST.currFunc]
+		return self.nextInstr[self.ST.getCurrScopeName()]
 
 	def incInstr(self):
-		currScope = self.ST.currFunc
+		currScope = self.ST.getCurrScopeName()
 		self.instr[currScope] = self.nextInstr[currScope]
 		self.nextInstr[currScope] += 1 ;
 
@@ -25,7 +25,7 @@ class threeAddressCode:
 
 	#emit code for an instruction
 	def emit(self, destReg, srcReg1, srcReg2, op):
-		currScope = self.ST.currFunc
+		currScope = self.ST.getCurrScopeName()
 		self.incInstr()
 		self.code[currScope].append([destReg, srcReg1, srcReg2, op])
 
@@ -43,11 +43,6 @@ class threeAddressCode:
  #        for variable in locList:
  #            self.code[currScope][variable][2] = location
 	def backPatch(self, lList, loc):
-		currScope = self.ST.currFunc
+		currScope = self.ST.getCurrScopeName()
 		for pos in lList:
 			self.code[currScope][pos][2] = loc
-
-	def generateFuncTac(self,funcName):
-		self.code[funcName] =  []
-		self.instr[funcName] =  -1
-		self.nextInstr[funcName] = 0 

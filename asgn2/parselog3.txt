@@ -18,72 +18,8 @@ MethodDeclaration -> Modifiers TypeSpecifier MethodDeclarator MethodBody
 None,None,None,None
 MethodBody -> Block
 None
-Block -> { LocalVariableDeclarationsAndStatements }
-'{',None,'}'
-LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement
-None
-LocalVariableDeclarationOrStatement -> Statement
-None
-Statement -> ExpressionStatement ;
-None,';'
-ExpressionStatement -> Expression
-None
-Expression -> AssignmentExpression
-None
-AssignmentExpression -> UnaryExpression AssignmentOperator AssignmentExpression
-None,None,None
-AssignmentExpression -> ConditionalExpression
-None
-ConditionalExpression -> ConditionalOrExpression
-None
-ConditionalOrExpression -> ConditionalAndExpression
-None
-ConditionalAndExpression -> InclusiveOrExpression
-None
-InclusiveOrExpression -> ExclusiveOrExpression
-None
-ExclusiveOrExpression -> AndExpression
-None
-AndExpression -> EqualityExpression
-None
-EqualityExpression -> RelationalExpression
-None
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> NotJustName
-None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> INT_LITERAL
-'2'
-AssignmentOperator -> =
-'='
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> QualifiedName
-None
-QualifiedName -> IDENTIFIER
-'a'
+Block -> { }
+'{','}'
 MethodDeclarator -> DeclaratorName ( ParameterList )
 None,'(',None,')'
 ParameterList -> Parameter

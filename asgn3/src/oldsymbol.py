@@ -3,68 +3,60 @@ import pprint
 class symbTbl:
 
 	def __init__(self):
-		self.mainSymbTbl = {
-			'Main' :	{
+		mainSymbTbl = {
 				'scope' :	'Main',
 				'type'	:	'function',	
-				'pscope':	None,		#parent scope
-				'retype':	'undefined',
-				'functions': {} 
+				'pscope':	'Main',		#parent scope
+				'retype':	'undefined'
 			}
-		}
 		self.tempCount = 0 
-		self.currScope = 'Main'
+		self.scopeList = [mainSymbTbl]
 		self.switchList = []
-		self.currFunc = 'Main'
-
 	#for error handling
 	def printSymbTbl(self):
-		pprint.pprint(self.mainSymbTbl)
+		pprint.pprint(self.scopeList)
 
 	#to get the current scope name 
 	def getCurrScopeName(self):
-		return self.currScope
+		return self.scopeList[-1]['scope']		#get the last element of the array by -1
 
 	def lookup_for_identifier(self, identifier):
-		currScope = self.currScope
-		idEntry = self.checkscope_id(identifier, currScope)
+		idEntry = self.checkscope_id(identifier, len(self.scopeList) - 1)
 		if idEntry!= None : 
 			return True
 		else:
 			return False
 
 	def lookup_for_id(self, identifier):
-		currScope =  self.currScope
-		idEntry = self.checkscope_id(identifier, currScope)
+		idEntry = self.checkscope_id(identifier, len(self.scopeList) - 1)
 		return idEntry
 
 	#error in scope
-	def checkscope_id(self, identifier, currScope):
-		if currScope == None:
+	def checkscope_id(self, identifier, scopeLen):
+		if scopeLen == -1 :
 			return None
-		tempScope = self.mainSymbTbl[currScope]
+		print identifier
+		# print self.scopeList[scopeLen][identifier]
+		tempScope = self.scopeList[scopeLen]
 		if tempScope.has_key(identifier):
 			return tempScope[identifier]
 		else:
-			return self.checkscope_id(identifier, tempScope['pscope'])
+			return self.checkscope_id(identifier, tempScope - 1)
 
-	def addNewScope(self, funcName,functype):
-		pScope = self.currScope
+	def addNewScope(self, funcName):
+		tempScope = self.scopeList[-1]
+
 		newSymbTbl = {
-			'scope'	: pScope + "." + funcName,
-			'type'	: functype,
-			'pscope' : pScope,
+			'scope'	: funcName,
+			'type'	: 'function',
+			'pscope' : tempScope['scope'],
 			'retype' : 'undefined'
 		}
-		self.mainSymbTbl[pScope + "." + funcName] = newSymbTbl
-		self.currScope = pScope + "." + funcName
-		if functype == 'function':
-			self.currFunc = pScope + "." + funcName
-		return self.currScope
-		# TAC.generateFuncTac(self.currFunc)
+
+		self.scopeList.append(newSymbTbl)
 
 	def addNewIdentifier(self, identifier,type):
-		tempScope = self.mainSymbTbl[self.currScope]
+		tempScope = self.scopeList[-1]
 		width = 0 
 		
 		if type in ['bool', 'char']:
@@ -86,21 +78,17 @@ class symbTbl:
 			}	
 
 	#insert attributes in the symbol table
-	#galat hai baad mein karenege
-	#\n
-	#\n
 	def addAttrId(self, identifier, attrName, attrVal):
-		temp = self.lookup_for_id(identifier)
+		temp = self.lookup_for_identifier(identifier)
 		temp[attrName] = attrVal
-	#\n
-	#\n
 
 	#add attributes to the current scopeLen
 	def addAttrScope(self, attrName, attrVal):
-		self.mainSymbTbl[self.currScope][attrName] = attrVal
+		tempScope = self.scopeList[-1]
+		tempScope[attrName] = attrVal
 
 	def getAttrScope(self, attrName):
-		tempScope = self.mainSymbTbl[self.currScope]
+		tempScope = self.scopeList[-1]
 		return tempScope[attrName]
 
 	def getIdAttr(self, identifier, attrName):
@@ -112,19 +100,25 @@ class symbTbl:
 
 	#check for existence of an identifier in current scope
 	def existCurrScope(self, identifier):
-		existence = self.mainSymbTbl[self.currScope].get(identifier, 0)
+		existence = self.scopeList[-1].get(identifier, 0)
 		return existence
-
-	def change_scope(self):
-		print self.currScope, self.currFunc, True 
-		if self.currScope == self.currFunc :
-			self.currScope = self.mainSymbTbl[self.currScope]['pscope']
-			return self.currScope
 
 	def getTemp(self):
 		temp = "_t" + str(self.tempCount)
 		self.tempCount += 1
 		return temp
+
+	def delScope(self, function):
+		del self.scopeList[-1]
+
+	def addNewScope(self, name, scopeType):
+		tempSymbTbl = {
+				'scope' :	name,
+				'type'	:	scopeType,	
+				'pscope':	self.scopeList[-1]['scope'],		#parent scope
+				'retype':	'undefined'
+			}
+		self.scopeList.append(tempSymbTbl)
 
 	#switch
 

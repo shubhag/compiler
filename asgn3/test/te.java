@@ -6,17 +6,32 @@ public class HelloWorld {
     //    		a = 5;
     //    }
     
-    int a ;
-    switch (a){
-      case 1:
-        a = 2;
-        break;
-      case 2:
-        a = 3;
-      default:
-        a =4;
-    }
+    // int a ;
+    // switch (a){
+    //   case 1:
+    //   case 2:
+    //     a =4;
+    // }
 
+        char grade = 'C';
+
+        switch(grade)
+        {
+         case 'A' :
+            System.out.println("Excellent!"); 
+            break;
+         case 'B' :
+         case 'C' :
+            System.out.println("Well done");
+            break;
+         case 'D' :
+            System.out.println("You passed");
+         case 'F' :
+            System.out.println("Better try again");
+            break;
+         default :
+            System.out.println("Invalid grade");
+        }
     // 	// int a;
     //  a = ( a == 1) ? 2 : 3 ;
     
