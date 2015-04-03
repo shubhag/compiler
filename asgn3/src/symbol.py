@@ -18,6 +18,20 @@ class symbTbl:
 		self.switchList = []
 		self.currFunc = 'Main'
 		self.currClass = ''
+		self.prevScope = -1
+
+	def checkExistFuncClass(self, className, funcName):
+		function = self.mainSymbTbl['Main.'+className]['functions']
+		if function.has_key(funcName):
+			return True
+		else:
+			raise Exception("Invalid function call")
+
+	def checkNumClassArgs(self,className, funcName, numArgs):
+		function = self.mainSymbTbl['Main.'+className]['functions']
+		if function.has_key(funcName):
+			if len(function[funcName]['arglist']) != numArgs :
+				raise Exception('Number of arguments passed in '+ funcName +' call not equal to that in its declration')
 
 	def chgClass(self, name):
 		self.currClass = "Main." + name
@@ -140,7 +154,15 @@ class symbTbl:
 				'type'	:	type,
 				'offset' : self.mainSymbTbl[self.currScope]['offset']
 			}	
-
+	def addClassIdentifier(self, identifier, type, width):
+		tempScope = self.mainSymbTbl[self.currScope]['identifier']
+		if not tempScope.has_key(identifier):
+			tempScope[identifier] = {}
+		tempScope[identifier] = {
+				'width'	:	width,
+				'type'	:	type,
+				'offset' : self.mainSymbTbl[self.currScope]['offset']
+			}	
 	#insert attributes in the symbol table
 	#galat hai baad mein karenege
 	#\n
@@ -150,7 +172,20 @@ class symbTbl:
 	# 	temp[attrName] = attrVal
 	#\n
 	#\n
+	def ifClass(self, className):
+		cname = 'Main.'+ className;
+		if not self.mainSymbTbl.has_key(cname):
+			print False
+		else:
+			return True
 
+	def checkForClass(self, className):
+		cname = 'Main.'+ className;
+		# print cname, self.mainSymbTbl[cname]
+		if not self.mainSymbTbl.has_key(cname):
+			raise Exception("Class not defined before use")
+		else:
+			return self.mainSymbTbl[cname]['offset']
 	#get width of identifier
 	def getWidth(self,type):
 		if type in ['boolean', 'char']:

@@ -22,7 +22,8 @@ def p_typespeciifier(p):
 
 	if len(p) == 2 :
 		p[0] = p[1]
-
+		# if ST.checkForClass(p[0]) :
+		# 	p[0] =  
 def p_typename(p):
 	'''TypeName : PrimitiveType 
 				| QualifiedName '''
@@ -166,18 +167,27 @@ def p_variabledeclarator(p):
 	''' VariableDeclarator : DeclaratorName
 							| DeclaratorName '=' VariableInitializer '''
 
-	if p[-1] != ',':
-		p[0] = {'type': p[-1], 'name': p[1]} 
-	else:
-		p[0] = {'type': p[-2]['type'], 'name': p[1]}
-	
 	exist = ST.existCurrScope(p[1])
-	if exist == 0:
-		ST.addNewIdentifier(p[1],p[0]['type'])
+	print p[-1], "171"
+	if ST.ifClass(p[-1]) :
+		p[0] = {'type': p[-1], 'name': p[1]}
+		if exist == 0:
+			ST.addClassIdentifier(p[1],p[0]['type'], ST.checkForClass(p[-1]))
+		else:
+			raise Exception("Error: " + p[1] + " Redeclared")
 	else:
-		raise Exception("Error: " + p[1] + " Redeclared")
+		if p[-1] != ',':
+			p[0] = {'type': p[-1], 'name': p[1]} 
+		else:
+			p[0] = {'type': p[-2]['type'], 'name': p[1]}
+	
+		if exist == 0:
+			ST.addNewIdentifier(p[1],p[0]['type'])
+		else:
+			raise Exception("Error: " + p[1] + " Redeclared")
 
 	if len(p) == 4:
+		print p[3], "190"
 		if type(p[3]) is not dict:
 			type1 = ST.getIdAttr(p[3], 'type')
 			tempVar1 = p[1]
@@ -692,40 +702,85 @@ def p_MethodCall(p):
 	'''MethodCall : MethodAccess '(' ArgumentList ')'
 					| MethodAccess '(' ')' '''
 
-	temp = ST.getTemp()
-	typeWidth = 0
-	if len(p) == 5:
-		if p[1] == "System.out.println":
-			TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
-		else:
-			funcName = ST.getFuncName(p[1])
+	if len(p[1].split('.'))==2 and ST.ifClass(p[1].split('.')[0]) :
+		ST.checkExistFuncClass(p[1].split('.')[0], p[1].split('.')[1])
+		temp = ST.getTemp()
+		typeWidth = 0
+		if len(p) == 5:
+			funcName = 'Main.'+p[1]
 			a = 0
-			ST.checkNumArgs(p[1], len(p[3]['expr']))
-			
-			for params in  p[3]['expr']:
-				if type(params) is not dict:
-					typei = ST.getIdAttr(params, 'type')
-					width = ST.getIdAttr(params, 'width')
-					typeWidth += width
-					ST.checkType(p[1],typei,a)
-					TAC.emit(params,'','','PARAM')
-				else:
-					width = ST.getWidth(params['type'])
-					typeWidth += width
-					ST.checkType(p[1],params['type'],a)
-					TAC.emit(params['tempVar'],'','','PARAM')
-				a += 1
-			TAC.emit(funcName,len(p[3]['expr']),temp,'CALL')
-			TAC.emit(typeWidth,'','','POP')
+			ST.checkNumArgs(p[1].split('.')[0],p[1].split('.')[1], len(p[3]['expr']))
+
+		#yahan se karna hai
+		#shubham
+		#vineet
+
+
+
+
+
+
+		# 	for params in  p[3]['expr']:
+		# 		if type(params) is not dict:
+		# 			typei = ST.getIdAttr(params, 'type')
+		# 			width = ST.getIdAttr(params, 'width')
+		# 			typeWidth += width
+		# 			ST.checkType(p[1],typei,a)
+		# 			TAC.emit(params,'','','PARAM')
+		# 		else:
+		# 			width = ST.getWidth(params['type'])
+		# 			typeWidth += width
+		# 			ST.checkType(p[1],params['type'],a)
+		# 			TAC.emit(params['tempVar'],'','','PARAM')
+		# 		a += 1
+		# 	TAC.emit(funcName,len(p[3]['expr']),temp,'CALL')
+		# 	TAC.emit(typeWidth,'','','POP')
+		# else:
+		# 	ST.checkNumArgs(p[1],0)
+		# 	funcName = ST.getFuncName(p[1])
+		# 	TAC.emit(funcName,0,temp,'CALL')
+		# methodtype = ST.getReturntype(p[1])
+		# p[0] = {
+		# 	'type' : methodtype,
+		# 	'tempVar' : temp
+		# }
+
+
 	else:
-		ST.checkNumArgs(p[1],0)
-		funcName = ST.getFuncName(p[1])
-		TAC.emit(funcName,0,temp,'CALL')
-	methodtype = ST.getReturntype(p[1])
-	p[0] = {
-		'type' : methodtype,
-		'tempVar' : temp
-	}
+		temp = ST.getTemp()
+		typeWidth = 0
+		if len(p) == 5:
+			if p[1] == "System.out.println":
+				TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
+			else:
+				funcName = ST.getFuncName(p[1])
+				a = 0
+				ST.checkNumArgs(p[1], len(p[3]['expr']))
+				
+				for params in  p[3]['expr']:
+					if type(params) is not dict:
+						typei = ST.getIdAttr(params, 'type')
+						width = ST.getIdAttr(params, 'width')
+						typeWidth += width
+						ST.checkType(p[1],typei,a)
+						TAC.emit(params,'','','PARAM')
+					else:
+						width = ST.getWidth(params['type'])
+						typeWidth += width
+						ST.checkType(p[1],params['type'],a)
+						TAC.emit(params['tempVar'],'','','PARAM')
+					a += 1
+				TAC.emit(funcName,len(p[3]['expr']),temp,'CALL')
+				TAC.emit(typeWidth,'','','POP')
+		else:
+			ST.checkNumArgs(p[1],0)
+			funcName = ST.getFuncName(p[1])
+			TAC.emit(funcName,0,temp,'CALL')
+		methodtype = ST.getReturntype(p[1])
+		p[0] = {
+			'type' : methodtype,
+			'tempVar' : temp
+		}
 
 def p_MethodAccess(p):
 	'''MethodAccess : ComplexPrimaryNoParenthesis
@@ -748,9 +803,12 @@ def p_ArgumentList(p):
 	else:
 		p[1]['expr'].append(p[3])
 		p[0]['expr'] = p[1]['expr']
+
 def p_NewAllocationExpression(p):
 	'''NewAllocationExpression : PlainNewAllocationExpression
         						| QualifiedName '.' PlainNewAllocationExpression '''
+	if len(p) == 2:
+		p[0] = p[1]
 
 def p_PlainNewAllocationExpression(p):
     '''PlainNewAllocationExpression : ArrayAllocationExpression
@@ -759,10 +817,26 @@ def p_PlainNewAllocationExpression(p):
 							    	| ClassAllocationExpression '{' '}'
 							    	| ArrayAllocationExpression '{' ArrayInitializers '}'
 							    	| ClassAllocationExpression '{' FieldDeclarations '}' '''
+    if len(p) == 2:
+		p[0] = p[1]
 
 def p_ClassAllocationExpression(p):
 	'''ClassAllocationExpression : NEW TypeName '(' ArgumentList ')'
 								| NEW TypeName '('              ')' '''
+	# if len(p) == 5:
+	offset = ST.checkForClass(p[2])
+	# print offset
+	if len(p) == 5 :
+		temp = ST.getTemp()
+		TAC.emit(temp ,offset,'','=')
+		TAC.emit(temp,'','','PARAM')
+		temp = ST.getTemp()
+		TAC.emit('_ALLOC',1,temp,'CALL')
+		TAC.emit(4,'','','POP')
+		p[0] = {
+			'type': p[2],
+			'tempVar' : temp
+		}
 
 def p_ArrayAllocationExpression(p):
 	'''ArrayAllocationExpression : NEW TypeName DimExprs Dims

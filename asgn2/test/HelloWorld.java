@@ -5,10 +5,12 @@ public class HelloWorld {
     // }
 
     public static void main(String[] args) {
-    hello(true);
-    	if(true){
+    // hello(true);
+    // 	if(true){
 
-    	}
+    // 	}
+    	// employee abc = new employee();
+    	employee.hello();
      //   int a,b;
      // a = ( a == 1) ? a : b ;
       // newmain(a,2);
@@ -21,15 +23,16 @@ public class HelloWorld {
 
 }
 
+
 // public class employee{
-// 	// int a;
-// 	employee(){
-// 		// a = 1;
-// 	}
-//   // public int hello(){
-//   //   return 1;
-//   // }
-// 
+// 	int a;
+// 	// employee(){
+// 	// 	// a = 1;
+// 	// }
+//   public int hello(){
+//     return 1;
+//   }
+// }
 // public class employee{
 //   // int a ;
 //   // employee(){

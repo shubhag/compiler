@@ -20,62 +20,6 @@ MethodBody -> Block
 None
 Block -> { LocalVariableDeclarationsAndStatements }
 '{',None,'}'
-LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationsAndStatements LocalVariableDeclarationOrStatement
-None,None
-LocalVariableDeclarationOrStatement -> Statement
-None
-Statement -> SelectionStatement M_instr
-None,None
-M_instr -> <empty>
-
-SelectionStatement -> IF ( Expression ) Statement
-'if','(',None,')',None
-Statement -> Block
-None
-Block -> { }
-'{','}'
-Expression -> AssignmentExpression
-None
-AssignmentExpression -> ConditionalExpression
-None
-ConditionalExpression -> ConditionalOrExpression
-None
-ConditionalOrExpression -> ConditionalAndExpression
-None
-ConditionalAndExpression -> InclusiveOrExpression
-None
-InclusiveOrExpression -> ExclusiveOrExpression
-None
-ExclusiveOrExpression -> AndExpression
-None
-AndExpression -> EqualityExpression
-None
-EqualityExpression -> RelationalExpression
-None
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> NotJustName
-None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> BOOL
-'true'
 LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement
 None
 LocalVariableDeclarationOrStatement -> Statement
@@ -126,56 +70,14 @@ ComplexPrimary -> ComplexPrimaryNoParenthesis
 None
 ComplexPrimaryNoParenthesis -> MethodCall
 None
-MethodCall -> MethodAccess ( ArgumentList )
-None,'(',None,')'
-ArgumentList -> Expression
-None
-Expression -> AssignmentExpression
-None
-AssignmentExpression -> ConditionalExpression
-None
-ConditionalExpression -> ConditionalOrExpression
-None
-ConditionalOrExpression -> ConditionalAndExpression
-None
-ConditionalAndExpression -> InclusiveOrExpression
-None
-InclusiveOrExpression -> ExclusiveOrExpression
-None
-ExclusiveOrExpression -> AndExpression
-None
-AndExpression -> EqualityExpression
-None
-EqualityExpression -> RelationalExpression
-None
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> NotJustName
-None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> BOOL
-'true'
+MethodCall -> MethodAccess ( )
+None,'(',')'
 MethodAccess -> QualifiedName
 None
+QualifiedName -> QualifiedName . IDENTIFIER
+None,'.','hello'
 QualifiedName -> IDENTIFIER
-'hello'
+'employee'
 MethodDeclarator -> DeclaratorName ( ParameterList )
 None,'(',None,')'
 ParameterList -> Parameter

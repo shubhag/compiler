@@ -1,3 +1,13 @@
+public class employee{
+  int a ;
+ // employee(){
+ //    a = 1;
+ //  }
+  public int hello(){
+    return 1;
+  }
+
+}
 public class HelloWorld {
 
      public static int hello(int b, int c, boolean d) {
@@ -15,8 +25,8 @@ public class HelloWorld {
            // int a = 5;
       // int a;
       // a =newmain();
-      // employee abc = new employee();
-      int a ;
+      employee abc = new employee();
+      // int a ;
       // while(a==1){
       //   if(a==1){
       //     break;
@@ -25,15 +35,15 @@ public class HelloWorld {
       //     continue;
       //   }
       // }
-      for(a=0;a<5;a++){
-        if(a==1){
-          a = 3;
-          continue;
-        } else{
-          a = 2;
-          break;
-        }
-      }
+      // for(a=0;a<5;a++){
+      //   if(a==1){
+      //     a = 3;
+      //     continue;
+      //   } else{
+      //     a = 2;
+      //     break;
+      //   }
+      // }
       // do{
       //    if(a==1){
       //     break;
@@ -48,13 +58,3 @@ public class HelloWorld {
     // }
 }
 
-public class employee{
-  int a ;
- employee(){
-    a = 1;
-  }
-  public int hello(){
-    return 1;
-  }
-
-}
