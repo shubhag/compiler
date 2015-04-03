@@ -1,17 +1,41 @@
 public class HelloWorld {
 
     //  public static int newmain() {
-    //   // int a ;
+    //   int a ;
     // }
 
     public static void main(String[] args) {
+    hello(true);
+    	if(true){
+
+    	}
      //   int a,b;
      // a = ( a == 1) ? a : b ;
       // newmain(a,2);
       // System.out.println("Hello World");
            // int a = 5;
-      a =newmain();
-
+      // int a;
+      // a =newmain();
+      // employee abc ;
     }
 
 }
+
+// public class employee{
+// 	// int a;
+// 	employee(){
+// 		// a = 1;
+// 	}
+//   // public int hello(){
+//   //   return 1;
+//   // }
+// 
+// public class employee{
+//   // int a ;
+//   // employee(){
+//   //   a = 1;
+//   // }
+//   public int hello(){
+//     return 1;
+//   }
+// }

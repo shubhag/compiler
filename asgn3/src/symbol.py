@@ -17,16 +17,26 @@ class symbTbl:
 		self.currScope = 'Main'
 		self.switchList = []
 		self.currFunc = 'Main'
+		self.currClass = ''
+
+	def chgClass(self, name):
+		self.currClass = "Main." + name
 
 	def checkNumArgs(self, funcName, numArgs):
-		function = self.mainSymbTbl['Main']['functions']
+		function = self.mainSymbTbl[self.currClass]['functions']
 		if function.has_key(funcName):
 			if len(function[funcName]['arglist']) != numArgs :
 				raise Exception('Number of arguments passed in '+ funcName +' call not equal to that in its declration')
 
+	def checkRetType(self, typeId, scope):
+		funcName = self.mainSymbTbl[scope]['name']
+		function = self.mainSymbTbl[self.currClass]['functions']
+		if function.has_key(funcName):
+			if function[funcName]['returnType'] != typeId :
+				raise Exception("Type check error in return type of function")
 
 	def checkType(self, funcName, typeId, index):
-		function = self.mainSymbTbl['Main']['functions']
+		function = self.mainSymbTbl[self.currClass]['functions']
 		if function.has_key(funcName):
 			if function[funcName]['arglist'][index]['type'] != typeId :
 				raise Exception('TypeCheck Error')
@@ -36,12 +46,12 @@ class symbTbl:
 		pprint.pprint(self.mainSymbTbl)
 
 	def getFuncName(self,funcName):
-		function = self.mainSymbTbl['Main']['functions']
+		function = self.mainSymbTbl[self.currClass]['functions']
 		if function.has_key(funcName):
 			return function[funcName]['name']
 
 	def addArgList(self, funcName, arguments):
-		function = self.mainSymbTbl['Main']['functions']
+		function = self.mainSymbTbl[self.currClass]['functions']
 		if function.has_key(funcName):
 			if arguments == None:
 				function[funcName]['arglist'] = {}
@@ -49,12 +59,12 @@ class symbTbl:
 				function[funcName]['arglist'] = arguments
 
 	def addReturntype(self, funcName, returnType):
-		function = self.mainSymbTbl['Main']['functions']
+		function = self.mainSymbTbl[self.currClass]['functions']
 		if function.has_key(funcName):
 			function[funcName]['returnType'] = returnType
 
 	def getReturntype(self, funcName):
-		function = self.mainSymbTbl['Main']['functions']
+		function = self.mainSymbTbl[self.currClass]['functions']
 		if function.has_key(funcName):
 			return function[funcName]['returnType']
 
@@ -93,13 +103,17 @@ class symbTbl:
 			'type'	: functype,
 			'pscope' : pScope,
 			'retype' : 'undefined',
-			'identifier' : {}
+			'identifier' : {},
+			'functions' : {},
+			'offset' : 0,
+			'name' : funcName
 		}
+		# print newSymbTbl, "115"
 		self.mainSymbTbl[pScope + "." + funcName] = newSymbTbl
 		self.currScope = pScope + "." + funcName
-		if functype == 'function':
+		if functype == 'function' or functype =='constructor':
 			self.currFunc = pScope + "." + funcName
-			self.mainSymbTbl['Main']['functions'][funcName] = { 'name' : pScope + "." + funcName }
+			self.mainSymbTbl[self.currClass]['functions'][funcName] = { 'name' : pScope + "." + funcName }
 		return self.currScope
 		# TAC.generateFuncTac(self.currFunc)
 
@@ -107,7 +121,7 @@ class symbTbl:
 		tempScope = self.mainSymbTbl[self.currScope]['identifier']
 		width = 0 
 		
-		if type in ['bool', 'char']:
+		if type in ['boolean', 'char']:
 			width = 1
 		elif type == 'int':
 			width = 4
@@ -116,25 +130,40 @@ class symbTbl:
 		elif type in ['FUNCTION', 'CALLBACK', 'String']:
 			width = 4					#address size
 		else:
-			width = -1
-
+			width = 0
+		self.mainSymbTbl[self.currScope]['offset'] +=  width
+		
 		if not tempScope.has_key(identifier):
 			tempScope[identifier] = {}
 		tempScope[identifier] = {
 				'width'	:	width,
-				'type'	:	type
+				'type'	:	type,
+				'offset' : self.mainSymbTbl[self.currScope]['offset']
 			}	
 
 	#insert attributes in the symbol table
 	#galat hai baad mein karenege
 	#\n
 	#\n
-	def addAttrId(self, identifier, attrName, attrVal):
-		temp = self.lookup_for_id(identifier)
-		temp[attrName] = attrVal
+	# def addAttrId(self, identifier, attrName, attrVal):
+	# 	temp = self.lookup_for_id(identifier)
+	# 	temp[attrName] = attrVal
 	#\n
 	#\n
 
+	#get width of identifier
+	def getWidth(self,type):
+		if type in ['boolean', 'char']:
+			width = 1
+		elif type == 'int':
+			width = 4
+		elif type in ['float', 'double']:
+			width = 8
+		elif type in ['FUNCTION', 'CALLBACK', 'String']:
+			width = 4					#address size
+		else:
+			width = 0
+		return width
 	#add attributes to the current scopeLen
 	def addAttrScope(self, attrName, attrVal):
 		self.mainSymbTbl[self.currScope][attrName] = attrVal

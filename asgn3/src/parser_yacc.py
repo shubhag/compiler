@@ -88,8 +88,9 @@ def p_qualifiedname(p):
 
 
 def p_typedeclaration(p):
-	'''TypeDeclaration : ClassHeader '{' FieldDeclarations '}'
-						| ClassHeader '{' '}' '''
+	'''TypeDeclaration : ClassHeader '{' FieldDeclarations Rparen
+						| ClassHeader '{' Rparen '''
+
 
 def p_classheader(p):
 	'''ClassHeader :	Modifiers ClassWord IDENTIFIER
@@ -102,6 +103,7 @@ def p_classheader(p):
 
 	funcName = ST.addNewScope(p[0]['id'], 'class')
 	TAC.generateFuncTac(funcName)
+	ST.chgClass(p[0]['id'])
 	# TAC.genNewTacFunc()
 def p_modifiers(p):
 	''' Modifiers : Modifier
@@ -214,7 +216,6 @@ def p_methoddeclaration(p):
 def p_methoddeclarator(p):
 	'''MethodDeclarator : DeclaratorName '(' ParameterList ')'
 						| DeclaratorName '(' ')' '''
-	print p[-1]
 	funcName = ST.addNewScope(p[1], 'function' )
 	TAC.generateFuncTac(funcName)
 	if len(p) == 4 : 
@@ -261,16 +262,41 @@ def p_methodbody(p):
 		p[0] = p[2]
 	else :
 		p[0] = {}
+	TAC.addendAtStart()
+	TAC.emit('','','','EndFunc')
 	ST.change_scope()
-	TAC.emit('','','','JUMPBACK')
+	
+
 
 def p_constructdeclarator(p):
-	''' ConstructorDeclaration : Modifiers ConstructorDeclarator        Block
-								|           ConstructorDeclarator        Block '''
+	''' ConstructorDeclaration : Modifiers ConstructorDeclarator '{' LocalVariableDeclarationsAndStatements '}'
+								| Modifiers ConstructorDeclarator '{' '}'
+								|           ConstructorDeclarator  '{' LocalVariableDeclarationsAndStatements '}'
+								| ConstructorDeclarator '{' '}' '''
+
+	TAC.addendAtStart()
+	TAC.emit('','','','EndFunc')
+	ST.change_scope()
+	# if len(p) == 4 : 
+	# 	p[0] = {'mod': p[1],  'constructor': p[2]}
+	# else :
+	# 	p[0] = { 'constructor':p[1]}
 
 def p_constructordeclarator(p):
 	'''ConstructorDeclarator : IDENTIFIER '(' ParameterList ')'
 							| IDENTIFIER '(' ')' '''
+
+	funcName = ST.addNewScope(p[1], 'constructor' )
+	TAC.generateFuncTac(funcName)
+	if len(p) == 4 : 
+		p[0] = { 'name': p[1], 'plist': [] }
+		ST.addArgList(p[1], None )
+	else:
+		p[0] = {'name': p[1], 'plist': p[3]}
+		ST.addArgList(p[1], p[3] )
+		for parameter in p[3] :
+			ST.addNewIdentifier(parameter['name'], parameter['type'])
+	# ST.addReturntype(p[1], p[-1])
 
 def p_staticinitializer(p):
 	'''StaticInitializer : STATIC Block '''
@@ -445,7 +471,7 @@ def p_branch_if(p):
 	}
 
 def p_IterationStatement(p):
-	'''IterationStatement : WHILE M_instr_branch '(' Expression ')' M_instr_branch Statement
+	'''IterationStatement : WHILE M_instr_branch '(' Expression  ')' M_instr_branch Statement
 							| DO M_instr_branch Statement WHILE M_instr_branch '(' Expression ')' ';'
 							| FOR '(' ForInit M_instr ForExpr M_instr ForIncr ')' M_instr Statement '''
 							# | FOR '(' ForInit ForExpr         ')' Statement '''
@@ -528,7 +554,19 @@ def p_JumpStatement(p):
 		if  p[1] == 'break' :
 			ST.addInbrklist(TAC.getNextInstr())
 			TAC.emit('','','','GOTO')
-
+		elif p[1] == 'return':
+			TAC.emit('','','','RETURN')
+	elif len(p) == 4 :
+		scope =  ST.getCurrScopeName() 
+		if p[1] == 'return':
+			if type(p[2]) is not dict:
+				typeId = ST.getIdAttr(p[2], 'type')
+				ST.checkRetType(typeId, scope)
+				TAC.emit(p[2],'','','RETURN')
+			else:
+				typeId = p[2]['type']
+				ST.checkRetType(typeId,scope)
+				TAC.emit(p[2]['tempVar'],'','','RETURN')
 def p_Catches(p):
 	'''Catches : Catch
 				| Catches Catch '''
@@ -607,7 +645,7 @@ def p_boolLit(p):
 	''' Bool_LIT : BOOL '''
 	
 	temp = ST.getTemp()
-	p[0] = {'type':'Boolean', 'tempVar': temp}
+	p[0] = {'type':'boolean', 'tempVar': temp}
 	TAC.emit(temp,p[1],'','=')
 
 	if p[1] == True :
@@ -632,6 +670,8 @@ def p_MethodCall(p):
 	'''MethodCall : MethodAccess '(' ArgumentList ')'
 					| MethodAccess '(' ')' '''
 
+	temp = ST.getTemp()
+	typeWidth = 0
 	if len(p) == 5:
 		if p[1] == "System.out.println":
 			TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
@@ -639,20 +679,26 @@ def p_MethodCall(p):
 			funcName = ST.getFuncName(p[1])
 			a = 0
 			ST.checkNumArgs(p[1], len(p[3]['expr']))
+			
 			for params in  p[3]['expr']:
 				if type(params) is not dict:
 					typei = ST.getIdAttr(params, 'type')
+					width = ST.getIdAttr(params, 'width')
+					typeWidth += width
 					ST.checkType(p[1],typei,a)
 					TAC.emit(params,'','','PARAM')
 				else:
+					width = ST.getWidth(params['type'])
+					typeWidth += width
 					ST.checkType(p[1],params['type'],a)
 					TAC.emit(params['tempVar'],'','','PARAM')
 				a += 1
-			TAC.emit(funcName,len(p[3]['expr']),'','CALL')
+			TAC.emit(funcName,len(p[3]['expr']),temp,'CALL')
+			TAC.emit(typeWidth,'','','POP')
 	else:
+		ST.checkNumArgs(p[1],0)
 		funcName = ST.getFuncName(p[1])
-		TAC.emit(funcName,0,'','CALL')
-	temp = ST.getTemp()
+		TAC.emit(funcName,0,temp,'CALL')
 	methodtype = ST.getReturntype(p[1])
 	p[0] = {
 		'type' : methodtype,
@@ -785,14 +831,14 @@ def p_LogicalUnaryExpression(p):
 		temp = ST.getTemp()
 		if type(p[2]) is not dict:
 			typeId = ST.getIdAttr(p[2], 'type')
-			if typeId != 'int' and typeId != 'Boolean' :
+			if typeId != 'int' and typeId != 'boolean' :
 				raise Exception("Type check error in variable "+ p[2])
 			else:
 				TAC.emit(temp, p[2], '', p[1])
 		else :
 			typeId = p[2]['type']
 			# print typeId
-			if typeId != 'int' and typeId != 'Boolean' :
+			if typeId != 'int' and typeId != 'boolean' :
 				raise Exception("Type check error ")
 			else:
 				TAC.emit(temp, p[2]['tempVar'], '', p[1])
@@ -933,7 +979,7 @@ def p_RelationalExpression(p):
 		p[0] = {
 			'trueList' : [TAC.getNextInstr()],
 			'falseList' : [TAC.getNextInstr() + 1],
-			'type' : 'Boolean'
+			'type' : 'boolean'
 		}
 		TAC.emit('IF',temp,'','GOTO')
 		TAC.emit('','','','GOTO')
@@ -960,7 +1006,7 @@ def p_EqualityExpression(p):
 		p[0] = {
 			'trueList' : [TAC.getNextInstr()],
 			'falseList' : [TAC.getNextInstr() + 1],
-			'type' : 'Boolean'
+			'type' : 'boolean'
 		}
 		TAC.emit('IF',temp,'','GOTO')
 		TAC.emit('','','','GOTO')
@@ -1058,7 +1104,7 @@ def p_ConditionalAndExpression(p):
 		p[0] = {
 			'trueList' : p[4].get('trueList', []),
 			'falseList' : TAC.merge(p[1].get('falseList',[]), p[4].get('falseList',[])),
-			'type' : 'Boolean'
+			'type' : 'boolean'
 		}
 
 
@@ -1072,7 +1118,7 @@ def p_ConditionalOrExpression(p):
 		p[0] = {
 			'trueList' : TAC.merge(p[1].get('trueList',[]), p[4].get('trueList',[])),
 			'falseList' : p[4].get('falseList', []),
-			'type' : 'Boolean'
+			'type' : 'boolean'
 		}
 
 
@@ -1090,9 +1136,9 @@ def p_ConditionalExpression(p):
 	else:
 		if type(p[1]) is not dict:
 			typeId = ST.getIdAttr(p[1], 'type')
-			if (typeId!='Boolean'):
+			if (typeId!='boolean'):
 				raise Exception("Type check error for condition expression")
-		elif p[1]['type'] != 'Boolean':
+		elif p[1]['type'] != 'boolean':
 			raise Exception("Type check error for condition expression")
 		
 		if type(p[8]) is not dict:

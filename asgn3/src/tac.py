@@ -12,6 +12,12 @@ class threeAddressCode:
 	def printSymbTbl(self):
 		self.ST.printSymbTbl()
 
+	def addendAtStart(self):
+		offset = self.ST.mainSymbTbl[self.ST.currScope]['offset']
+		currScope = self.ST.currFunc
+		self.incInstr()
+		self.code[currScope].insert(0, ['','',offset,'BeginFunc'])
+
 	def getNextInstr(self):
 		return self.nextInstr[self.ST.currFunc]
 
