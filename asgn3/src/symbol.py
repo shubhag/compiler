@@ -9,13 +9,27 @@ class symbTbl:
 				'type'	:	'function',	
 				'pscope':	None,		#parent scope
 				'retype':	'undefined',
-				'functions': {} 
+				'functions': {} ,
+				'identifier' : {}
 			}
 		}
 		self.tempCount = 0 
 		self.currScope = 'Main'
 		self.switchList = []
 		self.currFunc = 'Main'
+
+	def checkNumArgs(self, funcName, numArgs):
+		function = self.mainSymbTbl['Main']['functions']
+		if function.has_key(funcName):
+			if len(function[funcName]['arglist']) != numArgs :
+				raise Exception('Number of arguments passed in '+ funcName +' call not equal to that in its declration')
+
+
+	def checkType(self, funcName, typeId, index):
+		function = self.mainSymbTbl['Main']['functions']
+		if function.has_key(funcName):
+			if function[funcName]['arglist'][index]['type'] != typeId :
+				raise Exception('TypeCheck Error')
 
 	#for error handling
 	def printSymbTbl(self):
@@ -52,13 +66,14 @@ class symbTbl:
 
 	#error in scope
 	def checkscope_id(self, identifier, currScope):
-		if currScope == None:
+		print currScope
+		if currScope == 'Main' or currScope == None:
 			return None
 		tempScope = self.mainSymbTbl[currScope]['identifier']
 		if tempScope.has_key(identifier):
 			return tempScope[identifier]
 		else:
-			return self.checkscope_id(identifier, tempScope['pscope'])
+			return self.checkscope_id(identifier, self.mainSymbTbl[currScope]['pscope'])
 
 	def addNewScope(self, funcName,functype):
 		pScope = self.currScope
@@ -119,14 +134,18 @@ class symbTbl:
 
 	def getIdAttr(self, identifier, attrName):
 		idEntry = self.lookup_for_id(identifier)
-		if idEntry.has_key(attrName):
+		if not idEntry :
+			raise Exception("Variable "+identifier+" not declared before use")
+			return None
+		elif idEntry.has_key(attrName):
 			return idEntry[attrName]
 		else:
+			raise Exception("Variable "+identifier+" not declared before use")
 			return None
 
 	#check for existence of an identifier in current scope
 	def existCurrScope(self, identifier):
-		existence = self.mainSymbTbl[self.currScope].get(identifier, 0)
+		existence = self.mainSymbTbl[self.currScope]['identifier'].get(identifier, 0)
 		return existence
 
 	def change_scope(self):
