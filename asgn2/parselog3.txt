@@ -30,6 +30,8 @@ ExpressionStatement -> Expression
 None
 Expression -> AssignmentExpression
 None
+AssignmentExpression -> UnaryExpression AssignmentOperator AssignmentExpression
+None,None,None
 AssignmentExpression -> ConditionalExpression
 None
 ConditionalExpression -> ConditionalOrExpression
@@ -75,7 +77,19 @@ None,'(',')'
 MethodAccess -> QualifiedName
 None
 QualifiedName -> IDENTIFIER
-'hell'
+'newmain'
+AssignmentOperator -> =
+'='
+UnaryExpression -> LogicalUnaryExpression
+None
+LogicalUnaryExpression -> PostfixExpression
+None
+PostfixExpression -> PrimaryExpression
+None
+PrimaryExpression -> QualifiedName
+None
+QualifiedName -> IDENTIFIER
+'a'
 MethodDeclarator -> DeclaratorName ( ParameterList )
 None,'(',None,')'
 ParameterList -> Parameter

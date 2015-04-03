@@ -49,6 +49,7 @@ def p_primitivetype(p):
 def p_semicolons(p):
 	''' SemiColons : ';'
 					| SemiColons ';' '''
+	p[0] = {}
 
 def p_programfile(p):
 	'''ProgramFile : PackageStatement ImportStatements TypeDeclarations
@@ -122,7 +123,7 @@ def p_modifier(p):
 def p_classword(p):
 	''' ClassWord : CLASS
 					| INTERFACE '''
-
+	p[0] = p[1]
 # def p_interfaces(p):
 # 	'''Interfaces : IMPLEMENTS ClassNameList '''
 
@@ -213,7 +214,7 @@ def p_methoddeclaration(p):
 def p_methoddeclarator(p):
 	'''MethodDeclarator : DeclaratorName '(' ParameterList ')'
 						| DeclaratorName '(' ')' '''
-
+	print p[-1]
 	funcName = ST.addNewScope(p[1], 'function' )
 	TAC.generateFuncTac(funcName)
 	if len(p) == 4 : 
@@ -224,6 +225,7 @@ def p_methoddeclarator(p):
 		ST.addArgList(p[1], p[3] )
 		for parameter in p[3] :
 			ST.addNewIdentifier(parameter['name'], parameter['type'])
+	ST.addReturntype(p[1], p[-1])
 	
 
 def p_parameterlist(p):
@@ -510,6 +512,10 @@ def p_ExpressionStatements(p):
 							| ExpressionStatements ',' ExpressionStatement '''
 	if len(p) == 2:
 		p[0] = p[1]
+	else:
+		p[0] = {
+			'nList' : p[3].get('nList',[])
+		}
 def p_JumpStatement(p):
 	'''JumpStatement : BREAK IDENTIFIER ';'
 					| BREAK            ';'
@@ -564,8 +570,10 @@ def p_ComplexPrimaryNoParenthesis(p):
 	'''ComplexPrimaryNoParenthesis :  ArrayAccess
 									| FieldAccess
 									| MethodCall '''
-
-	p[0] = {'val': p[1], 'type':'unknown'}
+	if type(p[1]) is not dict:
+		p[0] = {'val': p[1], 'type':'None'}
+	else:
+		p[0] = p[1]
 
 def p_IntLit(p):
 	'''Integer_LIT : INT_LITERAL '''
@@ -599,7 +607,7 @@ def p_boolLit(p):
 	''' Bool_LIT : BOOL '''
 	
 	temp = ST.getTemp()
-	p[0] = {'type':'Bool', 'tempVar': temp}
+	p[0] = {'type':'Boolean', 'tempVar': temp}
 	TAC.emit(temp,p[1],'','=')
 
 	if p[1] == True :
@@ -644,6 +652,12 @@ def p_MethodCall(p):
 	else:
 		funcName = ST.getFuncName(p[1])
 		TAC.emit(funcName,0,'','CALL')
+	temp = ST.getTemp()
+	methodtype = ST.getReturntype(p[1])
+	p[0] = {
+		'type' : methodtype,
+		'tempVar' : temp
+	}
 
 def p_MethodAccess(p):
 	'''MethodAccess : ComplexPrimaryNoParenthesis
@@ -718,11 +732,14 @@ def p_RealPostfixExpression(p):
 	TAC.emit(p[1],temp2,'','=')
 	p[0] = {
 			'trueList' : [TAC.getNextInstr()],
-			'falseList' : [TAC.getNextInstr() + 1]
+			'falseList' : [TAC.getNextInstr() + 1],
+			'type' : typeId,
+			'tempVar' : p[1]
 		}
 
 def p_UnaryExpression(p):
-	'''UnaryExpression : ArithmeticUnaryOperator CastExpression
+	'''UnaryExpression : OPT_INC_DEC UnaryExpression
+						| ArithmeticUnaryOperator CastExpression
 						| LogicalUnaryExpression '''
 	if len(p) == 2 :
 		p[0] = p[1]
@@ -741,6 +758,21 @@ def p_UnaryExpression(p):
 			else:
 				TAC.emit(temp, p[2]['tempVar'], '', p[1])
 		p[0] = { 'type' : typeId , 'tempVar' : temp } 
+	else:
+		typeId = ST.getIdAttr(p[2], 'type')
+		if typeId != 'int' :
+			raise Exception("Identifier " + p[2] + " not of type integer")
+		temp1 = ST.getTemp()
+		TAC.emit(temp1, 1,'','=')
+		temp2 = ST.getTemp()
+		TAC.emit(temp2, temp1, p[2],p[1][0])
+		TAC.emit(p[2],temp2,'','=')
+		p[0] = {
+				'trueList' : [TAC.getNextInstr()],
+				'falseList' : [TAC.getNextInstr() + 1],
+				'type' : typeId,
+				'tempVar' : p[2]
+			}
 
 def p_LogicalUnaryExpression(p):
 	'''LogicalUnaryExpression : PostfixExpression
@@ -753,14 +785,14 @@ def p_LogicalUnaryExpression(p):
 		temp = ST.getTemp()
 		if type(p[2]) is not dict:
 			typeId = ST.getIdAttr(p[2], 'type')
-			if typeId != 'int' and typeId != 'Bool' :
+			if typeId != 'int' and typeId != 'Boolean' :
 				raise Exception("Type check error in variable "+ p[2])
 			else:
 				TAC.emit(temp, p[2], '', p[1])
 		else :
 			typeId = p[2]['type']
 			# print typeId
-			if typeId != 'int' and typeId != 'Bool' :
+			if typeId != 'int' and typeId != 'Boolean' :
 				raise Exception("Type check error ")
 			else:
 				TAC.emit(temp, p[2]['tempVar'], '', p[1])
@@ -855,7 +887,27 @@ def p_ShiftExpression(p):
 	
 	if len(p) == 2:
 		p[0] = p[1]
+	else:
+		if type(p[1]) is not dict:
+			type1 = ST.getIdAttr(p[1], 'type')
+			tempVar1 = p[1]
+		else:
+			type1 = p[1]['type'] 
+			tempVar1 = p[1]['tempVar']
 
+		if type(p[3]) is not dict:
+			type2 = ST.getIdAttr(p[3], 'type')
+			tempVar2 = p[3]
+		else:
+			type2 = p[3]['type']
+			tempVar2 = p[3]['tempVar']
+
+		if type1 == type2 and (type1 == 'int') :
+			temp = ST.getTemp()
+			p[0] = {'type': type1 , 'tempVar' : temp}
+			TAC.emit(temp, tempVar1, tempVar2, p[2])
+		else :
+			raise Exception("Type error in additive Expression")
 
 def p_RelationalExpression(p):
 	'''RelationalExpression : ShiftExpression
@@ -880,7 +932,8 @@ def p_RelationalExpression(p):
 		TAC.emit(temp, temp1,temp2,p[2])
 		p[0] = {
 			'trueList' : [TAC.getNextInstr()],
-			'falseList' : [TAC.getNextInstr() + 1]
+			'falseList' : [TAC.getNextInstr() + 1],
+			'type' : 'Boolean'
 		}
 		TAC.emit('IF',temp,'','GOTO')
 		TAC.emit('','','','GOTO')
@@ -906,7 +959,8 @@ def p_EqualityExpression(p):
 		TAC.emit(temp, temp1,temp2,p[2])
 		p[0] = {
 			'trueList' : [TAC.getNextInstr()],
-			'falseList' : [TAC.getNextInstr() + 1]
+			'falseList' : [TAC.getNextInstr() + 1],
+			'type' : 'Boolean'
 		}
 		TAC.emit('IF',temp,'','GOTO')
 		TAC.emit('','','','GOTO')
@@ -999,12 +1053,14 @@ def p_ConditionalAndExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
-		print p[1], p[3]
+		# if type(p[1]) is dict :
 		TAC.backPatch(p[1]['trueList'], p[3]['instr'])
 		p[0] = {
 			'trueList' : p[4].get('trueList', []),
-			'falseList' : TAC.merge(p[1].get('falseList',[]), p[4].get('falseList',[]))
+			'falseList' : TAC.merge(p[1].get('falseList',[]), p[4].get('falseList',[])),
+			'type' : 'Boolean'
 		}
+
 
 def p_ConditionalOrExpression(p):
 	'''ConditionalOrExpression : ConditionalAndExpression
@@ -1015,7 +1071,8 @@ def p_ConditionalOrExpression(p):
 		TAC.backPatch(p[1]['falseList'], p[3]['instr'])
 		p[0] = {
 			'trueList' : TAC.merge(p[1].get('trueList',[]), p[4].get('trueList',[])),
-			'falseList' : p[4].get('falseList', [])
+			'falseList' : p[4].get('falseList', []),
+			'type' : 'Boolean'
 		}
 
 
@@ -1031,12 +1088,29 @@ def p_ConditionalExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
+		if type(p[1]) is not dict:
+			typeId = ST.getIdAttr(p[1], 'type')
+			if (typeId!='Boolean'):
+				raise Exception("Type check error for condition expression")
+		elif p[1]['type'] != 'Boolean':
+			raise Exception("Type check error for condition expression")
+		
 		if type(p[8]) is not dict:
 			temp3 = p[8]
 			type3 = ST.getIdAttr(p[8], 'type')
 		else:
 			temp3 = p[8]['tempVar']
 			type3 = p[8]['type']
+
+		if type(p[4]) is not dict:
+			temp2 = p[4]
+			type2 = ST.getIdAttr(p[4], 'type')
+		else:
+			temp2 = p[4]['tempVar']
+			type2 = p[4]['type']
+
+		if type2 != type3:
+			raise Exception("Type check error in ternary operator")
 
 		TAC.backPatch(p[1].get('trueList',[]), p[3].get('instr',[]) )		
 		TAC.emit(p[5]['temp'],temp3,'','=')
@@ -1071,6 +1145,7 @@ def p_AssignmentExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
+		print p[3]
 		type1 = ST.getIdAttr(p[1], 'type')
 		tempVar1 = p[1]
 

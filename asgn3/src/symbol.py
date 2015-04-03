@@ -47,6 +47,17 @@ class symbTbl:
 				function[funcName]['arglist'] = {}
 			else:
 				function[funcName]['arglist'] = arguments
+
+	def addReturntype(self, funcName, returnType):
+		function = self.mainSymbTbl['Main']['functions']
+		if function.has_key(funcName):
+			function[funcName]['returnType'] = returnType
+
+	def getReturntype(self, funcName):
+		function = self.mainSymbTbl['Main']['functions']
+		if function.has_key(funcName):
+			return function[funcName]['returnType']
+
 	#to get the current scope name 
 	def getCurrScopeName(self):
 		return self.currScope

@@ -1,17 +1,18 @@
 public class HelloWorld {
 
-    //  public static void newmain() {
-    //   int a ;
-    //   System.out.println("Hello World");
-    // }
+     public static int newmain() {
+      int a ;
+    }
 
     public static void main(String[] args) {
-      Boolean a,b;
-      if(a || b ){
-
-      }
+     //   int a,b;
+     // a = ( a == 1) ? a : b ;
       // newmain(a,2);
       // System.out.println("Hello World");
+           // int a = 5;
+      int a;
+      a =newmain();
+
     }
 
 }
