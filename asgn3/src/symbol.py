@@ -227,6 +227,9 @@ class symbTbl:
 	def getbrkList(self):
 		return self.switchList[-1]['brklist']
 
+	def getcaseList(self):
+		return self.switchList[-1]['caselist']
+
 	def getListVar(self):
 		return self.switchList[-1]['val']
 

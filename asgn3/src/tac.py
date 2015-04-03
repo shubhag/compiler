@@ -2,8 +2,8 @@ import pprint
 class threeAddressCode:
 	def __init__(self, ST):
 		self.code = {'Main': []}
-		self.instr = {'Main': -1}
-		self.nextInstr = {'Main': 0}
+		self.instr = {'Main': -2}
+		self.nextInstr = {'Main': -1}
 		self.ST = ST
 
 	def printTAC(self):
@@ -36,8 +36,8 @@ class threeAddressCode:
 		self.code[currScope].append([destReg, srcReg1, srcReg2, op])
 
 	def genNewTacFunc(self, funcName):
-		self.instr[funcName] = -1
-		self.nextInstr[funcName] = 0
+		self.instr[funcName] = -2
+		self.nextInstr[funcName] = -1
 		self.code[funcName] = []
 
 	def merge(self, list1, list2):

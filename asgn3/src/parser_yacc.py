@@ -471,35 +471,54 @@ def p_branch_if(p):
 	}
 
 def p_IterationStatement(p):
-	'''IterationStatement : WHILE M_instr_branch '(' Expression  ')' M_instr_branch Statement
-							| DO M_instr_branch Statement WHILE M_instr_branch '(' Expression ')' ';'
-							| FOR '(' ForInit M_instr ForExpr M_instr ForIncr ')' M_instr Statement '''
+	'''IterationStatement : WHILE M_instr_branch '(' Expression Mark_switch ')' M_instr_branch Statement
+							| DO Mark_switch M_instr_branch Statement WHILE M_instr_branch '(' Expression ')' ';'
+							| FOR '(' Mark_switch ForInit M_instr ForExpr M_instr ForIncr ')' M_instr Statement '''
 							# | FOR '(' ForInit ForExpr         ')' Statement '''
 
-	if len(p) == 8:
-		TAC.backPatch(p[7].get('nList',[]), p[2].get('instr',[]))
-		TAC.backPatch(p[4].get('trueList',[]), p[6].get('instr', []))
+	if len(p) == 9:
+		TAC.backPatch(p[8].get('nList',[]), p[2].get('instr',[]))
+		TAC.backPatch(p[4].get('trueList',[]), p[7].get('instr', []))
 		p[0] = {
 			'nList' : p[4].get('falseList',[])
 		}
 		TAC.emit('','',p[2]['instr'],'GOTO')
-
-	elif len(p) == 10:
-		TAC.backPatch(p[3].get('nList',[]), p[5].get('instr',[]))
-		TAC.backPatch(p[7].get('trueList',[]), p[2].get('instr',[]))
-		p[0] = {
-			'nList' : p[7].get('falseList',[])
-		}
-		TAC.emit('','',p[2]['instr'],'GOTO')
+		brkList = ST.getbrkList()
+		contList = ST.getcaseList()
+		for addr in brkList:
+			TAC.backPatch([ addr ], TAC.getNextInstr())
+		for addr in contList:
+			TAC.backPatch([ addr ],p[2].get('instr',[]))
+		# print ST.getbrkList(), "486"
 
 	elif len(p) == 11:
-		TAC.backPatch(p[5].get('trueList',[]), p[9].get('instr',[]))
-		TAC.backPatch(p[10].get('nList',[]), p[6].get('instr',[]))
-		TAC.backPatch(p[7].get('nList',[]), p[4].get('instr',[]))
+		TAC.backPatch(p[4].get('nList',[]), p[6].get('instr',[]))
+		TAC.backPatch(p[8].get('trueList',[]), p[3].get('instr',[]))
 		p[0] = {
-			'nList' : p[5].get('falseList',[])
+			'nList' : p[8].get('falseList',[])
 		}
-		TAC.emit('','',p[6]['instr'],'GOTO')
+		brkList = ST.getbrkList()
+		contList = ST.getcaseList()
+		for addr in brkList:
+			TAC.backPatch([ addr ], TAC.getNextInstr())
+		for addr in contList:
+			TAC.backPatch([ addr ],p[6].get('instr',[]))
+		# TAC.emit('','',p[2]['instr'],'GOTO')
+
+	elif len(p) == 12:
+		TAC.backPatch(p[6].get('trueList',[]), p[10].get('instr',[]))
+		TAC.backPatch(p[11].get('nList',[]), p[7].get('instr',[]))
+		TAC.backPatch(p[8].get('nList',[]), p[5].get('instr',[]))
+		p[0] = {
+			'nList' : p[6].get('falseList',[])
+		}
+		TAC.emit('','',p[7]['instr'],'GOTO')
+		brkList = ST.getbrkList()
+		contList = ST.getcaseList()
+		for addr in brkList:
+			TAC.backPatch([ addr ], TAC.getNextInstr())
+		for addr in contList:
+			TAC.backPatch([ addr ],p[7].get('instr',[]))
 
 def p_forinit(p):
 	'''ForInit : ExpressionStatements ';'
@@ -556,6 +575,9 @@ def p_JumpStatement(p):
 			TAC.emit('','','','GOTO')
 		elif p[1] == 'return':
 			TAC.emit('','','','RETURN')
+		elif p[1] == 'continue':
+			ST.addIncaselist(TAC.getNextInstr())
+			TAC.emit('','','','GOTO')
 	elif len(p) == 4 :
 		scope =  ST.getCurrScopeName() 
 		if p[1] == 'return':
