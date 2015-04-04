@@ -742,7 +742,7 @@ def p_arrayaccess(p):
 			if type(p[1]) is not dict:
 				TAC.emit(temp ,p[3]['tempVar'], dimension[0],'*' )
 			else:
-				TAC.emit(temp, p[0]['tempVar'], p[3]['tempVar'], '+' )
+				TAC.emit(temp, p[1]['tempVar'], p[3]['tempVar'], '+' )
 				TAC.emit(temp ,temp, dimension[0],'*' )
 			typeIdarray = typeId.split('_')
 			typeIdarray[2] = str(int(typeIdarray[2]) - 1)

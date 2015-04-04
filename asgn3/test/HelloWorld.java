@@ -27,10 +27,10 @@ public class HelloWorld {
            // int a = 5;
       // int a;
       // int a, c,b;
-       int[][] a =  new int[8][5] ;
-       int b;
+       char[][][] a =  new char[8][5][3] ;
+       char b;
       // a[2][3  ] = 1;
-       b = a[2][1] ;
+       b = a[2][1][1] ;
       // a =hello(a,c);
       // a = ( a == 1) ? a : b ;
       // employee abc = new employee();
