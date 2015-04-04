@@ -15,6 +15,11 @@ public class HelloWorld {
     }
 
     public static void main(String[] args) {
+      employee e = new employee();
+      int a = 1;
+      int b = 2;
+      b = e.hello(a,b);
+      System.out.println(b);
      //   int a,b;
       // int b;
       // int a = hello(1,2,false);
@@ -24,10 +29,7 @@ public class HelloWorld {
            // int a = 5;
       // int a;
       // int a, c,b;
-       // char[][][] a =  new char[8][5][3] ;
-       // char b;
-      // a[2][3  ] = 1;
-       // b = a[2][1][1] ;
+
       // a =hello(a,c);
       // a = ( a == 1) ? a : b ;
       int a,c;
