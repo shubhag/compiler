@@ -25,9 +25,8 @@ digraph "Parse Tree" {
 	MethodBody1 -> {  Block1 }
 	LocalVariableDeclarationsAndStatements1 [label = "LocalVariableDeclarationsAndStatements"] 
 	Block1 -> {  "{" LocalVariableDeclarationsAndStatements1 "}" }
-	LocalVariableDeclarationsAndStatements2 [label = "LocalVariableDeclarationsAndStatements"] 
 	LocalVariableDeclarationOrStatement1 [label = "LocalVariableDeclarationOrStatement"] 
-	LocalVariableDeclarationsAndStatements1 -> {  LocalVariableDeclarationsAndStatements2 LocalVariableDeclarationOrStatement1 }
+	LocalVariableDeclarationsAndStatements1 -> {  LocalVariableDeclarationOrStatement1 }
 	Statement1 [label = "Statement"] 
 	LocalVariableDeclarationOrStatement1 -> {  Statement1 }
 	ExpressionStatement1 [label = "ExpressionStatement"] 
@@ -36,8 +35,12 @@ digraph "Parse Tree" {
 	ExpressionStatement1 -> {  Expression1 }
 	AssignmentExpression1 [label = "AssignmentExpression"] 
 	Expression1 -> {  AssignmentExpression1 }
+	UnaryExpression1 [label = "UnaryExpression"] 
+	AssignmentOperator1 [label = "AssignmentOperator"] 
+	AssignmentExpression2 [label = "AssignmentExpression"] 
+	AssignmentExpression1 -> {  UnaryExpression1 AssignmentOperator1 AssignmentExpression2 }
 	ConditionalExpression1 [label = "ConditionalExpression"] 
-	AssignmentExpression1 -> {  ConditionalExpression1 }
+	AssignmentExpression2 -> {  ConditionalExpression1 }
 	ConditionalOrExpression1 [label = "ConditionalOrExpression"] 
 	ConditionalExpression1 -> {  ConditionalOrExpression1 }
 	ConditionalAndExpression1 [label = "ConditionalAndExpression"] 
@@ -60,10 +63,10 @@ digraph "Parse Tree" {
 	AdditiveExpression1 -> {  MultiplicativeExpression1 }
 	CastExpression1 [label = "CastExpression"] 
 	MultiplicativeExpression1 -> {  CastExpression1 }
-	UnaryExpression1 [label = "UnaryExpression"] 
-	CastExpression1 -> {  UnaryExpression1 }
+	UnaryExpression2 [label = "UnaryExpression"] 
+	CastExpression1 -> {  UnaryExpression2 }
 	LogicalUnaryExpression1 [label = "LogicalUnaryExpression"] 
-	UnaryExpression1 -> {  LogicalUnaryExpression1 }
+	UnaryExpression2 -> {  LogicalUnaryExpression1 }
 	PostfixExpression1 [label = "PostfixExpression"] 
 	LogicalUnaryExpression1 -> {  PostfixExpression1 }
 	PrimaryExpression1 [label = "PrimaryExpression"] 
@@ -74,28 +77,28 @@ digraph "Parse Tree" {
 	NotJustName1 -> {  ComplexPrimary1 }
 	ComplexPrimaryNoParenthesis1 [label = "ComplexPrimaryNoParenthesis"] 
 	ComplexPrimary1 -> {  ComplexPrimaryNoParenthesis1 }
-	MethodCall1 [label = "MethodCall"] 
-	ComplexPrimaryNoParenthesis1 -> {  MethodCall1 }
-	MethodAccess1 [label = "MethodAccess"] 
-	MethodCall1 -> {  MethodAccess1 "(" ")" }
-	QualifiedName1 [label = "QualifiedName"] 
-	MethodAccess1 -> {  QualifiedName1 }
-	IDENTIFIER1 [label = "IDENTIFIER"] 
-	QualifiedName1 -> {  IDENTIFIER1 }
-	LocalVariableDeclarationOrStatement2 [label = "LocalVariableDeclarationOrStatement"] 
-	LocalVariableDeclarationsAndStatements2 -> {  LocalVariableDeclarationOrStatement2 }
-	Statement2 [label = "Statement"] 
-	LocalVariableDeclarationOrStatement2 -> {  Statement2 }
-	ExpressionStatement2 [label = "ExpressionStatement"] 
-	Statement2 -> {  ExpressionStatement2 ";" }
+	INT_LITERAL1 [label = "INT_LITERAL"] 
+	ComplexPrimaryNoParenthesis1 -> {  INT_LITERAL1 }
+	AssignmentOperator1 -> {  "=" }
+	LogicalUnaryExpression2 [label = "LogicalUnaryExpression"] 
+	UnaryExpression2 -> {  LogicalUnaryExpression2 }
+	PostfixExpression2 [label = "PostfixExpression"] 
+	LogicalUnaryExpression2 -> {  PostfixExpression2 }
+	PrimaryExpression2 [label = "PrimaryExpression"] 
+	PostfixExpression2 -> {  PrimaryExpression2 }
+	NotJustName2 [label = "NotJustName"] 
+	PrimaryExpression2 -> {  NotJustName2 }
+	ComplexPrimary2 [label = "ComplexPrimary"] 
+	NotJustName2 -> {  ComplexPrimary2 }
+	ComplexPrimaryNoParenthesis2 [label = "ComplexPrimaryNoParenthesis"] 
+	ComplexPrimary2 -> {  ComplexPrimaryNoParenthesis2 }
+	ArrayAccess1 [label = "ArrayAccess"] 
+	ComplexPrimaryNoParenthesis2 -> {  ArrayAccess1 }
+	ComplexPrimary3 [label = "ComplexPrimary"] 
 	Expression2 [label = "Expression"] 
-	ExpressionStatement2 -> {  Expression2 }
-	AssignmentExpression2 [label = "AssignmentExpression"] 
-	Expression2 -> {  AssignmentExpression2 }
-	UnaryExpression2 [label = "UnaryExpression"] 
-	AssignmentOperator1 [label = "AssignmentOperator"] 
+	ArrayAccess1 -> {  ComplexPrimary3 "[" Expression2 "]" }
 	AssignmentExpression3 [label = "AssignmentExpression"] 
-	AssignmentExpression2 -> {  UnaryExpression2 AssignmentOperator1 AssignmentExpression3 }
+	Expression2 -> {  AssignmentExpression3 }
 	ConditionalExpression2 [label = "ConditionalExpression"] 
 	AssignmentExpression3 -> {  ConditionalExpression2 }
 	ConditionalOrExpression2 [label = "ConditionalOrExpression"] 
@@ -122,35 +125,75 @@ digraph "Parse Tree" {
 	MultiplicativeExpression2 -> {  CastExpression2 }
 	UnaryExpression3 [label = "UnaryExpression"] 
 	CastExpression2 -> {  UnaryExpression3 }
-	LogicalUnaryExpression2 [label = "LogicalUnaryExpression"] 
-	UnaryExpression3 -> {  LogicalUnaryExpression2 }
-	PostfixExpression2 [label = "PostfixExpression"] 
-	LogicalUnaryExpression2 -> {  PostfixExpression2 }
-	PrimaryExpression2 [label = "PrimaryExpression"] 
-	PostfixExpression2 -> {  PrimaryExpression2 }
-	NotJustName2 [label = "NotJustName"] 
-	PrimaryExpression2 -> {  NotJustName2 }
-	ComplexPrimary2 [label = "ComplexPrimary"] 
-	NotJustName2 -> {  ComplexPrimary2 }
-	ComplexPrimaryNoParenthesis2 [label = "ComplexPrimaryNoParenthesis"] 
-	ComplexPrimary2 -> {  ComplexPrimaryNoParenthesis2 }
-	INT_LITERAL1 [label = "INT_LITERAL"] 
-	ComplexPrimaryNoParenthesis2 -> {  INT_LITERAL1 }
-	AssignmentOperator1 -> {  "=" }
 	LogicalUnaryExpression3 [label = "LogicalUnaryExpression"] 
 	UnaryExpression3 -> {  LogicalUnaryExpression3 }
 	PostfixExpression3 [label = "PostfixExpression"] 
 	LogicalUnaryExpression3 -> {  PostfixExpression3 }
 	PrimaryExpression3 [label = "PrimaryExpression"] 
 	PostfixExpression3 -> {  PrimaryExpression3 }
-	QualifiedName2 [label = "QualifiedName"] 
-	PrimaryExpression3 -> {  QualifiedName2 }
-	IDENTIFIER2 [label = "IDENTIFIER"] 
-	QualifiedName2 -> {  IDENTIFIER2 }
+	NotJustName3 [label = "NotJustName"] 
+	PrimaryExpression3 -> {  NotJustName3 }
+	ComplexPrimary4 [label = "ComplexPrimary"] 
+	NotJustName3 -> {  ComplexPrimary4 }
+	ComplexPrimaryNoParenthesis3 [label = "ComplexPrimaryNoParenthesis"] 
+	ComplexPrimary4 -> {  ComplexPrimaryNoParenthesis3 }
+	INT_LITERAL2 [label = "INT_LITERAL"] 
+	ComplexPrimaryNoParenthesis3 -> {  INT_LITERAL2 }
+	ComplexPrimaryNoParenthesis4 [label = "ComplexPrimaryNoParenthesis"] 
+	ComplexPrimary4 -> {  ComplexPrimaryNoParenthesis4 }
+	ArrayAccess2 [label = "ArrayAccess"] 
+	ComplexPrimaryNoParenthesis4 -> {  ArrayAccess2 }
+	QualifiedName1 [label = "QualifiedName"] 
+	Expression3 [label = "Expression"] 
+	ArrayAccess2 -> {  QualifiedName1 "[" Expression3 "]" }
+	AssignmentExpression4 [label = "AssignmentExpression"] 
+	Expression3 -> {  AssignmentExpression4 }
+	ConditionalExpression3 [label = "ConditionalExpression"] 
+	AssignmentExpression4 -> {  ConditionalExpression3 }
+	ConditionalOrExpression3 [label = "ConditionalOrExpression"] 
+	ConditionalExpression3 -> {  ConditionalOrExpression3 }
+	ConditionalAndExpression3 [label = "ConditionalAndExpression"] 
+	ConditionalOrExpression3 -> {  ConditionalAndExpression3 }
+	InclusiveOrExpression3 [label = "InclusiveOrExpression"] 
+	ConditionalAndExpression3 -> {  InclusiveOrExpression3 }
+	ExclusiveOrExpression3 [label = "ExclusiveOrExpression"] 
+	InclusiveOrExpression3 -> {  ExclusiveOrExpression3 }
+	AndExpression3 [label = "AndExpression"] 
+	ExclusiveOrExpression3 -> {  AndExpression3 }
+	EqualityExpression3 [label = "EqualityExpression"] 
+	AndExpression3 -> {  EqualityExpression3 }
+	RelationalExpression3 [label = "RelationalExpression"] 
+	EqualityExpression3 -> {  RelationalExpression3 }
+	ShiftExpression3 [label = "ShiftExpression"] 
+	RelationalExpression3 -> {  ShiftExpression3 }
+	AdditiveExpression3 [label = "AdditiveExpression"] 
+	ShiftExpression3 -> {  AdditiveExpression3 }
+	MultiplicativeExpression3 [label = "MultiplicativeExpression"] 
+	AdditiveExpression3 -> {  MultiplicativeExpression3 }
+	CastExpression3 [label = "CastExpression"] 
+	MultiplicativeExpression3 -> {  CastExpression3 }
+	UnaryExpression4 [label = "UnaryExpression"] 
+	CastExpression3 -> {  UnaryExpression4 }
+	LogicalUnaryExpression4 [label = "LogicalUnaryExpression"] 
+	UnaryExpression4 -> {  LogicalUnaryExpression4 }
+	PostfixExpression4 [label = "PostfixExpression"] 
+	LogicalUnaryExpression4 -> {  PostfixExpression4 }
+	PrimaryExpression4 [label = "PrimaryExpression"] 
+	PostfixExpression4 -> {  PrimaryExpression4 }
+	NotJustName4 [label = "NotJustName"] 
+	PrimaryExpression4 -> {  NotJustName4 }
+	ComplexPrimary5 [label = "ComplexPrimary"] 
+	NotJustName4 -> {  ComplexPrimary5 }
+	ComplexPrimaryNoParenthesis5 [label = "ComplexPrimaryNoParenthesis"] 
+	ComplexPrimary5 -> {  ComplexPrimaryNoParenthesis5 }
+	INT_LITERAL3 [label = "INT_LITERAL"] 
+	ComplexPrimaryNoParenthesis5 -> {  INT_LITERAL3 }
+	IDENTIFIER1 [label = "IDENTIFIER"] 
+	QualifiedName1 -> {  IDENTIFIER1 }
 	DeclaratorName1 [label = "DeclaratorName"] 
 	MethodDeclarator1 -> {  DeclaratorName1 "(" ")" }
-	IDENTIFIER3 [label = "IDENTIFIER"] 
-	DeclaratorName1 -> {  IDENTIFIER3 }
+	IDENTIFIER2 [label = "IDENTIFIER"] 
+	DeclaratorName1 -> {  IDENTIFIER2 }
 	TypeName1 [label = "TypeName"] 
 	TypeSpecifier1 -> {  TypeName1 }
 	PrimitiveType1 [label = "PrimitiveType"] 
@@ -163,8 +206,8 @@ digraph "Parse Tree" {
 	Modifier1 -> {  PUBLIC1 }
 	Modifiers2 [label = "Modifiers"] 
 	ClassWord1 [label = "ClassWord"] 
-	IDENTIFIER4 [label = "IDENTIFIER"] 
-	ClassHeader1 -> {  Modifiers2 ClassWord1 IDENTIFIER4 }
+	IDENTIFIER3 [label = "IDENTIFIER"] 
+	ClassHeader1 -> {  Modifiers2 ClassWord1 IDENTIFIER3 }
 	CLASS1 [label = "CLASS"] 
 	ClassWord1 -> {  CLASS1 }
 	Modifier2 [label = "Modifier"] 

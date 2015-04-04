@@ -29,8 +29,8 @@ public class employee{
 	// 	// a = 1;
 	// }
   public int hello(){
-    a = 1;
-    a();
+  	// int[] a = new int[8] ;
+  	a[1][2] = 2;
   }
 }
 // public class employee{

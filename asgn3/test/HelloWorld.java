@@ -26,37 +26,41 @@ public class HelloWorld {
       // System.out.println("Hello World");
            // int a = 5;
       // int a;
-      int a, c,b;
-      a =hello(a,c);
-      a = ( a == 1) ? a : b ;
-      employee abc = new employee();
-      a =abc.hello(a,c);
+      // int a, c,b;
+       int[][] a =  new int[8][5] ;
+       int b;
+      // a[2][3  ] = 1;
+       b = a[2][1] ;
+      // a =hello(a,c);
+      // a = ( a == 1) ? a : b ;
+      // employee abc = new employee();
+      // a =abc.hello(a,c);
       // int a ;
-      while(a==1){
-        if(a==1){
-          break;
-        }else{
-          a= 1;
-          continue;
-        }
-      }
-      for(a=0;a<5;a++){
-        if(a==1){
-          a = 3;
-          continue;
-        } else{
-          a = 2;
-          break;
-        }
-      }
-      do{
-         if(a==1){
-          break;
-        }else{
-          a= 1;
-          continue;
-        }
-      }while(a==1);
+      // while(a==1){
+      //   if(a==1){
+      //     break;
+      //   }else{
+      //     a= 1;
+      //     continue;
+      //   }
+      // }
+      // for(a=0;a<5;a++){
+      //   if(a==1){
+      //     a = 3;
+      //     continue;
+      //   } else{
+      //     a = 2;
+      //     break;
+      //   }
+      // }
+      // do{
+      //    if(a==1){
+      //     break;
+      //   }else{
+      //     a= 1;
+      //     continue;
+      //   }
+      // }while(a==1);
     }
     //  public static int hello1(int b) {
     //   int a ;

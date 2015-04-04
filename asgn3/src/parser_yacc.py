@@ -22,8 +22,9 @@ def p_typespeciifier(p):
 
 	if len(p) == 2 :
 		p[0] = p[1]
-		# if ST.checkForClass(p[0]) :
-		# 	p[0] =  
+	else:
+		p[0] = 'array_'+p[1]+'_' +str(p[2])
+		print p[0], "27"
 def p_typename(p):
 	'''TypeName : PrimitiveType 
 				| QualifiedName '''
@@ -88,7 +89,7 @@ def p_qualifiedname(p):
 		p[0] = p[1]
 		if ST.notLocalnotMainClass(p[0]) :
 			typeId, offset = ST.getTypeOffset(p[0])
-			print typeId, offset , "91"
+			# print typeId, offset , "91"
 			temp = ST.getTemp()
 			TAC.emit(temp, 'this', offset, '+*')
 			p[0] = {'type': typeId, 'tempVar' : temp}
@@ -179,7 +180,6 @@ def p_variabledeclarator(p):
 							| DeclaratorName '=' VariableInitializer '''
 
 	exist = ST.existCurrScope(p[1])
-	print p[-1], "171"
 	if ST.ifClass(p[-1]) :
 		p[0] = {'type': p[-1], 'name': p[1]}
 		if exist == 0:
@@ -198,7 +198,6 @@ def p_variabledeclarator(p):
 			raise Exception("Error: " + p[1] + " Redeclared")
 
 	if len(p) == 4:
-		print p[3], "190"
 		if type(p[3]) is not dict:
 			type1 = ST.getIdAttr(p[3], 'type')
 			tempVar1 = p[1]
@@ -210,6 +209,8 @@ def p_variabledeclarator(p):
 
 		if p[0]['type'] == type1 :
 			TAC.emit(p[1],tempVar1,'','=')
+			if type1.split('_')[0] == 'array':
+				ST.addIdentifierAttr(p[1], 'dimension', p[3]['dimension'] )
 		else:
 			raise Exception("Type Check in variable declaration of " + p[1])
 
@@ -704,6 +705,58 @@ def p_boolLit(p):
 def p_arrayaccess(p):
 	''' ArrayAccess : QualifiedName '[' Expression ']'
 					| ComplexPrimary '[' Expression ']' '''
+	print p[1], "708"
+	if type(p[1]) is not dict:
+		typeId = ST.getIdAttr(p[1], 'type')
+		dimension = ST.getIdAttr(p[1], 'dimension')
+		tempVal = p[1]
+	else:
+		typeId = p[1]['type']
+		dimension = p[1]['dimension']
+		tempVal = p[1]['tempVar']
+	if typeId.split('_')[0] == 'array' :
+		if not  p[3]['type'] == 'int':
+			raise Exception('Array indices must be integers')
+
+		dimlength = len(dimension)
+		if dimlength == 1:
+			typeofarray = typeId.split('_')[1]
+			width =ST.getWidth(typeofarray)
+			temp1 = ST.getTemp()
+			if type(p[1]) is not dict:
+				TAC.emit(temp1, p[3]['tempVar'], width, '*')
+				temp = ST.getTemp()
+				TAC.emit(temp, tempVal, temp1, '+*')
+			else:
+				TAC.emit(temp1, p[1]['tempVar'], p[3]['tempVar'], '+' )
+				TAC.emit(temp1 ,temp1, width,'*' )
+				temp = ST.getTemp()
+				TAC.emit(temp, p[1]['arrayAdd'], temp1, '+*')
+			p[0] = {
+				'type': typeofarray,
+				'tempVar': temp
+				}
+		else:
+			del dimension[0]
+			temp = ST.getTemp()
+			if type(p[1]) is not dict:
+				TAC.emit(temp ,p[3]['tempVar'], dimension[0],'*' )
+			else:
+				TAC.emit(temp, p[0]['tempVar'], p[3]['tempVar'], '+' )
+				TAC.emit(temp ,temp, dimension[0],'*' )
+			typeIdarray = typeId.split('_')
+			typeIdarray[2] = str(int(typeIdarray[2]) - 1)
+			typeofarray = '_'.join(typeIdarray)
+			p[0] = {
+				'type': typeofarray,
+				'tempVar': temp,
+				'dimension' : dimension,
+			}
+			if type(p[1]) is not dict:
+				p[0]['arrayAdd'] = p[1]
+			else:
+				p[0]['arrayAdd'] = p[1]['arrayAdd']
+
 
 def p_fieldaccess(p):
 	'''FieldAccess : NotJustName '.' IDENTIFIER
@@ -741,13 +794,13 @@ def p_MethodCall(p):
 						ST.checkClassType(className,p[1].split('.')[1],params['type'],a)
 						TAC.emit(params['tempVar'],'','','PARAM')
 					a += 1
-				TAC.emit(p[1].split('.')[0], '','','PUSH')
-				TAC.emit('Main.'+className+'.'+p[1].split('.')[1],len(p[3]['expr']),temp,'CALL')
+				TAC.emit(p[1].split('.')[0], '','','PARAM')
+				TAC.emit('Main.'+className+'.'+p[1].split('.')[1],len(p[3]['expr'])+1,temp,'CALL')
 				TAC.emit(typeWidth+4,'','','POP')
 			else:
 				ST.checkNumClassArgs(className,funcName, 0)
-				TAC.emit(p[1].split('.')[0], '','','PUSH')
-				TAC.emit('Main.'+className+'.'+p[1].split('.')[1], 0,temp,'CALL')
+				TAC.emit(p[1].split('.')[0], '','','PARAM')
+				TAC.emit('Main.'+className+'.'+p[1].split('.')[1], 1,temp,'CALL')
 				TAC.emit(4, '','','POP')
 			methodtype = ST.getReturntype(p[1].split('.')[1])
 			p[0] = {
@@ -852,20 +905,56 @@ def p_ArrayAllocationExpression(p):
 	'''ArrayAllocationExpression : NEW TypeName DimExprs Dims
 								| NEW TypeName DimExprs
 							    | NEW TypeName Dims '''
+	if len(p) == 5:
+		raise Exception("Not allowed in language")
+	else:
+		dimension = len(p[3])
+		typeWidth = ST.getWidth(p[2])
+		temp = ST.getTemp()
+		TAC.emit(temp,typeWidth,'','=' ) 
+		stringDim = []
+		for dim in p[3]:
+			stringDim.append(dim['tempVar'])
+			if dim['type'] != 'int':
+				raise Exception('Array indices must be integers')
+			TAC.emit(temp,dim['tempVar'],temp,'*' ) 
+			# width =  dim['tempVar'] * width
+		typeId = 'array_' + p[2] + '_' + str(dimension)
+		TAC.emit(temp,'','','PARAM')
+		temp2 = ST.getTemp()
+		TAC.emit('_ALLOC',1,temp2,'CALL')
+		TAC.emit(4,'','','POP')
+		p[0] = {
+			'type' : typeId,
+			'tempVar' : temp2,
+			'dimension' : stringDim
+		} 
 
 def p_DimExprs(p):
 	'''DimExprs : DimExpr
 				| DimExprs DimExpr '''
+	if len(p) == 2:
+		p[0] =[ p[1] ]
+	else:
+		p[1].append(p[2])
+		p[0] = p[1]
 
 def p_DimExpr(p):
 	'''DimExpr : '[' Expression ']' '''
+	p[0] = p[2] 
+
 
 def p_Dims(p):
 	'''Dims : OP_DIM
 			| Dims OP_DIM '''
+	if len(p) == 2:
+		p[0] = p[1]
+	else:
+		p[0] = p[1] + p[2]
 
 def p_OP_DIM(p):
 	'''OP_DIM : '[' ']' '''
+	p[0] = 1
 
 def p_PostfixExpression(p):
 	'''PostfixExpression : PrimaryExpression
@@ -1297,7 +1386,6 @@ def p_AssignmentExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
-		print p[3], "1289"
 		if type(p[1]) is not dict:
 			type1 = ST.getIdAttr(p[1], 'type')
 			tempVar1 = p[1]

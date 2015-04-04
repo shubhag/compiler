@@ -179,7 +179,11 @@ class symbTbl:
 		elif type in ['FUNCTION', 'CALLBACK', 'String']:
 			width = 4					#address size
 		else:
-			width = 0
+			if type.split('_')[0] == 'array':
+				width = 4
+			else:
+				width = 0
+			# width = 0
 		self.mainSymbTbl[self.currScope]['offset'] +=  width
 		
 		if not tempScope.has_key(identifier):
@@ -189,6 +193,11 @@ class symbTbl:
 				'type'	:	type,
 				'offset' : self.mainSymbTbl[self.currScope]['offset']
 			}	
+	def addIdentifierAttr(self, identifier, attr, val):
+		tempScope = self.mainSymbTbl[self.currScope]['identifier']
+		if tempScope.has_key(identifier):
+			tempScope[identifier][attr] = val
+
 	def addClassIdentifier(self, identifier, type, width):
 		tempScope = self.mainSymbTbl[self.currScope]['identifier']
 		self.mainSymbTbl[self.currScope]['offset'] +=  width
@@ -233,7 +242,11 @@ class symbTbl:
 		elif type in ['FUNCTION', 'CALLBACK', 'String']:
 			width = 4					#address size
 		else:
-			width = 0
+			# print type, type.split('_') , "236"
+			if type.split('_')[0] == 'array':
+				width = 4
+			else:
+				width = 0
 		return width
 	#add attributes to the current scopeLen
 	def addAttrScope(self, attrName, attrVal):
