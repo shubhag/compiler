@@ -1,8 +1,5 @@
 public class employee{
   int a,b ;
- // employee(){
- //    a = 1;
- //  }
   public int hello(int d, int c){
     a = d;
     c = b;
@@ -27,14 +24,17 @@ public class HelloWorld {
            // int a = 5;
       // int a;
       // int a, c,b;
-       char[][][] a =  new char[8][5][3] ;
-       char b;
+       // char[][][] a =  new char[8][5][3] ;
+       // char b;
       // a[2][3  ] = 1;
-       b = a[2][1][1] ;
+       // b = a[2][1][1] ;
       // a =hello(a,c);
       // a = ( a == 1) ? a : b ;
-      // employee abc = new employee();
-      // a =abc.hello(a,c);
+      int a,c;
+      employee abc = new employee();
+      c = abc.b ;
+      a =abc.hello(a,c);
+      c = hello(a,c);
       // int a ;
       // while(a==1){
       //   if(a==1){

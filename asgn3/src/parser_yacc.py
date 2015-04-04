@@ -10,7 +10,7 @@ TAC = tac.threeAddressCode(ST)
 
 def p_compilationunit(p):
 	'''CompilationUnit : ProgramFile '''
-	# ST.printSymbTbl()
+	ST.printSymbTbl()
 	TAC.printTAC()
 	# TAC.emit('','',-1,'END')
 
@@ -623,9 +623,24 @@ def p_catchheader(p):
 					| CATCH '(' TypeSpecifier ')' '''
 
 def p_PrimaryExpression(p):
-	'''PrimaryExpression : QualifiedName
-						| NotJustName '''
+	'''PrimaryExpression :  NotJustName '''
 	p[0] = p[1]
+
+def p_primaryexpr(p):
+	'''PrimaryExpression : QualifiedName '''
+	p[0] = p[1]
+	if (type(p[1]) is not dict) and (len(p[1].split('.')) == 2):
+		print p[1], "633"
+		className = ST.getIdAttr(p[1].split('.')[0], 'type')
+		typeId, offset = ST.checkClassId(className, p[1].split('.')[1]) 
+		print typeId, offset
+		temp = ST.getTemp()
+		TAC.emit(temp,p[1].split('.')[0], offset,'+*' )
+		p[0] = {
+			'type' : typeId,
+			'tempVar' : temp
+		}
+
 
 def p_NotJustName(p):
 	''' NotJustName : SpecialName

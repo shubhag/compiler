@@ -164,8 +164,8 @@ Rule 136   Catches -> Catches Catch
 Rule 137   Catch -> CatchHeader Block
 Rule 138   CatchHeader -> CATCH ( TypeSpecifier IDENTIFIER )
 Rule 139   CatchHeader -> CATCH ( TypeSpecifier )
-Rule 140   PrimaryExpression -> QualifiedName
-Rule 141   PrimaryExpression -> NotJustName
+Rule 140   PrimaryExpression -> NotJustName
+Rule 141   PrimaryExpression -> QualifiedName
 Rule 142   NotJustName -> SpecialName
 Rule 143   NotJustName -> NewAllocationExpression
 Rule 144   NotJustName -> ComplexPrimary
@@ -448,7 +448,7 @@ MultiplicativeExpression : 210 211 212 213 214 215
 N_instr              : 111
 NewAllocationExpression : 143
 NonStaticInitializer : 53
-NotJustName          : 141 162
+NotJustName          : 140 162
 OP_DIM               : 73 193 194
 PackageStatement     : 19 20
 Parameter            : 69 70
@@ -458,7 +458,7 @@ PostfixExpression    : 198 202
 PrimaryExpression    : 196
 PrimitiveType        : 4 166
 ProgramFile          : 1
-QualifiedName        : 5 6 7 23 30 31 33 140 160 164 165 171 178
+QualifiedName        : 5 6 7 23 30 31 33 141 160 164 165 171 178
 RealPostfixExpression : 163 197
 RelationalExpression : 219 220 221 222 223 224 225
 Rparen               : 34 35 87 88
@@ -1609,8 +1609,8 @@ state 54
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -2577,16 +2577,16 @@ state 89
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -3011,16 +3011,16 @@ state 98
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -3212,14 +3212,14 @@ state 100
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -3664,14 +3664,14 @@ state 111
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -4855,7 +4855,7 @@ state 150
 
     (5) TypeName -> QualifiedName .
     (33) QualifiedName -> QualifiedName . . IDENTIFIER
-    (140) PrimaryExpression -> QualifiedName .
+    (141) PrimaryExpression -> QualifiedName .
     (178) NewAllocationExpression -> QualifiedName . . PlainNewAllocationExpression
     (160) ArrayAccess -> QualifiedName . [ Expression ]
     (164) FieldAccess -> QualifiedName . . THIS
@@ -4865,29 +4865,29 @@ state 150
   ! shift/reduce conflict for [ resolved as shift
     IDENTIFIER      reduce using rule 5 (TypeName -> QualifiedName .)
     .               shift and go to state 237
-    OPT_INC_DEC     reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    =               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OPT_EQ          reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    *               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    /               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    %               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    +               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    -               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OPT_SOME        reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    <               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    >               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_LE           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_GE           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_EQ           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_NE           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    &               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ^               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    |               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_LAND         reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ?               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_LOR          reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ;               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ,               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
+    OPT_INC_DEC     reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    =               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OPT_EQ          reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    *               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    /               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    %               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    +               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    -               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OPT_SOME        reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    <               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    >               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_LE           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_GE           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_EQ           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_NE           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    &               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ^               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    |               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_LAND         reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ?               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_LOR          reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ;               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ,               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
     [               shift and go to state 238
     (               reduce using rule 171 (MethodAccess -> QualifiedName .)
 
@@ -5070,8 +5070,8 @@ state 154
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -5240,36 +5240,36 @@ state 154
 
 state 155
 
-    (141) PrimaryExpression -> NotJustName .
+    (140) PrimaryExpression -> NotJustName .
     (162) FieldAccess -> NotJustName . . IDENTIFIER
 
-    OPT_INC_DEC     reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    =               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OPT_EQ          reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    *               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    /               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    %               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    +               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    -               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OPT_SOME        reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    <               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    >               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OP_LE           reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OP_GE           reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OP_EQ           reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OP_NE           reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    &               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    ^               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    |               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OP_LAND         reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    ?               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    OP_LOR          reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    )               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    ,               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    ;               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    :               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    }               reduce using rule 141 (PrimaryExpression -> NotJustName .)
-    ]               reduce using rule 141 (PrimaryExpression -> NotJustName .)
+    OPT_INC_DEC     reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    =               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OPT_EQ          reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    *               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    /               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    %               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    +               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    -               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OPT_SOME        reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    <               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    >               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OP_LE           reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OP_GE           reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OP_EQ           reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OP_NE           reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    &               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    ^               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    |               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OP_LAND         reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    ?               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    OP_LOR          reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    )               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    ,               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    ;               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    :               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    }               reduce using rule 140 (PrimaryExpression -> NotJustName .)
+    ]               reduce using rule 140 (PrimaryExpression -> NotJustName .)
     .               shift and go to state 242
 
 
@@ -5287,14 +5287,14 @@ state 156
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -5606,16 +5606,16 @@ state 163
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -5997,8 +5997,8 @@ state 170
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -6285,16 +6285,16 @@ state 175
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -6571,8 +6571,8 @@ state 179
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -6901,14 +6901,14 @@ state 184
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -7037,7 +7037,7 @@ state 186
 
 state 187
 
-    (140) PrimaryExpression -> QualifiedName .
+    (141) PrimaryExpression -> QualifiedName .
     (33) QualifiedName -> QualifiedName . . IDENTIFIER
     (178) NewAllocationExpression -> QualifiedName . . PlainNewAllocationExpression
     (160) ArrayAccess -> QualifiedName . [ Expression ]
@@ -7045,33 +7045,33 @@ state 187
     (165) FieldAccess -> QualifiedName . . CLASS
     (171) MethodAccess -> QualifiedName .
 
-    OPT_INC_DEC     reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    =               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OPT_EQ          reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    *               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    /               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    %               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    +               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    -               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OPT_SOME        reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    <               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    >               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_LE           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_GE           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_EQ           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_NE           reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    &               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ^               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    |               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_LAND         reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ?               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    OP_LOR          reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    )               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ,               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ;               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    :               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    }               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
-    ]               reduce using rule 140 (PrimaryExpression -> QualifiedName .)
+    OPT_INC_DEC     reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    =               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OPT_EQ          reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    *               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    /               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    %               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    +               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    -               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OPT_SOME        reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    <               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    >               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_LE           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_GE           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_EQ           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_NE           reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    &               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ^               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    |               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_LAND         reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ?               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    OP_LOR          reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    )               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ,               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ;               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    :               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    }               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
+    ]               reduce using rule 141 (PrimaryExpression -> QualifiedName .)
     .               shift and go to state 237
     [               shift and go to state 238
     (               reduce using rule 171 (MethodAccess -> QualifiedName .)
@@ -7168,14 +7168,14 @@ state 189
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -7573,14 +7573,14 @@ state 198
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -7721,14 +7721,14 @@ state 199
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -7855,14 +7855,14 @@ state 200
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -7985,14 +7985,14 @@ state 201
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -8115,14 +8115,14 @@ state 202
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -8418,16 +8418,16 @@ state 207
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -8599,16 +8599,16 @@ state 208
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -8785,14 +8785,14 @@ state 209
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -8930,14 +8930,14 @@ state 210
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -9072,14 +9072,14 @@ state 211
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -9214,14 +9214,14 @@ state 212
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -9356,14 +9356,14 @@ state 213
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -9552,16 +9552,16 @@ state 216
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -10000,16 +10000,16 @@ state 225
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -10235,14 +10235,14 @@ state 228
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -10370,14 +10370,14 @@ state 229
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -10510,16 +10510,16 @@ state 230
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -10757,14 +10757,14 @@ state 233
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -11030,16 +11030,16 @@ state 238
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -11202,14 +11202,14 @@ state 239
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -11480,16 +11480,16 @@ state 244
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -11813,8 +11813,8 @@ state 253
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -12054,8 +12054,8 @@ state 254
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -12360,8 +12360,8 @@ state 261
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -12742,14 +12742,14 @@ state 269
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -13140,8 +13140,8 @@ state 277
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -13718,16 +13718,16 @@ state 293
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -13896,16 +13896,16 @@ state 294
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -14158,16 +14158,16 @@ state 297
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -14441,14 +14441,14 @@ state 301
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -14590,16 +14590,16 @@ state 302
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -14936,16 +14936,16 @@ state 308
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -15494,8 +15494,8 @@ state 321
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
@@ -15947,16 +15947,16 @@ state 333
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -16195,16 +16195,16 @@ state 336
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -16776,16 +16776,16 @@ state 354
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -16986,16 +16986,16 @@ state 356
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -17314,16 +17314,16 @@ state 365
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -17781,16 +17781,16 @@ state 375
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -18021,16 +18021,16 @@ state 377
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -18238,14 +18238,14 @@ state 378
     (197) PostfixExpression -> . RealPostfixExpression
     (204) LogicalUnaryOperator -> . ~
     (205) LogicalUnaryOperator -> . !
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (172) SpecialName -> . THIS
     (173) SpecialName -> . SUPER
     (174) SpecialName -> . NULL
@@ -18389,16 +18389,16 @@ state 379
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -18833,16 +18833,16 @@ state 390
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS
@@ -19060,16 +19060,16 @@ state 391
     (205) LogicalUnaryOperator -> . !
     (230) InclusiveOrExpression -> . ExclusiveOrExpression
     (231) InclusiveOrExpression -> . InclusiveOrExpression | ExclusiveOrExpression
-    (140) PrimaryExpression -> . QualifiedName
-    (141) PrimaryExpression -> . NotJustName
+    (140) PrimaryExpression -> . NotJustName
+    (141) PrimaryExpression -> . QualifiedName
     (198) RealPostfixExpression -> . PostfixExpression OPT_INC_DEC
     (228) ExclusiveOrExpression -> . AndExpression
     (229) ExclusiveOrExpression -> . ExclusiveOrExpression ^ AndExpression
-    (32) QualifiedName -> . IDENTIFIER
-    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (142) NotJustName -> . SpecialName
     (143) NotJustName -> . NewAllocationExpression
     (144) NotJustName -> . ComplexPrimary
+    (32) QualifiedName -> . IDENTIFIER
+    (33) QualifiedName -> . QualifiedName . IDENTIFIER
     (226) AndExpression -> . EqualityExpression
     (227) AndExpression -> . AndExpression & EqualityExpression
     (172) SpecialName -> . THIS

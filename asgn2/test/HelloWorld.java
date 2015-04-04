@@ -30,7 +30,7 @@ public class employee{
 	// }
   public int hello(){
   	// int[] a = new int[8] ;
-  	a[1][2] = 2;
+  	 b = a.x();
   }
 }
 // public class employee{

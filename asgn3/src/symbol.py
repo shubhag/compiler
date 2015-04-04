@@ -67,6 +67,12 @@ class symbTbl:
 			if function[funcName]['arglist'][index]['type'] != typeId :
 				raise Exception('TypeCheck Error')
 
+	def checkClassId(self, className, identifier):
+		idEntry = self.mainSymbTbl['Main.'+className]['identifier']
+		if idEntry.has_key(identifier):
+			return idEntry[identifier]['type'], idEntry[identifier]['offset']
+		else:
+			raise Exception('Variable not defined in respective class')
 
 	def chgClass(self, name):
 		self.currClass = "Main." + name

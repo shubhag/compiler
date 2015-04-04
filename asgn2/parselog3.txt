@@ -70,8 +70,16 @@ NotJustName -> ComplexPrimary
 None
 ComplexPrimary -> ComplexPrimaryNoParenthesis
 None
-ComplexPrimaryNoParenthesis -> INT_LITERAL
-'2'
+ComplexPrimaryNoParenthesis -> MethodCall
+None
+MethodCall -> MethodAccess ( )
+None,'(',')'
+MethodAccess -> QualifiedName
+None
+QualifiedName -> QualifiedName . IDENTIFIER
+None,'.','x'
+QualifiedName -> IDENTIFIER
+'a'
 AssignmentOperator -> =
 '='
 UnaryExpression -> LogicalUnaryExpression
@@ -80,108 +88,10 @@ LogicalUnaryExpression -> PostfixExpression
 None
 PostfixExpression -> PrimaryExpression
 None
-PrimaryExpression -> NotJustName
+PrimaryExpression -> QualifiedName
 None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> ArrayAccess
-None
-ArrayAccess -> ComplexPrimary [ Expression ]
-None,'[',None,']'
-Expression -> AssignmentExpression
-None
-AssignmentExpression -> ConditionalExpression
-None
-ConditionalExpression -> ConditionalOrExpression
-None
-ConditionalOrExpression -> ConditionalAndExpression
-None
-ConditionalAndExpression -> InclusiveOrExpression
-None
-InclusiveOrExpression -> ExclusiveOrExpression
-None
-ExclusiveOrExpression -> AndExpression
-None
-AndExpression -> EqualityExpression
-None
-EqualityExpression -> RelationalExpression
-None
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> NotJustName
-None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> INT_LITERAL
-'2'
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> ArrayAccess
-None
-ArrayAccess -> QualifiedName [ Expression ]
-None,'[',None,']'
-Expression -> AssignmentExpression
-None
-AssignmentExpression -> ConditionalExpression
-None
-ConditionalExpression -> ConditionalOrExpression
-None
-ConditionalOrExpression -> ConditionalAndExpression
-None
-ConditionalAndExpression -> InclusiveOrExpression
-None
-InclusiveOrExpression -> ExclusiveOrExpression
-None
-ExclusiveOrExpression -> AndExpression
-None
-AndExpression -> EqualityExpression
-None
-EqualityExpression -> RelationalExpression
-None
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> NotJustName
-None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> INT_LITERAL
-'1'
 QualifiedName -> IDENTIFIER
-'a'
+'b'
 MethodDeclarator -> DeclaratorName ( )
 None,'(',')'
 DeclaratorName -> IDENTIFIER
