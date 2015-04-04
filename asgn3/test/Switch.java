@@ -1,4 +1,4 @@
-public class HelloWorld {
+public class Switch {
 
     public static void main(String[] args) {
     //    int a;
