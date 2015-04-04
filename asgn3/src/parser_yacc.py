@@ -86,6 +86,12 @@ def p_qualifiedname(p):
 		p[0] = p[1] + '.' + p[3]
 	else:
 		p[0] = p[1]
+		if ST.notLocalnotMainClass(p[0]) :
+			typeId, offset = ST.getTypeOffset(p[0])
+			print typeId, offset , "91"
+			temp = ST.getTemp()
+			TAC.emit(temp, 'this', offset, '+*')
+			p[0] = {'type': typeId, 'tempVar' : temp}
 
 
 def p_typedeclaration(p):
@@ -102,6 +108,11 @@ def p_classheader(p):
 	else:
 		p[0] = {'mod': p[1], 'id':p[3], 'class': p[2] }
 
+	global MainClass
+	if p[0]['id'] == MainClass:
+		ST.setMain(True)
+	else:
+		ST.setMain(False)
 	funcName = ST.addNewScope(p[0]['id'], 'class')
 	TAC.generateFuncTac(funcName)
 	ST.chgClass(p[0]['id'])
@@ -451,6 +462,7 @@ def p_SelectionStatement(p):
 			brkList = ST.getbrkList()
 			for addr in brkList:
 				TAC.backPatch([ addr ], TAC.getNextInstr())
+			ST.deleteList()
 	
 	elif len(p) == 11 :
 		TAC.backPatch(p[3].get('trueList',[]), p[5].get('instr',[]) )
@@ -499,6 +511,7 @@ def p_IterationStatement(p):
 			TAC.backPatch([ addr ], TAC.getNextInstr())
 		for addr in contList:
 			TAC.backPatch([ addr ],p[2].get('instr',[]))
+		ST.deleteList()
 		# print ST.getbrkList(), "486"
 
 	elif len(p) == 11:
@@ -513,6 +526,7 @@ def p_IterationStatement(p):
 			TAC.backPatch([ addr ], TAC.getNextInstr())
 		for addr in contList:
 			TAC.backPatch([ addr ],p[6].get('instr',[]))
+		ST.deleteList()
 		# TAC.emit('','',p[2]['instr'],'GOTO')
 
 	elif len(p) == 12:
@@ -529,6 +543,7 @@ def p_IterationStatement(p):
 			TAC.backPatch([ addr ], TAC.getNextInstr())
 		for addr in contList:
 			TAC.backPatch([ addr ],p[7].get('instr',[]))
+		ST.deleteList()
 
 def p_forinit(p):
 	'''ForInit : ExpressionStatements ';'
@@ -702,50 +717,45 @@ def p_MethodCall(p):
 	'''MethodCall : MethodAccess '(' ArgumentList ')'
 					| MethodAccess '(' ')' '''
 
-	if len(p[1].split('.'))==2 and ST.ifClass(p[1].split('.')[0]) :
-		ST.checkExistFuncClass(p[1].split('.')[0], p[1].split('.')[1])
-		temp = ST.getTemp()
-		typeWidth = 0
-		if len(p) == 5:
-			funcName = 'Main.'+p[1]
-			a = 0
-			ST.checkNumArgs(p[1].split('.')[0],p[1].split('.')[1], len(p[3]['expr']))
-
-		#yahan se karna hai
-		#shubham
-		#vineet
-
-
-
-
-
-
-		# 	for params in  p[3]['expr']:
-		# 		if type(params) is not dict:
-		# 			typei = ST.getIdAttr(params, 'type')
-		# 			width = ST.getIdAttr(params, 'width')
-		# 			typeWidth += width
-		# 			ST.checkType(p[1],typei,a)
-		# 			TAC.emit(params,'','','PARAM')
-		# 		else:
-		# 			width = ST.getWidth(params['type'])
-		# 			typeWidth += width
-		# 			ST.checkType(p[1],params['type'],a)
-		# 			TAC.emit(params['tempVar'],'','','PARAM')
-		# 		a += 1
-		# 	TAC.emit(funcName,len(p[3]['expr']),temp,'CALL')
-		# 	TAC.emit(typeWidth,'','','POP')
-		# else:
-		# 	ST.checkNumArgs(p[1],0)
-		# 	funcName = ST.getFuncName(p[1])
-		# 	TAC.emit(funcName,0,temp,'CALL')
-		# methodtype = ST.getReturntype(p[1])
-		# p[0] = {
-		# 	'type' : methodtype,
-		# 	'tempVar' : temp
-		# }
-
-
+	if len(p[1].split('.'))==2 :
+		className = ST.getIdAttr(p[1].split('.')[0], 'type')
+		print className , "707"
+		if ST.ifClass(className) :
+			funcName = p[1].split('.')[1]
+			ST.checkExistFuncClass(className, p[1].split('.')[1])
+			temp = ST.getTemp()
+			typeWidth = 0
+			if len(p) == 5:
+				a = 0
+				ST.checkNumClassArgs(className,p[1].split('.')[1], len(p[3]['expr']))
+				for params in  p[3]['expr']:
+					if type(params) is not dict:
+						typei = ST.getIdAttr(params, 'type')
+						width = ST.getIdAttr(params, 'width')
+						typeWidth += width
+						ST.checkClassType(className,p[1].split('.')[1],typei,a)
+						TAC.emit(params,'','','PARAM')
+					else:
+						width = ST.getWidth(params['type'])
+						typeWidth += width
+						ST.checkClassType(className,p[1].split('.')[1],params['type'],a)
+						TAC.emit(params['tempVar'],'','','PARAM')
+					a += 1
+				TAC.emit(p[1].split('.')[0], '','','PUSH')
+				TAC.emit('Main.'+className+'.'+p[1].split('.')[1],len(p[3]['expr']),temp,'CALL')
+				TAC.emit(typeWidth+4,'','','POP')
+			else:
+				ST.checkNumClassArgs(className,funcName, 0)
+				TAC.emit(p[1].split('.')[0], '','','PUSH')
+				TAC.emit('Main.'+className+'.'+p[1].split('.')[1], 0,temp,'CALL')
+				TAC.emit(4, '','','POP')
+			methodtype = ST.getReturntype(p[1].split('.')[1])
+			p[0] = {
+				'type' : methodtype,
+				'tempVar' : temp
+			}
+		else:
+			raise Exception("Error in method call declaration")
 	else:
 		temp = ST.getTemp()
 		typeWidth = 0
@@ -1287,9 +1297,13 @@ def p_AssignmentExpression(p):
 	if len(p) == 2:
 		p[0] = p[1]
 	else:
-		print p[3]
-		type1 = ST.getIdAttr(p[1], 'type')
-		tempVar1 = p[1]
+		print p[3], "1289"
+		if type(p[1]) is not dict:
+			type1 = ST.getIdAttr(p[1], 'type')
+			tempVar1 = p[1]
+		else:
+			type1 = p[1]['type']
+			tempVar1 = p[1]['tempVar']
 
 		if type(p[3]) is not dict:
 			type2 = ST.getIdAttr(p[3], 'type')
@@ -1362,8 +1376,10 @@ parser = yacc.yacc(debug=True)
 #    print result
 if __name__ == '__main__':
 	try:
-		filename = sys.argv[1]
-		f = open(filename)
+		Filename = sys.argv[1]
+		MainClass = Filename.split('/')[-1].split('.')[0]
+		# print MainClass
+		f = open(Filename)
 		data = f.read()
 		f.close()
 	except EOFError:

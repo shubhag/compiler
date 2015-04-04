@@ -19,6 +19,34 @@ class symbTbl:
 		self.currFunc = 'Main'
 		self.currClass = ''
 		self.prevScope = -1
+		self.mainClass = False
+
+	def notLocalnotMainClass(self, identifier):
+		tempScope = self.mainSymbTbl[self.currScope]['identifier']
+		if self.mainClass == True:
+			return False
+		elif tempScope.has_key(identifier):
+			return False
+		else:
+			scopename = self.mainSymbTbl[self.currScope]['pscope']
+			tempScope = self.mainSymbTbl[scopename]['identifier']
+			if tempScope.has_key(identifier):
+				return True
+			else:
+				return False
+
+	def getTypeOffset(self, identifier):
+		scopename = self.mainSymbTbl[self.currScope]['pscope']
+		tempScope = self.mainSymbTbl[scopename]['identifier']
+		if tempScope.has_key(identifier):
+			return tempScope[identifier]['type'], tempScope[identifier]['offset']
+		else:
+			raise Exception("Something went wrong with classes")
+	def setMain(self, value):
+		self.mainClass = value
+
+	def getMain(self, value):
+		return self.mainClass
 
 	def checkExistFuncClass(self, className, funcName):
 		function = self.mainSymbTbl['Main.'+className]['functions']
@@ -32,6 +60,13 @@ class symbTbl:
 		if function.has_key(funcName):
 			if len(function[funcName]['arglist']) != numArgs :
 				raise Exception('Number of arguments passed in '+ funcName +' call not equal to that in its declration')
+
+	def checkClassType(self,className, funcName, typeId, index):
+		function = self.mainSymbTbl['Main.'+className]['functions']
+		if function.has_key(funcName):
+			if function[funcName]['arglist'][index]['type'] != typeId :
+				raise Exception('TypeCheck Error')
+
 
 	def chgClass(self, name):
 		self.currClass = "Main." + name
@@ -156,6 +191,7 @@ class symbTbl:
 			}	
 	def addClassIdentifier(self, identifier, type, width):
 		tempScope = self.mainSymbTbl[self.currScope]['identifier']
+		self.mainSymbTbl[self.currScope]['offset'] +=  width
 		if not tempScope.has_key(identifier):
 			tempScope[identifier] = {}
 		tempScope[identifier] = {
@@ -270,3 +306,6 @@ class symbTbl:
 
 	def printswitch(self):
 		pprint.pprint(self.switchList)
+
+	def deleteList(self):
+		self.switchList = []

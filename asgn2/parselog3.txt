@@ -20,8 +20,8 @@ MethodBody -> Block
 None
 Block -> { LocalVariableDeclarationsAndStatements }
 '{',None,'}'
-LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement
-None
+LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationsAndStatements LocalVariableDeclarationOrStatement
+None,None
 LocalVariableDeclarationOrStatement -> Statement
 None
 Statement -> ExpressionStatement ;
@@ -74,46 +74,88 @@ MethodCall -> MethodAccess ( )
 None,'(',')'
 MethodAccess -> QualifiedName
 None
-QualifiedName -> QualifiedName . IDENTIFIER
-None,'.','hello'
 QualifiedName -> IDENTIFIER
-'employee'
-MethodDeclarator -> DeclaratorName ( ParameterList )
-None,'(',None,')'
-ParameterList -> Parameter
+'a'
+LocalVariableDeclarationsAndStatements -> LocalVariableDeclarationOrStatement
 None
-Parameter -> TypeSpecifier DeclaratorName
-None,None
-DeclaratorName -> IDENTIFIER
-'args'
-TypeSpecifier -> TypeName Dims
-None,None
-Dims -> OP_DIM
+LocalVariableDeclarationOrStatement -> Statement
 None
-OP_DIM -> [ ]
-'[',']'
-TypeName -> QualifiedName
+Statement -> ExpressionStatement ;
+None,';'
+ExpressionStatement -> Expression
+None
+Expression -> AssignmentExpression
+None
+AssignmentExpression -> UnaryExpression AssignmentOperator AssignmentExpression
+None,None,None
+AssignmentExpression -> ConditionalExpression
+None
+ConditionalExpression -> ConditionalOrExpression
+None
+ConditionalOrExpression -> ConditionalAndExpression
+None
+ConditionalAndExpression -> InclusiveOrExpression
+None
+InclusiveOrExpression -> ExclusiveOrExpression
+None
+ExclusiveOrExpression -> AndExpression
+None
+AndExpression -> EqualityExpression
+None
+EqualityExpression -> RelationalExpression
+None
+RelationalExpression -> ShiftExpression
+None
+ShiftExpression -> AdditiveExpression
+None
+AdditiveExpression -> MultiplicativeExpression
+None
+MultiplicativeExpression -> CastExpression
+None
+CastExpression -> UnaryExpression
+None
+UnaryExpression -> LogicalUnaryExpression
+None
+LogicalUnaryExpression -> PostfixExpression
+None
+PostfixExpression -> PrimaryExpression
+None
+PrimaryExpression -> NotJustName
+None
+NotJustName -> ComplexPrimary
+None
+ComplexPrimary -> ComplexPrimaryNoParenthesis
+None
+ComplexPrimaryNoParenthesis -> INT_LITERAL
+'1'
+AssignmentOperator -> =
+'='
+UnaryExpression -> LogicalUnaryExpression
+None
+LogicalUnaryExpression -> PostfixExpression
+None
+PostfixExpression -> PrimaryExpression
+None
+PrimaryExpression -> QualifiedName
 None
 QualifiedName -> IDENTIFIER
-'String'
+'a'
+MethodDeclarator -> DeclaratorName ( )
+None,'(',')'
 DeclaratorName -> IDENTIFIER
-'main'
+'hello'
 TypeSpecifier -> TypeName
 None
 TypeName -> PrimitiveType
 None
-PrimitiveType -> VOID
-'void'
-Modifiers -> Modifiers Modifier
-None,None
-Modifier -> STATIC
-'static'
+PrimitiveType -> INT
+'int'
 Modifiers -> Modifier
 None
 Modifier -> PUBLIC
 'public'
 ClassHeader -> Modifiers ClassWord IDENTIFIER
-None,None,'HelloWorld'
+None,None,'employee'
 ClassWord -> CLASS
 'class'
 Modifiers -> Modifier

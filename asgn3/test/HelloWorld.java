@@ -1,16 +1,18 @@
 public class employee{
-  int a ;
+  int a,b ;
  // employee(){
  //    a = 1;
  //  }
-  public int hello(){
+  public int hello(int d, int c){
+    a = d;
+    c = b;
     return 1;
   }
 
 }
 public class HelloWorld {
 
-     public static int hello(int b, int c, boolean d) {
+     public static int hello(int b, int c) {
       int a ;
       return 2;
     }
@@ -24,34 +26,37 @@ public class HelloWorld {
       // System.out.println("Hello World");
            // int a = 5;
       // int a;
-      // a =newmain();
+      int a, c,b;
+      a =hello(a,c);
+      a = ( a == 1) ? a : b ;
       employee abc = new employee();
+      a =abc.hello(a,c);
       // int a ;
-      // while(a==1){
-      //   if(a==1){
-      //     break;
-      //   }else{
-      //     a= 1;
-      //     continue;
-      //   }
-      // }
-      // for(a=0;a<5;a++){
-      //   if(a==1){
-      //     a = 3;
-      //     continue;
-      //   } else{
-      //     a = 2;
-      //     break;
-      //   }
-      // }
-      // do{
-      //    if(a==1){
-      //     break;
-      //   }else{
-      //     a= 1;
-      //     continue;
-      //   }
-      // }while(a==1);
+      while(a==1){
+        if(a==1){
+          break;
+        }else{
+          a= 1;
+          continue;
+        }
+      }
+      for(a=0;a<5;a++){
+        if(a==1){
+          a = 3;
+          continue;
+        } else{
+          a = 2;
+          break;
+        }
+      }
+      do{
+         if(a==1){
+          break;
+        }else{
+          a= 1;
+          continue;
+        }
+      }while(a==1);
     }
     //  public static int hello1(int b) {
     //   int a ;
