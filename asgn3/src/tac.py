@@ -7,7 +7,14 @@ class threeAddressCode:
 		self.ST = ST
 
 	def printTAC(self):
-		pprint.pprint(self.code)
+		# pprint.pprint(self.code)
+		for function in self.code:
+			if len(self.code[function]) :
+				pprint.pprint(function + " :")
+				lineno = -1
+				for taccode in self.code[function]:
+					print(str(lineno) + ":\t"+str(taccode[0]) + '\t' + str(taccode[1]) + '\t' + str(taccode[2]) + '\t' + str(taccode[3]) )
+					lineno += 1
 
 	def printSymbTbl(self):
 		self.ST.printSymbTbl()
@@ -44,10 +51,6 @@ class threeAddressCode:
 		list2.extend(list1)
 		return list2
 
-	# def backPatch(self, locList, location):
-	# 	currScope = self.ST.getCurrScopeName()
- #        for variable in locList:
- #            self.code[currScope][variable][2] = location
 	def backPatch(self, lList, loc):
 		currScope = self.ST.currFunc
 		for pos in lList:

@@ -136,7 +136,6 @@ class symbTbl:
 
 	#error in scope
 	def checkscope_id(self, identifier, currScope):
-		print currScope
 		if currScope == 'Main' or currScope == None:
 			return None
 		tempScope = self.mainSymbTbl[currScope]['identifier']
@@ -157,7 +156,6 @@ class symbTbl:
 			'offset' : 0,
 			'name' : funcName
 		}
-		# print newSymbTbl, "115"
 		self.mainSymbTbl[pScope + "." + funcName] = newSymbTbl
 		self.currScope = pScope + "." + funcName
 		if functype == 'function' or functype =='constructor':
@@ -220,13 +218,12 @@ class symbTbl:
 	def ifClass(self, className):
 		cname = 'Main.'+ className;
 		if not self.mainSymbTbl.has_key(cname):
-			print False
+			return False
 		else:
 			return True
 
 	def checkForClass(self, className):
 		cname = 'Main.'+ className;
-		# print cname, self.mainSymbTbl[cname]
 		if not self.mainSymbTbl.has_key(cname):
 			raise Exception("Class not defined before use")
 		else:
@@ -242,7 +239,6 @@ class symbTbl:
 		elif type in ['FUNCTION', 'CALLBACK', 'String']:
 			width = 4					#address size
 		else:
-			# print type, type.split('_') , "236"
 			if type.split('_')[0] == 'array':
 				width = 4
 			else:
@@ -273,7 +269,6 @@ class symbTbl:
 		return existence
 
 	def change_scope(self):
-		# print self.currScope, self.currFunc, True 
 		# if self.currScope == self.currFunc :
 		self.currScope = self.mainSymbTbl[self.currScope]['pscope']
 		return self.currScope

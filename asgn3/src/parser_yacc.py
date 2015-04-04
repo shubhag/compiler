@@ -10,9 +10,8 @@ TAC = tac.threeAddressCode(ST)
 
 def p_compilationunit(p):
 	'''CompilationUnit : ProgramFile '''
-	ST.printSymbTbl()
+	# ST.printSymbTbl()
 	TAC.printTAC()
-	ST.printswitch()
 	# TAC.emit('','',-1,'END')
 
 
@@ -24,7 +23,8 @@ def p_typespeciifier(p):
 		p[0] = p[1]
 	else:
 		p[0] = 'array_'+p[1]+'_' +str(p[2])
-		print p[0], "27"
+
+
 def p_typename(p):
 	'''TypeName : PrimitiveType 
 				| QualifiedName '''
@@ -89,7 +89,6 @@ def p_qualifiedname(p):
 		p[0] = p[1]
 		if ST.notLocalnotMainClass(p[0]) :
 			typeId, offset = ST.getTypeOffset(p[0])
-			# print typeId, offset , "91"
 			temp = ST.getTemp()
 			TAC.emit(temp, 'this', offset, '+*')
 			p[0] = {'type': typeId, 'tempVar' : temp}
@@ -513,7 +512,6 @@ def p_IterationStatement(p):
 		for addr in contList:
 			TAC.backPatch([ addr ],p[2].get('instr',[]))
 		ST.deleteList()
-		# print ST.getbrkList(), "486"
 
 	elif len(p) == 11:
 		TAC.backPatch(p[4].get('nList',[]), p[6].get('instr',[]))
@@ -567,8 +565,6 @@ def p_ForIncr(p):
 				|'''
 
 	if len(p) == 2:
-		print p[0]
-		print "chal"
 		p[0] ={
 			'nList' : p[1].get('nList',[])
 		}
@@ -778,7 +774,6 @@ def p_MethodCall(p):
 
 	if len(p[1].split('.'))==2 :
 		className = ST.getIdAttr(p[1].split('.')[0], 'type')
-		print className , "707"
 		if ST.ifClass(className) :
 			funcName = p[1].split('.')[1]
 			ST.checkExistFuncClass(className, p[1].split('.')[1])
@@ -900,7 +895,6 @@ def p_ClassAllocationExpression(p):
 								| NEW TypeName '('              ')' '''
 	# if len(p) == 5:
 	offset = ST.checkForClass(p[2])
-	# print offset
 	if len(p) == 5 :
 		temp = ST.getTemp()
 		TAC.emit(temp ,offset,'','=')
@@ -1034,7 +1028,6 @@ def p_LogicalUnaryExpression(p):
 	if len(p) == 2 :
 		p[0] = p[1]
 	else :
-		# print p[2]
 		temp = ST.getTemp()
 		if type(p[2]) is not dict:
 			typeId = ST.getIdAttr(p[2], 'type')
@@ -1464,16 +1457,8 @@ logging.basicConfig(
 log = logging.getLogger()
 
 # Build the parser
-parser = yacc.yacc(debug=True)
-#parser.parse(debug=True)
-# while True:
-#    try:
-#        s = raw_input('Input:')
-#    except EOFError:
-#        break
-#    if not s: continue
-#    result = parser.parse(s)
-#    print result
+parser = yacc.yacc()
+
 if __name__ == '__main__':
 	try:
 		Filename = sys.argv[1]
@@ -1487,7 +1472,7 @@ if __name__ == '__main__':
     	# sys.stdout.write("Reading from standard input (type EOF to end):\n")
     	# data = sys.stdin.read()
     	if data:
-    		result = parser.parse(data,debug=log)
+    		result = parser.parse(data)
     		print result
 
    
