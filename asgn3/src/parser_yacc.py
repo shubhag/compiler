@@ -705,7 +705,6 @@ def p_boolLit(p):
 def p_arrayaccess(p):
 	''' ArrayAccess : QualifiedName '[' Expression ']'
 					| ComplexPrimary '[' Expression ']' '''
-	print p[1], "708"
 	if type(p[1]) is not dict:
 		typeId = ST.getIdAttr(p[1], 'type')
 		dimension = ST.getIdAttr(p[1], 'dimension')
@@ -715,6 +714,13 @@ def p_arrayaccess(p):
 		dimension = p[1]['dimension']
 		tempVal = p[1]['tempVar']
 	if typeId.split('_')[0] == 'array' :
+		if type(p[3]) is not dict:
+			type3 = ST.getIdAttr(p[3], 'type')
+			val = p[3]
+			p[3] = {
+				'type' : type3,
+				'tempVar': val
+			}
 		if not  p[3]['type'] == 'int':
 			raise Exception('Array indices must be integers')
 
@@ -814,7 +820,13 @@ def p_MethodCall(p):
 		typeWidth = 0
 		if len(p) == 5:
 			if p[1] == "System.out.println":
-				TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
+				if len(p[3]['expr']) > 1:
+					raise Exception('Multiple arguments in System.out.println not allowed')
+				expr = p[3]['expr'][0]
+				if type(expr) is dict:
+					TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
+				else:
+					TAC.emit('PRINT',p[3]['expr'][0],ST.getIdAttr(expr,'type'),'')
 			else:
 				funcName = ST.getFuncName(p[1])
 				a = 0
