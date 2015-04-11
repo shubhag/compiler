@@ -526,7 +526,7 @@ if __name__ == '__main__':
     	# data = sys.stdin.read()
     	if data:
     		result = parser.parse(data,debug=log)
-    		print result
+    		# print result
 
 call(["bash", "script.sh"])
 

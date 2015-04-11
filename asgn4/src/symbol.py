@@ -10,7 +10,8 @@ class symbTbl:
 				'pscope':	None,		#parent scope
 				'retype':	'undefined',
 				'functions': {} ,
-				'identifier' : {}
+				'identifier' : {},
+				'temp' : {}
 			}
 		}
 		self.tempCount = 0 
@@ -159,6 +160,7 @@ class symbTbl:
 			'retype' : 'undefined',
 			'identifier' : {},
 			'functions' : {},
+			'temp' : {},
 			'offset' : 0,
 			'name' : funcName
 		}
@@ -283,6 +285,34 @@ class symbTbl:
 		temp = "_t" + str(self.tempCount)
 		self.tempCount += 1
 		return temp
+
+	def addTempAttr(self, temporary, type):
+		tempScope = self.mainSymbTbl[self.currFunc]['temp']
+		width = 0 
+		
+		if type in ['boolean', 'char']:
+			width = 1
+		elif type == 'int':
+			width = 4
+		elif type in ['float', 'double']:
+			width = 8
+		elif type in ['FUNCTION', 'CALLBACK', 'String']:
+			width = 4					#address size
+		else:
+			if type.split('_')[0] == 'array':
+				width = 4
+			else:
+				width = 0
+
+		self.mainSymbTbl[self.currFunc]['offset'] +=  width
+		
+		if not tempScope.has_key(temporary):
+			tempScope[temporary] = {}
+		tempScope[temporary] = {
+				'width'	:	width,
+				'type'	:	type,
+				'offset' : self.mainSymbTbl[self.currFunc]['offset']
+			}	
 
 	#switch
 

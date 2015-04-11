@@ -11,7 +11,7 @@ TAC = tac.threeAddressCode(ST)
 def p_compilationunit(p):
 	'''CompilationUnit : ProgramFile '''
 	# ST.printSymbTbl()
-	TAC.printTAC()
+	# TAC.printTAC()
 	# TAC.emit('','',-1,'END')
 
 
@@ -30,10 +30,6 @@ def p_typename(p):
 				| QualifiedName '''
 
 	p[0] = p[1]
-
-def p_classnamelist(p):
-	'''ClassNameList : QualifiedName
-					| ClassNameList ',' QualifiedName '''
 
 def p_primitivetype(p):
 	'''PrimitiveType : BOOLEAN 
@@ -90,6 +86,7 @@ def p_qualifiedname(p):
 		if ST.notLocalnotMainClass(p[0]) :
 			typeId, offset = ST.getTypeOffset(p[0])
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, typeId)
 			TAC.emit(temp, 'this', offset, '+*')
 			p[0] = {'type': typeId, 'tempVar' : temp}
 
@@ -325,9 +322,6 @@ def p_staticinitializer(p):
 def p_nonstaticini(p):
 	'''NonStaticInitializer : Block '''
 
-def p_extends(p):
-	'''Extends : EXTENDS TypeName
-				| Extends ',' TypeName '''
 
 def p_block(p):
 	'''Block : Lparen LocalVariableDeclarationsAndStatements Rparen
@@ -417,6 +411,7 @@ def p_LabelStatement(p):
 		else:
 			p3 = p[3]
 		temp = ST.getTemp()
+		ST.addTempAttr(temp,'int')
 		t = ST.getListVar()
 		TAC.emit(temp,t,p3,'!=')
 		ST.addIncaselist(TAC.getNextInstr())
@@ -611,16 +606,6 @@ def p_JumpStatement(p):
 				typeId = p[2]['type']
 				ST.checkRetType(typeId,scope)
 				TAC.emit(p[2]['tempVar'],'','','RETURN')
-def p_Catches(p):
-	'''Catches : Catch
-				| Catches Catch '''
-
-def p_Catch(p):
-	'''Catch : CatchHeader Block '''
-
-def p_catchheader(p):
-	'''CatchHeader : CATCH '(' TypeSpecifier IDENTIFIER ')'
-					| CATCH '(' TypeSpecifier ')' '''
 
 def p_PrimaryExpression(p):
 	'''PrimaryExpression :  NotJustName '''
@@ -630,11 +615,10 @@ def p_primaryexpr(p):
 	'''PrimaryExpression : QualifiedName '''
 	p[0] = p[1]
 	if (type(p[1]) is not dict) and (len(p[1].split('.')) == 2):
-		print p[1], "633"
 		className = ST.getIdAttr(p[1].split('.')[0], 'type')
 		typeId, offset = ST.checkClassId(className, p[1].split('.')[1]) 
-		print typeId, offset
 		temp = ST.getTemp()
+		ST.addTempAttr(temp, typeId)
 		TAC.emit(temp,p[1].split('.')[0], offset,'+*' )
 		p[0] = {
 			'type' : typeId,
@@ -676,42 +660,47 @@ def p_IntLit(p):
 	'''Integer_LIT : INT_LITERAL '''
 
 	temp = ST.getTemp()
+	ST.addTempAttr(temp, 'int')
 	p[0] = {'type':'int', 'tempVar': temp }
-	TAC.emit(temp,p[1],'','=')
+	TAC.emit(temp,'',p[1],'=')
 
 def p_FloatLit(p):
 	''' Float_LIT : FLOAT_LITERAL '''
 
 	temp = ST.getTemp()
+	ST.addTempAttr(temp, 'float')
 	p[0] = {'type':'float', 'tempVar': temp}
-	TAC.emit(temp,p[1],'','=')
+	TAC.emit(temp,'',p[1],'=')
 
 def p_charlit(p):
 	''' Char_LIT : CHAR_LITERAL '''
 	
 	temp = ST.getTemp()
+	ST.addTempAttr(temp, 'char')
 	p[0] = { 'type':'char', 'tempVar': temp}
-	TAC.emit(temp,p[1],'','=')
+	TAC.emit(temp,'',p[1],'=')
 
 def p_stringLit(p):
 	''' String_LIT : STRING_LITERAL '''
 	
 	temp = ST.getTemp()
+	ST.addTempAttr(temp, 'String')
 	p[0] = {'type':'String', 'tempVar': temp}
-	TAC.emit(temp,p[1],'','=')
+	TAC.emit(temp,'',p[1],'=')
 
 def p_boolLit(p):
 	''' Bool_LIT : BOOL '''
 	
 	temp = ST.getTemp()
+	ST.addTempAttr(temp, 'boolean')
 	p[0] = {'type':'boolean', 'tempVar': temp}
-	TAC.emit(temp,p[1],'','=')
+	TAC.emit(temp,'',p[1],'=')
 
 	if p[1] == True :
 		p[0]['trueList'] = [TAC.getNextInstr()]
 	else :
 		p[0]['falseList'] = [TAC.getNextInstr()]
-	TAC.emit('','','','CondGOTO')
+	TAC.emit('','','','GOTO')
 
 def p_arrayaccess(p):
 	''' ArrayAccess : QualifiedName '[' Expression ']'
@@ -740,14 +729,17 @@ def p_arrayaccess(p):
 			typeofarray = typeId.split('_')[1]
 			width =ST.getWidth(typeofarray)
 			temp1 = ST.getTemp()
+			ST.addTempAttr(temp1, 'int')
 			if type(p[1]) is not dict:
 				TAC.emit(temp1, p[3]['tempVar'], width, '*')
 				temp = ST.getTemp()
+				ST.addTempAttr(temp, 'int')
 				TAC.emit(temp, tempVal, temp1, '+*')
 			else:
 				TAC.emit(temp1, p[1]['tempVar'], p[3]['tempVar'], '+' )
 				TAC.emit(temp1 ,temp1, width,'*' )
 				temp = ST.getTemp()
+				ST.addTempAttr(temp, 'int')
 				TAC.emit(temp, p[1]['arrayAdd'], temp1, '+*')
 			p[0] = {
 				'type': typeofarray,
@@ -756,6 +748,7 @@ def p_arrayaccess(p):
 		else:
 			del dimension[0]
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, 'int')
 			if type(p[1]) is not dict:
 				TAC.emit(temp ,p[3]['tempVar'], dimension[0],'*' )
 			else:
@@ -834,9 +827,9 @@ def p_MethodCall(p):
 					raise Exception('Multiple arguments in System.out.println not allowed')
 				expr = p[3]['expr'][0]
 				if type(expr) is dict:
-					TAC.emit('PRINT',p[3]['expr'][0]['tempVar'],p[3]['expr'][0]['type'],'')
+					TAC.emit(p[3]['expr'][0]['tempVar'],'',p[3]['expr'][0]['type'],'PRINT')
 				else:
-					TAC.emit('PRINT',p[3]['expr'][0],ST.getIdAttr(expr,'type'),'')
+					TAC.emit(p[3]['expr'][0],'',ST.getIdAttr(expr,'type'),'PRINT')
 			else:
 				funcName = ST.getFuncName(p[1])
 				a = 0
@@ -912,7 +905,8 @@ def p_ClassAllocationExpression(p):
 	offset = ST.checkForClass(p[2])
 	if len(p) == 5 :
 		temp = ST.getTemp()
-		TAC.emit(temp ,offset,'','=')
+		ST.addTempAttr(temp, 'int')
+		TAC.emit(temp ,'',offset,'=')
 		TAC.emit(temp,'','','PARAM')
 		temp = ST.getTemp()
 		TAC.emit('_ALLOC',1,temp,'CALL')
@@ -932,7 +926,8 @@ def p_ArrayAllocationExpression(p):
 		dimension = len(p[3])
 		typeWidth = ST.getWidth(p[2])
 		temp = ST.getTemp()
-		TAC.emit(temp,typeWidth,'','=' ) 
+		ST.addTempAttr(temp, 'int')
+		TAC.emit(temp,'',typeWidth,'=' ) 
 		stringDim = []
 		for dim in p[3]:
 			stringDim.append(dim['tempVar'])
@@ -988,8 +983,10 @@ def p_RealPostfixExpression(p):
 	if typeId != 'int' :
 		raise Exception("Identifier " + p[1] + " not of type integer")
 	temp1 = ST.getTemp()
-	TAC.emit(temp1, 1,'','=')
+	ST.addTempAttr(temp1, 'int')
+	TAC.emit(temp1,'', 1,'=')
 	temp2 = ST.getTemp()
+	ST.addTempAttr(temp2, 'int')
 	TAC.emit(temp2, temp1, p[1],p[2][0])
 	TAC.emit(p[1],temp2,'','=')
 	p[0] = {
@@ -1019,14 +1016,17 @@ def p_UnaryExpression(p):
 				raise Exception("Type check error")
 			else:
 				TAC.emit(temp, p[2]['tempVar'], '', p[1])
+		ST.addTempAttr(temp, typeId)
 		p[0] = { 'type' : typeId , 'tempVar' : temp } 
 	else:
 		typeId = ST.getIdAttr(p[2], 'type')
 		if typeId != 'int' :
 			raise Exception("Identifier " + p[2] + " not of type integer")
 		temp1 = ST.getTemp()
-		TAC.emit(temp1, 1,'','=')
+		ST.addTempAttr(temp1, 'int')
+		TAC.emit(temp1,'',1,'=')
 		temp2 = ST.getTemp()
+		ST.addTempAttr(temp2, 'int' )
 		TAC.emit(temp2, temp1, p[2],p[1][0])
 		TAC.emit(p[2],temp2,'','=')
 		p[0] = {
@@ -1058,6 +1058,7 @@ def p_LogicalUnaryExpression(p):
 			else:
 				TAC.emit(temp, p[2]['tempVar'], '', p[1])
 		p[0] = { 'type' : 'int' , 'tempVar' : temp } 
+		ST.addTempAttr(temp, 'int')
 
 def p_LogicalUnaryOperator(p):
 	'''LogicalUnaryOperator : '~'
@@ -1107,6 +1108,7 @@ def p_MultiplicativeExpression(p):
 
 		if type1 == type2 :
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, type1)
 			p[0] = {'type': type1 , 'tempVar' : temp}
 			TAC.emit(temp, tempVar1, tempVar2, p[2])
 		else :
@@ -1136,6 +1138,7 @@ def p_AdditiveExpression(p):
 
 		if type1 == type2 and (type1 == 'int' or type1 == 'float') :
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, type1)
 			p[0] = {'type': type1 , 'tempVar' : temp}
 			TAC.emit(temp, tempVar1, tempVar2, p[2])
 		else :
@@ -1165,6 +1168,7 @@ def p_ShiftExpression(p):
 
 		if type1 == type2 and (type1 == 'int') :
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, type1)
 			p[0] = {'type': type1 , 'tempVar' : temp}
 			TAC.emit(temp, tempVar1, tempVar2, p[2])
 		else :
@@ -1181,6 +1185,7 @@ def p_RelationalExpression(p):
 
 	else: 
 		temp = ST.getTemp()
+		ST.addTempAttr(temp, 'int')
 		if type(p[1]) is not dict:
 			temp1 = p[1]
 		else:
@@ -1207,6 +1212,7 @@ def p_EqualityExpression(p):
 		p[0] = p[1]
 	else: 
 		temp = ST.getTemp()
+		ST.addTempAttr(temp, 'int')
 		if type(p[1]) is not dict:
 			temp1 = p[1]
 		else:
@@ -1249,6 +1255,7 @@ def p_AndExpression(p):
 
 		if type1 == type2 and (type1 == 'int') :
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, type1)
 			p[0] = {'type': type1 , 'tempVar' : temp}
 			TAC.emit(temp, tempVar1, tempVar2, p[2])
 		else :
@@ -1276,6 +1283,7 @@ def p_ExclusiveOrExpression(p):
 
 		if type1 == type2 and (type1 == 'int' ) :
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, type1)
 			p[0] = {'type': type1 , 'tempVar' : temp}
 			TAC.emit(temp, tempVar1, tempVar2, p[2])
 		else :
@@ -1303,6 +1311,7 @@ def p_InclusiveOrExpression(p):
 
 		if type1 == type2 and (type1 == 'int' ) :
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, type1)
 			p[0] = {'type': type1 , 'tempVar' : temp}
 			TAC.emit(temp, tempVar1, tempVar2, p[2])
 		else :
@@ -1392,6 +1401,7 @@ def p_mark(p):
 	else:
 		temp = p[-1]['tempVar']
 		typeVar = p[-1]['type']
+	ST.addTempAttr(tempVar, typeVar)
 	TAC.emit(tempVar,temp,'','=')
 	instr = TAC.getNextInstr()
 	TAC.emit('','','','GOTO')
@@ -1429,6 +1439,7 @@ def p_AssignmentExpression(p):
 				TAC.emit(tempVar1, tempVar2,'', p[2])
 			else:
 				temp = ST.getTemp()
+				ST.addTempAttr(temp, type1)
 				TAC.emit(temp, tempVar1,tempVar2, p[2][0])
 				TAC.emit(tempVar1, temp, '', '=')
 
@@ -1474,20 +1485,27 @@ log = logging.getLogger()
 # Build the parser
 parser = yacc.yacc()
 
+def runParser(filename):
+	global MainClass
+	# try:
+	Filename = filename
+	MainClass = Filename.split('/')[-1].split('.')[0]
+	data = open(Filename).read()
+	# except EOFError:
+	# 	print "Please give testfile as well"
+	if data:
+		result = parser.parse(data)
+		return ST,TAC
+	else:
+		return None, None
+
 if __name__ == '__main__':
+	MainClass = ''
 	try:
 		Filename = sys.argv[1]
 		MainClass = Filename.split('/')[-1].split('.')[0]
-		# print MainClass
-		f = open(Filename)
-		data = f.read()
-		f.close()
+		data = open(Filename).read()
 	except EOFError:
-		print "asedfgh"
-    	# sys.stdout.write("Reading from standard input (type EOF to end):\n")
-    	# data = sys.stdin.read()
+		print "Please give testfile as well"
     	if data:
     		result = parser.parse(data)
-    		# print result
-
-   

@@ -1,7 +1,7 @@
 public class Loop {
 
     public static void main(String[] args) {
-    int sum,i;
+    int sum,i,j;
     sum = 0;
     i = 1;
 
@@ -19,6 +19,21 @@ public class Loop {
     {
         sum = sum + i;
         i = i + 1;
+        if(i>45)
+        {
+         continue;
+        }
+        if(i>48)
+        {
+            break;
+        }
+        for(j = 1;j < 3;j++)
+        {
+            System.out.println(j);
+            if(j==1){
+                break;
+            }
+        }
     }
     System.out.println(sum);
     System.out.println(i);
