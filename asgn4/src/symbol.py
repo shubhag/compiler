@@ -273,7 +273,10 @@ class symbTbl:
 		return tempScope[attrName]
 
 	def getTypeAssembly(self, identifier, function):
-		return self.mainSymbTbl[function]['identifier'][identifier]['type']
+		if identifier[0] == '_':
+			return self.mainSymbTbl[function]['temp'][identifier]['type']
+		else:	
+			return self.mainSymbTbl[function]['identifier'][identifier]['type']
 
 	def getIdAttr(self, identifier, attrName):
 		idEntry = self.lookup_for_id(identifier)
