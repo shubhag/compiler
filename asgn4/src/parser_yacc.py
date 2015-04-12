@@ -207,6 +207,7 @@ def p_variabledeclarator(p):
 			TAC.emit(p[1],tempVar1,'','=')
 			if type1.split('_')[0] == 'array':
 				ST.addIdentifierAttr(p[1], 'dimension', p[3]['dimension'] )
+				ST.changeWidth(p[1], p[3]['width'])
 		else:
 			raise Exception("Type Check in variable declaration of " + p[1])
 
@@ -661,7 +662,7 @@ def p_IntLit(p):
 
 	temp = ST.getTemp()
 	ST.addTempAttr(temp, 'int')
-	p[0] = {'type':'int', 'tempVar': temp }
+	p[0] = {'type':'int', 'tempVar': temp , 'tempVal': p[1]}
 	TAC.emit(temp,'',p[1],'=')
 
 def p_FloatLit(p):
@@ -733,16 +734,20 @@ def p_arrayaccess(p):
 			if type(p[1]) is not dict:
 				TAC.emit(temp1, p[3]['tempVar'], width, '*')
 				temp = ST.getTemp()
-				ST.addTempAttr(temp, 'int')
+				ST.addTempAttr(temp, 'pointer')
 				TAC.emit(temp, tempVal, temp1, '+*')
+				temp = ST.getTemp()
+				ST.addTempAttr(temp, 'int')
+				TAC.emit(temp, tempVal, temp1, '=*')
+				#START FROM HERE
 			else:
 				TAC.emit(temp1, p[1]['tempVar'], p[3]['tempVar'], '+' )
 				TAC.emit(temp1 ,temp1, width,'*' )
 				temp = ST.getTemp()
-				ST.addTempAttr(temp, 'int')
+				ST.addTempAttr(temp, 'pointer')
 				TAC.emit(temp, p[1]['arrayAdd'], temp1, '+*')
 			p[0] = {
-				'type': typeofarray,
+				'type': 'pointer',
 				'tempVar': temp
 				}
 		else:
@@ -786,6 +791,7 @@ def p_MethodCall(p):
 			funcName = p[1].split('.')[1]
 			ST.checkExistFuncClass(className, p[1].split('.')[1])
 			temp = ST.getTemp()
+			ST.addTempAttr(temp, 'int')
 			typeWidth = 0
 			if len(p) == 5:
 				a = 0
@@ -804,13 +810,13 @@ def p_MethodCall(p):
 						TAC.emit(params['tempVar'],'','','PARAM')
 					a += 1
 				TAC.emit(p[1].split('.')[0], '','','PARAM')
-				TAC.emit('Main.'+className+'.'+p[1].split('.')[1],len(p[3]['expr'])+1,temp,'CALL')
-				TAC.emit(typeWidth+4,'','','POP')
+				TAC.emit('Main.'+className+'.'+p[1].split('.')[1],typeWidth+4,temp,'CALL')
+				# TAC.emit(typeWidth+4,'','','POP')
 			else:
 				ST.checkNumClassArgs(className,funcName, 0)
 				TAC.emit(p[1].split('.')[0], '','','PARAM')
-				TAC.emit('Main.'+className+'.'+p[1].split('.')[1], 1,temp,'CALL')
-				TAC.emit(4, '','','POP')
+				TAC.emit('Main.'+className+'.'+p[1].split('.')[1], 4,temp,'CALL')
+				# TAC.emit(4, '','','POP')
 			methodtype = ST.getReturntype(p[1].split('.')[1])
 			p[0] = {
 				'type' : methodtype,
@@ -820,6 +826,7 @@ def p_MethodCall(p):
 			raise Exception("Error in method call declaration")
 	else:
 		temp = ST.getTemp()
+		ST.addTempAttr(temp, 'int')
 		typeWidth = 0
 		if len(p) == 5:
 			if p[1] == "System.out.println":
@@ -848,8 +855,8 @@ def p_MethodCall(p):
 						ST.checkType(p[1],params['type'],a)
 						TAC.emit(params['tempVar'],'','','PARAM')
 					a += 1
-				TAC.emit(funcName,len(p[3]['expr']),temp,'CALL')
-				TAC.emit(typeWidth,'','','POP')
+				TAC.emit(funcName,typeWidth,temp,'CALL')
+				# TAC.emit(typeWidth,'','','POP')
 		else:
 			ST.checkNumArgs(p[1],0)
 			funcName = ST.getFuncName(p[1])
@@ -909,8 +916,9 @@ def p_ClassAllocationExpression(p):
 		TAC.emit(temp ,'',offset,'=')
 		TAC.emit(temp,'','','PARAM')
 		temp = ST.getTemp()
-		TAC.emit('_ALLOC',1,temp,'CALL')
-		TAC.emit(4,'','','POP')
+		ST.addTempAttr(temp, 'int')
+		TAC.emit('_ALLOC',4,temp,'CALL')
+		# TAC.emit(4,'','','POP')
 		p[0] = {
 			'type': p[2],
 			'tempVar' : temp
@@ -925,25 +933,30 @@ def p_ArrayAllocationExpression(p):
 	else:
 		dimension = len(p[3])
 		typeWidth = ST.getWidth(p[2])
-		temp = ST.getTemp()
-		ST.addTempAttr(temp, 'int')
-		TAC.emit(temp,'',typeWidth,'=' ) 
+		# temp = ST.getTemp()
+		# ST.addTempAttr(temp, 'int')
+		# TAC.emit(temp,'',typeWidth,'=' ) 
 		stringDim = []
+		arrayWidth = typeWidth;
 		for dim in p[3]:
 			stringDim.append(dim['tempVar'])
 			if dim['type'] != 'int':
 				raise Exception('Array indices must be integers')
-			TAC.emit(temp,dim['tempVar'],temp,'*' ) 
+			# TAC.emit(temp,dim['tempVar'],temp,'*' ) 
+			arrayWidth = arrayWidth * int(dim['tempVal'])
 			# width =  dim['tempVar'] * width
 		typeId = 'array_' + p[2] + '_' + str(dimension)
-		TAC.emit(temp,'','','PARAM')
+		# TAC.emit(temp,'','','PARAM')
 		temp2 = ST.getTemp()
-		TAC.emit('_ALLOC',1,temp2,'CALL')
-		TAC.emit(4,'','','POP')
+		ST.addTempArrayAttr(temp2, arrayWidth, 'width')
+		# ST.addTempAttr(temp2, 'int')
+		# TAC.emit('_ALLOC',1,temp2,'CALL')
+		# TAC.emit(4,'','','POP')
 		p[0] = {
 			'type' : typeId,
 			'tempVar' : temp2,
-			'dimension' : stringDim
+			'dimension' : stringDim,
+			'width': arrayWidth
 		} 
 
 def p_DimExprs(p):
@@ -1430,7 +1443,12 @@ def p_AssignmentExpression(p):
 			type2 = p[3]['type']
 			tempVar2 = p[3]['tempVar']
 
-		if type1 != type2:
+		if type1 == 'pointer':
+			if p[2] == '=':
+				TAC.emit(tempVar1, tempVar2,'', '*=')
+
+			p[0] = {'type':'pointer', 'tempVar': tempVar1}
+		elif type1 != type2:
 			raise Exception("Type error in assignment expression")
 		else:
 			# temp = ST.getTemp()

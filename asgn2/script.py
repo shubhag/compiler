@@ -19,12 +19,8 @@ with open("parselog3.txt", "r") as f:
 			rhs_string = "{ ";
 			for token in rhs_tokens :
 				if len(token) == 1 :
-					value = node_terminals.get(token, 0)
-					node_terminals[token] = value + 1 ;
-					tree_file.write("\t"+ "\"" + token+str(node_terminals[token])+ "\"" +" [label = \"" +token+ "\"] \n")
-					rhs_string = rhs_string + " " + "\"" + token + str(node_terminals[token]) + "\"";
-					# token = "\"" + token + "\""
-					# rhs_string = rhs_string + " " + token;
+					token = "\"" + token + "\""
+					rhs_string = rhs_string + " " + token;
 				else :
 					value = node_terminals.get(token, 0)
 					node_terminals[token] = value + 1 ;

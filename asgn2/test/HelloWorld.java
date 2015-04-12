@@ -28,10 +28,7 @@ public class employee{
 	// employee(){
 	// 	// a = 1;
 	// }
-  public int hello(){
-  	// int[] a = new int[8] ;
-  	 b = a.x();
-  }
+	int ia = 4 ;
 }
 // public class employee{
 //   // int a ;

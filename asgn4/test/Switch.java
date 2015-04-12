@@ -1,24 +1,24 @@
 public class Switch {
 
     public static void main(String[] args) {
-        char grade = 'C';
-
+        char grade = 'D';
+        // int grade = 4
         switch(grade)
         {
          case 'A' :
-            System.out.println("Excellent!"); 
+            System.out.println(1); 
             break;
          case 'B' :
          case 'C' :
-            System.out.println("Well done");
+            System.out.println(2);
             break;
          case 'D' :
-            System.out.println("You passed");
+            System.out.println(3);
          case 'F' :
-            System.out.println("Better try again");
+            System.out.println(4);
             break;
          default :
-            System.out.println("Invalid grade");
+            System.out.println(5);
         }
 }
 }

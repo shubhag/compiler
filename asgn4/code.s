@@ -1,42 +1,41 @@
 .section .data
 .section .text
 .globl _start
+
+ 
 _start: 
-subl $36, %esp
-movl $5, %eax
-movl %eax, 12(%esp)
-movl $3, %eax
-movl %eax, 16(%esp)
-movl 12(%esp), %eax
-divl 16(%esp)
-movl %edx, 20(%esp)
-movl 20(%esp), %eax
-movl %eax, 8(%esp)
-movl $5, %eax
-movl %eax, 24(%esp)
-movl $5, %eax
-movl %eax, 28(%esp)
-movl $1, %eax
-movl %eax, 32(%esp)
-movl 24(%esp), %eax
-cmpl 28(%esp), %eax
-jne Label1
+subl $844, %esp
+movl $101, %eax
+movl %eax, 4(%esp)
+movl 408(%esp), %eax
+movl %eax, 812(%esp)
 movl $0, %eax
-movl %eax, 32(%esp)
-Label1: 
-movl 32(%esp), %eax
-cmpl $1, %eax
-je LabelGoto0
-jmp LabelGoto1
-LabelGoto0: 
-movl $1, %eax
-movl %eax, 36(%esp)
-movl 36(%esp), %eax
-movl %eax, 8(%esp)
-LabelGoto1: 
-pushl 8(%esp)
+movl %eax, 816(%esp)
+movl 816(%esp), %eax
+imull $4, %eax
+movl %eax, 820(%esp)
+movl $812, %eax
+subl 820(%esp), %eax
+addl %esp, %eax
+movl %eax, 824(%esp)
+movl $123, %eax
+movl %eax, 828(%esp)
+movl 824(%esp), %ebx
+movl %eax, (%ebx)
+movl $0, %eax
+movl %eax, 832(%esp)
+movl 832(%esp), %eax
+imull $4, %eax
+movl %eax, 836(%esp)
+movl $812, %eax
+subl 836(%esp), %eax
+addl %esp, %eax
+movl %eax, 840(%esp)
+movl 840(%esp), %eax
+pushl (%eax)
 call print_int
 popl %eax
+jmp exit
 exit:
 	movl $1, %eax
 	movl $0, %ebx

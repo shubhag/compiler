@@ -178,7 +178,7 @@ class symbTbl:
 		
 		if type in ['boolean', 'char']:
 			width = 1
-		elif type == 'int':
+		elif type in ['int','pointer']:
 			width = 4
 		elif type in ['float', 'double']:
 			width = 8
@@ -186,7 +186,7 @@ class symbTbl:
 			width = 4					#address size
 		else:
 			if type.split('_')[0] == 'array':
-				width = 4
+				width = 0
 			else:
 				width = 0
 			# width = 0
@@ -240,7 +240,7 @@ class symbTbl:
 	def getWidth(self,type):
 		if type in ['boolean', 'char']:
 			width = 1
-		elif type == 'int':
+		elif type in ['int','pointer']:
 			width = 4
 		elif type in ['float', 'double']:
 			width = 8
@@ -292,7 +292,7 @@ class symbTbl:
 		
 		if type in ['boolean', 'char']:
 			width = 1
-		elif type == 'int':
+		elif type in ['int','pointer']:
 			width = 4
 		elif type in ['float', 'double']:
 			width = 8
@@ -314,6 +314,27 @@ class symbTbl:
 				'offset' : self.mainSymbTbl[self.currFunc]['offset']
 			}	
 
+	def changeWidth(self, identifier, arrWidth):
+		tempScope = self.mainSymbTbl[self.currScope]['identifier']
+		self.mainSymbTbl[self.currScope]['offset'] +=  arrWidth
+		print tempScope[identifier],'320'
+		if tempScope.has_key(identifier):
+			tempScope[identifier]['width'] = arrWidth
+			tempScope[identifier]['offset'] = self.mainSymbTbl[self.currScope]['offset']
+
+	def addTempArrayAttr(self, temporary, arrWidth, type):
+		tempScope = self.mainSymbTbl[self.currFunc]['temp']
+		width = arrWidth
+
+		self.mainSymbTbl[self.currFunc]['offset'] +=  width
+		
+		if not tempScope.has_key(temporary):
+			tempScope[temporary] = {}
+		tempScope[temporary] = {
+				'width'	:	width,
+				'type'	:	type,
+				'offset' : self.mainSymbTbl[self.currFunc]['offset']
+			}	
 	#switch
 
 	def addbrkVar(self, variable):
