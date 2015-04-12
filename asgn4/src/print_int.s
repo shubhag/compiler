@@ -10,13 +10,13 @@ print_int:
 	movl $0, %edi					# initializing digit count
 
 	loop:
+		movl $0, %edx
 		movl $10, %ecx   			
 		divl %ecx  				
 
 		addl $48, %edx				# converting EDX to ascii value
 		pushl %edx 					# pushing EDX onto the stack
 		incl %edi					# incrementing digit count
-		movl $0, %edx
 
 		cmp $0, %eax   				# loop back if we have something remaining in EAX
 		jne loop

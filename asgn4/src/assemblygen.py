@@ -6,7 +6,7 @@ import pprint
 
 def getOffset(temp, Function, ST):
 	# print temp,'8'
-	if temp[0] == '_':
+	if temp[0] == '_' or temp[0] == '*':
 		# print '\n', temp,'\n'
 		# print ST.mainSymbTbl[Function]['temp'], "9"
 		offset = ST.mainSymbTbl[Function]['temp'][temp]['offset']
@@ -63,14 +63,15 @@ def genCode(inputfile):
 			lineno += 1
 
 			if line[3] == 'BeginFunc':
-				if function != mainFunction:
-					AC.addCommand(['pushl', '%ebp' , ''])
-					AC.addCommand(['movl', '%esp','%ebp'])
+				# if function != mainFunction:
+				AC.addCommand(['pushl', '%ebp' , ''])
+				AC.addCommand(['movl', '%esp','%ebp'])
 
 	
 				AC.addCommand(['subl', '$'+ str(line[2]) , '%esp'])
 
 			if line[3] == 'EndFunc':
+				AC.addCommand(['popl', '%ebp' , ''])
 				AC.addCommand(['jmp', 'exit' , ''])
 
 			if line[3] == '=':
@@ -82,20 +83,27 @@ def genCode(inputfile):
 						AC.addCommand(['movl', '$'+ str(line[2]) , '%eax'])
 				else:
 					offset1 = getOffset(line[1], function, ST)
-					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
+					if line[1][0] == '*':
+						AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+						AC.addCommand(['movl', '(%ebx)' , '%eax'])
+					else:	
+						AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+				if line[0][0] == '*':
+					AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+					AC.addCommand(['movl', '%eax' , '(%ebx)'])
+				else:
+					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 			
 			if line[3] == 'PRINT':
 				offset = getOffset(line[0], function, ST)
 				if line[2] == 'int':
-					AC.addCommand(['pushl', str(offset)+'(%esp)' , ''])
+					if (line[0][0] == '*'):
+						AC.addCommand(['movl', str(offset)+'(%esp)' , '%ebx'])
+						AC.addCommand(['pushl', '(%ebx)' , ''])
+					else:
+						AC.addCommand(['pushl', str(offset)+'(%esp)' , ''])
 					AC.addCommand(['call','print_int',''])		
 					AC.addCommand(['popl','%eax',''])	
-				elif line[2] == 'pointer':
-					AC.addCommand(['movl', str(offset)+'(%esp)' , '%eax'])
-					AC.addCommand(['pushl', '(%eax)' , ''])
-					AC.addCommand(['call','print_int',''])		
-					AC.addCommand(['popl','%eax',''])
 
 			if line[3] == '+':
 				offset = getOffset(line[0], function, ST)
@@ -105,9 +113,23 @@ def genCode(inputfile):
 					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 				else:
 					offset2 = getOffset(line[2], function, ST)
-					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-					AC.addCommand(['addl', str(offset2)+'(%esp)' , '%eax'])
-					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
+					if line[1][0] == '*':
+						AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+						AC.addCommand(['movl', '(%ebx)' , '%eax'])
+					else:
+						AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+					if line[2][0] == '*': 
+						AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+						AC.addCommand(['addl', '(%ebx)' , '%eax'])
+					else:
+						AC.addCommand(['addl', str(offset2)+'(%esp)' , '%eax'])
+					
+					if line[0][0] == '*':
+						AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+						AC.addCommand(['movl', '%eax' , '(%ebx)'])					
+					else:
+						AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 
 			if line[3] == '-':
 				offset = getOffset(line[0], function, ST)
@@ -118,36 +140,96 @@ def genCode(inputfile):
 					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 				else:
 					offset2 = getOffset(line[2], function, ST)
-					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-					AC.addCommand(['subl', str(offset2)+'(%esp)' , '%eax'])
-					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
+					if line[1][0] == '*':
+						AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+						AC.addCommand(['movl', '(%ebx)' , '%eax'])
+					else:
+						AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+					if line[2][0] == '*': 
+						AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+						AC.addCommand(['subl', '(%ebx)' , '%eax'])
+					else:
+						AC.addCommand(['subl', str(offset2)+'(%esp)' , '%eax'])
+					
+					if line[0][0] == '*':
+						AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+						AC.addCommand(['movl', '%eax' , '(%ebx)'])					
+					else:
+						AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 
 			if line[3] == '*':
 				offset = getOffset(line[0], function, ST)
 				offset1 = getOffset(line[1], function, ST)
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
 				if str(line[2]).isdigit():
 					AC.addCommand(['imull', '$'+str(line[2]) , '%eax'])
 				else:
 					offset2 = getOffset(line[2], function, ST)
-					AC.addCommand(['mull', str(offset2)+'(%esp)' , ''])
-				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
+					if line[2][0] == '*': 
+						AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+						AC.addCommand(['mull', '(%ebx)' , ''])
+					else:
+						AC.addCommand(['mull', str(offset2)+'(%esp)' , ''])
+
+				if line[0][0] == '*':
+					AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+					AC.addCommand(['movl', '%eax' , '(%ebx)'])					
+				else:
+					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 
 			if line[3] == '/':
 				offset = getOffset(line[0], function, ST)
 				offset1 = getOffset(line[1], function, ST)
 				offset2 = getOffset(line[2], function, ST)
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['divl', str(offset2)+'(%esp)' , ''])
-				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
+				AC.addCommand(['movl', '$0', '%edx'])
+				
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+				
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['divl', '(%ebx)' , ''])
+				else:
+					AC.addCommand(['divl', str(offset2)+'(%esp)' , ''])
+
+				if line[0][0] == '*':
+					AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+					AC.addCommand(['movl', '%eax' , '(%ebx)'])					
+				else:
+					AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
 
 			if line[3] == '%':
 				offset = getOffset(line[0], function, ST)
 				offset1 = getOffset(line[1], function, ST)
 				offset2 = getOffset(line[2], function, ST)
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['divl', str(offset2)+'(%esp)' , ''])
-				AC.addCommand(['movl', '%edx' , str(offset)+'(%esp)'])
+				AC.addCommand(['movl', '$0', '%edx'])
+
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+				
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['divl', '(%ebx)' , ''])
+				else:
+					AC.addCommand(['divl', str(offset2)+'(%esp)' , ''])
+
+				if line[0][0] == '*':
+					AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+					AC.addCommand(['movl', '%edx' , '(%ebx)'])					
+				else:
+					AC.addCommand(['movl', '%edx' , str(offset)+'(%esp)'])
 
 			if line[3] == '<=':
 				offset = getOffset(line[0], function, ST)
@@ -156,8 +238,17 @@ def genCode(inputfile):
 				
 				AC.addCommand(['movl', '$1' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['cmpl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
 				tempLabel = AC.newLabel()
 				AC.addCommand(['jle', 'Label'+str(tempLabel) , ''])
 				AC.addCommand(['movl', '$0' , '%eax'])
@@ -171,13 +262,21 @@ def genCode(inputfile):
 				
 				AC.addCommand(['movl', '$1' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['cmpl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
 				tempLabel = AC.newLabel()
 				AC.addCommand(['jge', 'Label'+str(tempLabel) , ''])
 				AC.addCommand(['movl', '$0' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-
 				AC.addCommand(['Label'+str(tempLabel)+':','',''])
 
 			if line[3] == '==':
@@ -187,13 +286,21 @@ def genCode(inputfile):
 				
 				AC.addCommand(['movl', '$1' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['cmpl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
 				tempLabel = AC.newLabel()
 				AC.addCommand(['je', 'Label'+str(tempLabel) , ''])
 				AC.addCommand(['movl', '$0' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-
 				AC.addCommand(['Label'+str(tempLabel)+':','',''])
 
 			if line[3] == '>':
@@ -203,13 +310,21 @@ def genCode(inputfile):
 				
 				AC.addCommand(['movl', '$1' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['cmpl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
 				tempLabel = AC.newLabel()
 				AC.addCommand(['jg', 'Label'+str(tempLabel) , ''])
 				AC.addCommand(['movl', '$0' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-
 				AC.addCommand(['Label'+str(tempLabel)+':','',''])
 
 			if line[3] == '<':
@@ -219,13 +334,21 @@ def genCode(inputfile):
 				
 				AC.addCommand(['movl', '$1' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['cmpl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
 				tempLabel = AC.newLabel()
 				AC.addCommand(['jl', 'Label'+str(tempLabel) , ''])
 				AC.addCommand(['movl', '$0' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-
 				AC.addCommand(['Label'+str(tempLabel)+':','',''])
 
 			if line[3] == '!=':
@@ -235,13 +358,21 @@ def genCode(inputfile):
 				
 				AC.addCommand(['movl', '$1' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-				AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
-				AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
+				if line[1][0] == '*':
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%ebx'])
+					AC.addCommand(['movl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['movl', str(offset1)+'(%esp)' , '%eax'])
+
+				if line[2][0] == '*': 
+					AC.addCommand(['movl', str(offset2)+'(%esp)' , '%ebx'])
+					AC.addCommand(['cmpl', '(%ebx)' , '%eax'])
+				else:
+					AC.addCommand(['cmpl', str(offset2)+'(%esp)' , '%eax'])
 				tempLabel = AC.newLabel()
 				AC.addCommand(['jne', 'Label'+str(tempLabel) , ''])
 				AC.addCommand(['movl', '$0' , '%eax'])
 				AC.addCommand(['movl', '%eax' , str(offset)+'(%esp)'])
-
 				AC.addCommand(['Label'+str(tempLabel)+':','',''])
 
 			if line[3] == 'GOTO':
@@ -255,7 +386,16 @@ def genCode(inputfile):
 			
 			if line[3] == 'PARAM':
 				offset = getOffset(line[0], function, ST)
-				AC.addCommand(['pushl', str(offset)+'(%esp)',''])
+				typeId = ST.getTypeAssembly(line[0], function)
+				if line[0][0] == '*' or typeId.split('_')[0] == 'array':
+					# AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
+					# AC.addCommand(['pushl','(%ebx)','']) 
+					AC.addCommand(['movl', '%esp', '%eax'])
+					AC.addCommand(['addl', '$'+str(offset),'%eax'])	
+					AC.addCommand(['pushl','%eax',''])	
+
+				else:
+					AC.addCommand(['pushl', str(offset)+'(%esp)',''])
 
 			if line[3] == 'CALL':
 				if line[0] != '_ALLOC':
@@ -282,11 +422,19 @@ def genCode(inputfile):
 				AC.addCommand(['addl','%esp', '%eax'])
 				AC.addCommand(['movl','%eax', str(offset)+'(%esp)'])
 
-			if line[3] == '=*':
+			if line[3] == '*.':
 				offset = getOffset(line[0], function, ST)
 				offset1 = getOffset(line[1], function, ST)
-				AC.addCommand(['movl',str(offset)+'(%esp)', '%ebx'])
-				AC.addCommand(['movl','%eax', '(%ebx)'])
+				offset2 = getOffset(line[2], function, ST)
+				AC.addCommand(['movl',str(offset1)+'(%esp)', '%eax'])
+				AC.addCommand(['subl',str(offset2)+'(%esp)', '%eax'])
+				AC.addCommand(['movl','%eax', str(offset)+'(%esp)'])
+
+			# if line[3] == '=*':
+			# 	offset = getOffset(line[0], function, ST)
+			# 	offset1 = getOffset(line[1], function, ST)
+			# 	AC.addCommand(['movl',str(offset)+'(%esp)', '%ebx'])
+			# 	AC.addCommand(['movl','%eax', '(%ebx)'])
 
 
 

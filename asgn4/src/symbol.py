@@ -170,7 +170,27 @@ class symbTbl:
 			self.currFunc = pScope + "." + funcName
 			self.mainSymbTbl[self.currClass]['functions'][funcName] = { 'name' : pScope + "." + funcName }
 		return self.currScope
-		# TAC.generateFuncTac(self.currFunc)
+
+	def changeOffsetArgList(self):
+		offsetFunction = self.mainSymbTbl[self.currFunc]['offset']
+		pscope = self.mainSymbTbl[self.currFunc]['pscope']
+		argList = self.mainSymbTbl[pscope]['functions'][self.currFunc.split('.')[-1]]['arglist']
+		for arguments in reversed(argList):
+			width = self.mainSymbTbl[self.currFunc]['identifier'][arguments['name']]['width']
+			offsetFunction = offsetFunction + width
+			self.mainSymbTbl[self.currFunc]['identifier'][arguments['name']]['offset'] = offsetFunction + 4
+
+	def searchForArrayArg(self, identifier ):
+		pscope = self.mainSymbTbl[self.currFunc]['pscope']
+		funcName = self.currFunc.split('.')[-1]
+		if funcName == 'main':
+			return False
+		else: 
+			argList = self.mainSymbTbl[pscope]['functions'][self.currFunc.split('.')[-1]]['arglist']
+			for arguments in argList:
+				if arguments['name'] == identifier :
+					return True
+			return False
 
 	def addNewIdentifier(self, identifier,type):
 		tempScope = self.mainSymbTbl[self.currScope]['identifier']
@@ -186,7 +206,7 @@ class symbTbl:
 			width = 4					#address size
 		else:
 			if type.split('_')[0] == 'array':
-				width = 0
+				width = 4
 			else:
 				width = 0
 			# width = 0
@@ -214,15 +234,7 @@ class symbTbl:
 				'type'	:	type,
 				'offset' : self.mainSymbTbl[self.currScope]['offset']
 			}	
-	#insert attributes in the symbol table
-	#galat hai baad mein karenege
-	#\n
-	#\n
-	# def addAttrId(self, identifier, attrName, attrVal):
-	# 	temp = self.lookup_for_id(identifier)
-	# 	temp[attrName] = attrVal
-	#\n
-	#\n
+
 	def ifClass(self, className):
 		cname = 'Main.'+ className;
 		if not self.mainSymbTbl.has_key(cname):
@@ -259,6 +271,9 @@ class symbTbl:
 	def getAttrScope(self, attrName):
 		tempScope = self.mainSymbTbl[self.currScope]
 		return tempScope[attrName]
+
+	def getTypeAssembly(self, identifier, function):
+		return self.mainSymbTbl[function]['identifier'][identifier]['type']
 
 	def getIdAttr(self, identifier, attrName):
 		idEntry = self.lookup_for_id(identifier)
@@ -317,7 +332,6 @@ class symbTbl:
 	def changeWidth(self, identifier, arrWidth):
 		tempScope = self.mainSymbTbl[self.currScope]['identifier']
 		self.mainSymbTbl[self.currScope]['offset'] +=  arrWidth
-		print tempScope[identifier],'320'
 		if tempScope.has_key(identifier):
 			tempScope[identifier]['width'] = arrWidth
 			tempScope[identifier]['offset'] = self.mainSymbTbl[self.currScope]['offset']

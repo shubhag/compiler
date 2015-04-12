@@ -14,77 +14,62 @@ digraph "Parse Tree" {
 	FieldDeclarations1 -> {  FieldDeclarationOptSemi1 }
 	FieldDeclaration1 [label = "FieldDeclaration"] 
 	FieldDeclarationOptSemi1 -> {  FieldDeclaration1 }
-	FieldVariableDeclaration1 [label = "FieldVariableDeclaration"] 
-	FieldDeclaration1 -> {  FieldVariableDeclaration1 ";" }
+	MethodDeclaration1 [label = "MethodDeclaration"] 
+	FieldDeclaration1 -> {  MethodDeclaration1 }
+	Modifiers1 [label = "Modifiers"] 
 	TypeSpecifier1 [label = "TypeSpecifier"] 
-	VariableDeclarators1 [label = "VariableDeclarators"] 
-	FieldVariableDeclaration1 -> {  TypeSpecifier1 VariableDeclarators1 }
-	VariableDeclarator1 [label = "VariableDeclarator"] 
-	VariableDeclarators1 -> {  VariableDeclarator1 }
+	MethodDeclarator1 [label = "MethodDeclarator"] 
+	MethodBody1 [label = "MethodBody"] 
+	MethodDeclaration1 -> {  Modifiers1 TypeSpecifier1 MethodDeclarator1 MethodBody1 }
+	Block1 [label = "Block"] 
+	MethodBody1 -> {  Block1 }
+	Block1 -> {  "{" "}" }
 	DeclaratorName1 [label = "DeclaratorName"] 
-	VariableInitializer1 [label = "VariableInitializer"] 
-	VariableDeclarator1 -> {  DeclaratorName1 "=" VariableInitializer1 }
-	Expression1 [label = "Expression"] 
-	VariableInitializer1 -> {  Expression1 }
-	AssignmentExpression1 [label = "AssignmentExpression"] 
-	Expression1 -> {  AssignmentExpression1 }
-	ConditionalExpression1 [label = "ConditionalExpression"] 
-	AssignmentExpression1 -> {  ConditionalExpression1 }
-	ConditionalOrExpression1 [label = "ConditionalOrExpression"] 
-	ConditionalExpression1 -> {  ConditionalOrExpression1 }
-	ConditionalAndExpression1 [label = "ConditionalAndExpression"] 
-	ConditionalOrExpression1 -> {  ConditionalAndExpression1 }
-	InclusiveOrExpression1 [label = "InclusiveOrExpression"] 
-	ConditionalAndExpression1 -> {  InclusiveOrExpression1 }
-	ExclusiveOrExpression1 [label = "ExclusiveOrExpression"] 
-	InclusiveOrExpression1 -> {  ExclusiveOrExpression1 }
-	AndExpression1 [label = "AndExpression"] 
-	ExclusiveOrExpression1 -> {  AndExpression1 }
-	EqualityExpression1 [label = "EqualityExpression"] 
-	AndExpression1 -> {  EqualityExpression1 }
-	RelationalExpression1 [label = "RelationalExpression"] 
-	EqualityExpression1 -> {  RelationalExpression1 }
-	ShiftExpression1 [label = "ShiftExpression"] 
-	RelationalExpression1 -> {  ShiftExpression1 }
-	AdditiveExpression1 [label = "AdditiveExpression"] 
-	ShiftExpression1 -> {  AdditiveExpression1 }
-	MultiplicativeExpression1 [label = "MultiplicativeExpression"] 
-	AdditiveExpression1 -> {  MultiplicativeExpression1 }
-	CastExpression1 [label = "CastExpression"] 
-	MultiplicativeExpression1 -> {  CastExpression1 }
-	UnaryExpression1 [label = "UnaryExpression"] 
-	CastExpression1 -> {  UnaryExpression1 }
-	LogicalUnaryExpression1 [label = "LogicalUnaryExpression"] 
-	UnaryExpression1 -> {  LogicalUnaryExpression1 }
-	PostfixExpression1 [label = "PostfixExpression"] 
-	LogicalUnaryExpression1 -> {  PostfixExpression1 }
-	PrimaryExpression1 [label = "PrimaryExpression"] 
-	PostfixExpression1 -> {  PrimaryExpression1 }
-	NotJustName1 [label = "NotJustName"] 
-	PrimaryExpression1 -> {  NotJustName1 }
-	ComplexPrimary1 [label = "ComplexPrimary"] 
-	NotJustName1 -> {  ComplexPrimary1 }
-	ComplexPrimaryNoParenthesis1 [label = "ComplexPrimaryNoParenthesis"] 
-	ComplexPrimary1 -> {  ComplexPrimaryNoParenthesis1 }
-	INT_LITERAL1 [label = "INT_LITERAL"] 
-	ComplexPrimaryNoParenthesis1 -> {  INT_LITERAL1 }
+	ParameterList1 [label = "ParameterList"] 
+	MethodDeclarator1 -> {  DeclaratorName1 "(" ParameterList1 ")" }
+	Parameter1 [label = "Parameter"] 
+	ParameterList1 -> {  Parameter1 }
+	TypeSpecifier2 [label = "TypeSpecifier"] 
+	DeclaratorName2 [label = "DeclaratorName"] 
+	Parameter1 -> {  TypeSpecifier2 DeclaratorName2 }
 	IDENTIFIER1 [label = "IDENTIFIER"] 
-	DeclaratorName1 -> {  IDENTIFIER1 }
+	DeclaratorName2 -> {  IDENTIFIER1 }
 	TypeName1 [label = "TypeName"] 
-	TypeSpecifier1 -> {  TypeName1 }
+	Dims1 [label = "Dims"] 
+	TypeSpecifier2 -> {  TypeName1 Dims1 }
+	OP_DIM1 [label = "OP_DIM"] 
+	Dims1 -> {  OP_DIM1 }
+	OP_DIM1 -> {  "[" "]" }
 	PrimitiveType1 [label = "PrimitiveType"] 
 	TypeName1 -> {  PrimitiveType1 }
 	INT1 [label = "INT"] 
 	PrimitiveType1 -> {  INT1 }
-	Modifiers1 [label = "Modifiers"] 
-	ClassWord1 [label = "ClassWord"] 
 	IDENTIFIER2 [label = "IDENTIFIER"] 
-	ClassHeader1 -> {  Modifiers1 ClassWord1 IDENTIFIER2 }
+	DeclaratorName2 -> {  IDENTIFIER2 }
+	TypeName2 [label = "TypeName"] 
+	TypeSpecifier2 -> {  TypeName2 }
+	PrimitiveType2 [label = "PrimitiveType"] 
+	TypeName2 -> {  PrimitiveType2 }
+	VOID1 [label = "VOID"] 
+	PrimitiveType2 -> {  VOID1 }
+	Modifiers2 [label = "Modifiers"] 
+	Modifier1 [label = "Modifier"] 
+	Modifiers1 -> {  Modifiers2 Modifier1 }
+	STATIC1 [label = "STATIC"] 
+	Modifier1 -> {  STATIC1 }
+	Modifier2 [label = "Modifier"] 
+	Modifiers2 -> {  Modifier2 }
+	PUBLIC1 [label = "PUBLIC"] 
+	Modifier2 -> {  PUBLIC1 }
+	Modifiers3 [label = "Modifiers"] 
+	ClassWord1 [label = "ClassWord"] 
+	IDENTIFIER3 [label = "IDENTIFIER"] 
+	ClassHeader1 -> {  Modifiers3 ClassWord1 IDENTIFIER3 }
 	CLASS1 [label = "CLASS"] 
 	ClassWord1 -> {  CLASS1 }
-	Modifier1 [label = "Modifier"] 
-	Modifiers1 -> {  Modifier1 }
-	PUBLIC1 [label = "PUBLIC"] 
-	Modifier1 -> {  PUBLIC1 }
+	Modifier3 [label = "Modifier"] 
+	Modifiers3 -> {  Modifier3 }
+	PUBLIC2 [label = "PUBLIC"] 
+	Modifier3 -> {  PUBLIC2 }
 
 }

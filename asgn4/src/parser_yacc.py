@@ -231,6 +231,7 @@ def p_methoddeclaration(p):
 		p[0] = {'mod': [], 'type': p[1], 'method': p[2]}
 	else :
 		p[0] = {'mod': p[1], 'type':p[2], 'method':p[3]}
+	ST.changeOffsetArgList()
 
 def p_methoddeclarator(p):
 	'''MethodDeclarator : DeclaratorName '(' ParameterList ')'
@@ -245,6 +246,10 @@ def p_methoddeclarator(p):
 		ST.addArgList(p[1], p[3] )
 		for parameter in p[3] :
 			ST.addNewIdentifier(parameter['name'], parameter['type'])
+			if parameter['type'].split('_')[0] == 'array':
+				print parameter['type']
+				dimension = [0] * int(parameter['type'].split('_')[2])
+				ST.addIdentifierAttr(parameter['name'], 'dimension', dimension)
 	ST.addReturntype(p[1], p[-1])
 	
 
@@ -731,23 +736,34 @@ def p_arrayaccess(p):
 			width =ST.getWidth(typeofarray)
 			temp1 = ST.getTemp()
 			ST.addTempAttr(temp1, 'int')
+			output = ST.searchForArrayArg(tempVal)
+			print output, '740'
 			if type(p[1]) is not dict:
 				TAC.emit(temp1, p[3]['tempVar'], width, '*')
 				temp = ST.getTemp()
-				ST.addTempAttr(temp, 'pointer')
-				TAC.emit(temp, tempVal, temp1, '+*')
-				temp = ST.getTemp()
+				temp = '*' + temp
 				ST.addTempAttr(temp, 'int')
-				TAC.emit(temp, tempVal, temp1, '=*')
+				if not output:
+					TAC.emit(temp, tempVal, temp1, '+*')
+				else:
+					TAC.emit(temp, tempVal, temp1, '*.')
+					
+				# temp = ST.getTemp()
+				# ST.addTempAttr(temp, 'int')
+				# TAC.emit(temp, tempVal, temp1, '=*')
 				#START FROM HERE
 			else:
 				TAC.emit(temp1, p[1]['tempVar'], p[3]['tempVar'], '+' )
 				TAC.emit(temp1 ,temp1, width,'*' )
 				temp = ST.getTemp()
-				ST.addTempAttr(temp, 'pointer')
-				TAC.emit(temp, p[1]['arrayAdd'], temp1, '+*')
+				temp[0] = '*'
+				ST.addTempAttr(temp, 'int')
+				if not output:
+					TAC.emit(temp, p[1]['arrayAdd'], temp1, '+*')
+				else:
+					TAC.emit(temp, p[1]['arrayAdd'], temp1, '*.')
 			p[0] = {
-				'type': 'pointer',
+				'type': 'int',
 				'tempVar': temp
 				}
 		else:
@@ -846,7 +862,10 @@ def p_MethodCall(p):
 					if type(params) is not dict:
 						typei = ST.getIdAttr(params, 'type')
 						width = ST.getIdAttr(params, 'width')
-						typeWidth += width
+						if typei.split('_')[0]== 'array':
+							typeWidth += 4
+						else:
+							typeWidth += width
 						ST.checkType(p[1],typei,a)
 						TAC.emit(params,'','','PARAM')
 					else:
@@ -1443,12 +1462,12 @@ def p_AssignmentExpression(p):
 			type2 = p[3]['type']
 			tempVar2 = p[3]['tempVar']
 
-		if type1 == 'pointer':
-			if p[2] == '=':
-				TAC.emit(tempVar1, tempVar2,'', '*=')
+		# if type1 == 'pointer':
+		# 	if p[2] == '=':
+		# 		TAC.emit(tempVar1, tempVar2,'', '*=')
 
-			p[0] = {'type':'pointer', 'tempVar': tempVar1}
-		elif type1 != type2:
+		# 	p[0] = {'type':'pointer', 'tempVar': tempVar1}
+		if type1 != type2:
 			raise Exception("Type error in assignment expression")
 		else:
 			# temp = ST.getTemp()

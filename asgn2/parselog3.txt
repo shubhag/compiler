@@ -12,68 +12,50 @@ FieldDeclarations -> FieldDeclarationOptSemi
 None
 FieldDeclarationOptSemi -> FieldDeclaration
 None
-FieldDeclaration -> FieldVariableDeclaration ;
-None,';'
-FieldVariableDeclaration -> TypeSpecifier VariableDeclarators
+FieldDeclaration -> MethodDeclaration
+None
+MethodDeclaration -> Modifiers TypeSpecifier MethodDeclarator MethodBody
+None,None,None,None
+MethodBody -> Block
+None
+Block -> { }
+'{','}'
+MethodDeclarator -> DeclaratorName ( ParameterList )
+None,'(',None,')'
+ParameterList -> Parameter
+None
+Parameter -> TypeSpecifier DeclaratorName
 None,None
-VariableDeclarators -> VariableDeclarator
-None
-VariableDeclarator -> DeclaratorName = VariableInitializer
-None,'=',None
-VariableInitializer -> Expression
-None
-Expression -> AssignmentExpression
-None
-AssignmentExpression -> ConditionalExpression
-None
-ConditionalExpression -> ConditionalOrExpression
-None
-ConditionalOrExpression -> ConditionalAndExpression
-None
-ConditionalAndExpression -> InclusiveOrExpression
-None
-InclusiveOrExpression -> ExclusiveOrExpression
-None
-ExclusiveOrExpression -> AndExpression
-None
-AndExpression -> EqualityExpression
-None
-EqualityExpression -> RelationalExpression
-None
-RelationalExpression -> ShiftExpression
-None
-ShiftExpression -> AdditiveExpression
-None
-AdditiveExpression -> MultiplicativeExpression
-None
-MultiplicativeExpression -> CastExpression
-None
-CastExpression -> UnaryExpression
-None
-UnaryExpression -> LogicalUnaryExpression
-None
-LogicalUnaryExpression -> PostfixExpression
-None
-PostfixExpression -> PrimaryExpression
-None
-PrimaryExpression -> NotJustName
-None
-NotJustName -> ComplexPrimary
-None
-ComplexPrimary -> ComplexPrimaryNoParenthesis
-None
-ComplexPrimaryNoParenthesis -> INT_LITERAL
-'4'
 DeclaratorName -> IDENTIFIER
-'ia'
-TypeSpecifier -> TypeName
+'args'
+TypeSpecifier -> TypeName Dims
+None,None
+Dims -> OP_DIM
 None
+OP_DIM -> [ ]
+'[',']'
 TypeName -> PrimitiveType
 None
 PrimitiveType -> INT
 'int'
+DeclaratorName -> IDENTIFIER
+'main'
+TypeSpecifier -> TypeName
+None
+TypeName -> PrimitiveType
+None
+PrimitiveType -> VOID
+'void'
+Modifiers -> Modifiers Modifier
+None,None
+Modifier -> STATIC
+'static'
+Modifiers -> Modifier
+None
+Modifier -> PUBLIC
+'public'
 ClassHeader -> Modifiers ClassWord IDENTIFIER
-None,None,'employee'
+None,None,'HelloWorld'
 ClassWord -> CLASS
 'class'
 Modifiers -> Modifier
