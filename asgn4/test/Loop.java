@@ -30,7 +30,7 @@ public class Loop {
         for(j = 1;j < 3;j++)
         {
             System.out.println(j);
-            if(j==1){
+            if(j==2){
                 break;
             }
         }

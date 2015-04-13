@@ -65,4 +65,19 @@ class AssemblyCode:
 		if temporary in self.regDetail.values():
 			register = self.addrDescriptor[temporary]
 		else:
-			
+			if len(self.freeRegister) :
+				register = self.freeRegister.pop()if temporary[0] == '_' or temporary[0] == '*':
+					offset = ST.mainSymbTbl[Function]['temp'][temp]['offset'] + count * 4
+				else:
+					offset = ST.mainSymbTbl[Function]['identifier'][temp]['offset'] + count * 4
+
+				self.regDetail[register] = temporary
+				self.addrDescriptor[temporary] = register
+				self.usedRegister.append(register)
+
+				if temporary[0] == '_' or temporary[0] == '*':
+					offset = ST.mainSymbTbl[Function]['temp'][temp]['offset'] + count * 4
+				else:
+					offset = ST.mainSymbTbl[Function]['identifier'][temp]['offset'] + count * 4
+
+				

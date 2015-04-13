@@ -84,7 +84,10 @@ def genCode(inputfile):
 					if str(line[2]).isdigit():
 						AC.addCommand(['movl', '$'+ str(line[2]) , '%eax'])
 					else:
-						AC.addCommand(['movl', '$'+ str(line[2]) , '%eax'])
+						AC.string.append([line[0]+':',''])
+						AC.string.append(['\t.ascii',line[2][:-1]+'\\n"'])
+						AC.addCommand(['movl', '$('+ str(line[0]) +')' , '%eax'])
+
 				else:
 					offset1 = getOffset(line[1], function, ST)
 					if line[1][0] == '*':
@@ -107,8 +110,13 @@ def genCode(inputfile):
 					else:
 						AC.addCommand(['pushl', str(offset)+'(%esp)' , ''])
 					AC.addCommand(['call','print_int',''])		
-					AC.addCommand(['popl','%eax',''])	
-
+					AC.addCommand(['addl', '$4', '%esp'])	
+				elif line[2] == 'String':
+					AC.addCommand(['pushl', str(offset)+'(%esp)' , ''])
+					length = len(AC.string[-1][-1]) - 3
+					AC.addCommand(['pushl', '$'+str(length) , ''])
+					AC.addCommand(['call','print_string',''])		
+					AC.addCommand(['addl','$8','%esp'])	
 			if line[3] == '+':
 				offset = getOffset(line[0], function, ST)
 				offset1 = getOffset(line[1], function, ST)
@@ -422,8 +430,8 @@ def genCode(inputfile):
 				AC.addCommand(['addl', '$'+ str(TAC.code[function][0][2]), '%esp'])
 				AC.addCommand(['popl', '%ebp', '' ])
 				AC.addCommand(['ret', '', '' ])
-				count -= 1
-				count -= int(TAC.code[function][0][2])/4
+				# count -= 1
+				# count -= int(TAC.code[function][0][2])/4
 
 			if line[3] == '+*':
 				offset = getOffset(line[0], function, ST)

@@ -1,8 +1,9 @@
-.section .text
+.section .data
 newline:
     .ascii "\n"
 end:
 
+.section .text
 .globl print_int
 
 print_int:

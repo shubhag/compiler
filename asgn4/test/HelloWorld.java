@@ -2,22 +2,22 @@ public class HelloWorld {
 
    // int globl;
 
-     public static int newmain(int[] a , int b, int c) {
-      // System.out.println(a[2]);
-      // a[1] = 23;
-      System.out.println(c);
-      b = 9;
-      a[0] = 7;
-      // System.out.println(a[1]);
-      System.out.println(a[0]);
-      // System.out.println(a[4]);
-      // if(a>1000){
-      //    return a;
-      // }
-      // a = newmain(a+2);
-      // return 2;
-      return b;
-    }
+    //  public static int newmain(int[] a , int b, int c) {
+    //   // System.out.println(a[2]);
+    //   // a[1] = 23;
+    //   System.out.println(c);
+    //   b = 9;
+    //   a[0] = 7;
+    //   // System.out.println(a[1]);
+    //   System.out.println(a[0]);
+    //   // System.out.println(a[4]);
+    //   // if(a>1000){
+    //   //    return a;
+    //   // }
+    //   // a = newmain(a+2);
+    //   // return 2;
+    //   return b;
+    // }
 
     public static void main(String[] args, int a , int b) {
     // hello(true);
@@ -32,16 +32,17 @@ public class HelloWorld {
       // int a;
       // globl = 1234;
       // a = 123;
-      int[] arr = new int[10];
-      // arr[2] = 2324;
-      // arr[4] = 23;
-      arr[0] = 11;
-      a = 10;
-      b = 1111;
-      int d = 1100;
-      a = newmain(arr, b , d);
-      System.out.println(a);
-      System.out.println(arr[0]);
+      // int[] arr = new int[10];
+      // // arr[2] = 2324;
+      // // arr[4] = 23;
+      // arr[0] = 11;
+      // a = 10;
+      // b = 1111;
+      // int d = 1100;
+      // a = newmain(arr, b , d);
+      // System.out.println(a);
+      // System.out.println(arr[0]);
+      System.out.println("HelloWorld");
       // employee abc ;
     }
 

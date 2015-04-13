@@ -6,15 +6,15 @@ class If_else {
     	if( x == 30 ){
             int a;
     		if( y == 10 ){
-    			// System.out.println(y);
+    			System.out.println(y);
     		}
     	}
     	x = 30;
 
-    	if( x > 20 ){
-    		// System.out.println(y);
+    	if( x < 20 ){
+    		System.out.println(y);
     	}else{
-    		// System.out.println(x);
+    		System.out.println(x);
     	}
     	int z;
 		z = (x > y) ? x : y;

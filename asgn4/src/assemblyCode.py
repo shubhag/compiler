@@ -2,6 +2,7 @@ import pprint
 class AssemblyCode:
 	def __init__(self, symbolTable, threeAddressCode):
 		self.code = {}
+		self.string = []
 		self.ST =symbolTable
 		self.TAC = threeAddressCode
 		self.currFunction = ''
@@ -31,6 +32,12 @@ class AssemblyCode:
 	def printToFile(self):
 		f = open('code.s','w')
 		f.write('.section .data\n')
+		for line in self.string:
+			if line[1]:
+				f.write(str(line[0]) + ' ' + str(line[1]) +'\n')
+			else:
+				f.write(str(line[0])+'\n')
+
 		f.write('.section .text\n')
 		f.write('.globl _start\n')
 		for function in self.code:
