@@ -31,7 +31,7 @@ def genCode(inputfile):
 	global count
 	ST, TAC = runParser(inputfile)
 	AC = AssemblyCode.AssemblyCode(ST,TAC)
-	ST.printSymbTbl()
+	# ST.printSymbTbl()
 	TAC.printTAC()
 	label = insertLabel(ST,TAC)
 
@@ -64,7 +64,6 @@ def genCode(inputfile):
 			if label[function].has_key(lineno):
 				AC.addCommand([label[function][lineno]+':', '', ''])
 			lineno += 1
-
 			if line[3] == 'BeginFunc':
 				# if function != mainFunction:
 				AC.addCommand(['pushl', '%ebp' , ''])

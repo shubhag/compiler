@@ -362,6 +362,16 @@ class symbTbl:
 				'type'	:	type,
 				'offset' : self.mainSymbTbl[self.currFunc]['offset']
 			}	
+
+	def getIdentifiers(self, function):
+		temporary = []
+		for identifier in self.mainSymbTbl[function]['identifier']:
+			temporary.append(identifier)
+
+		for identifier in self.mainSymbTbl[function]['temp']:
+			temporary.append(identifier)
+		return temporary
+
 	#switch
 
 	def addbrkVar(self, variable):

@@ -3,7 +3,7 @@ public class employee{
   public int hello(int d, int c){
     a = d;
     // c = b;
-    return 1;
+    return a;
   }
 
 }
@@ -19,9 +19,9 @@ public class Class {
       employee abc = new employee();
       abc.b = 1;
       c = abc.b + 4;
-      a = 1;
-      System.out.println(c);
-      // a =abc.hello(a,c);
+      a = 100;
+      a =abc.hello(a,c);
+      System.out.println(a);
       // c = hello(a,c);
     }
 

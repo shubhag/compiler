@@ -816,6 +816,7 @@ def p_MethodCall(p):
 			if len(p) == 5:
 				a = 0
 				ST.checkNumClassArgs(className,p[1].split('.')[1], len(p[3]['expr']))
+				TAC.emit(p[1].split('.')[0], '','','PARAM')
 				for params in  p[3]['expr']:
 					if type(params) is not dict:
 						typei = ST.getIdAttr(params, 'type')
@@ -829,7 +830,7 @@ def p_MethodCall(p):
 						ST.checkClassType(className,p[1].split('.')[1],params['type'],a)
 						TAC.emit(params['tempVar'],'','','PARAM')
 					a += 1
-				TAC.emit(p[1].split('.')[0], '','','PARAM')
+				
 				TAC.emit('Main.'+className+'.'+p[1].split('.')[1],typeWidth+4,temp,'CALL')
 				# TAC.emit(typeWidth+4,'','','POP')
 			else:

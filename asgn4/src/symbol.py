@@ -342,6 +342,14 @@ class symbTbl:
 				'offset' : self.mainSymbTbl[self.currFunc]['offset']
 			}	
 
+	def ifClassArray(self, type):
+		if type in ['boolean','char','int','double','float','String']:
+			return False
+		elif type.split('_')[0] == 'array':
+			return True
+		else:
+			return True
+
 	def changeWidth(self, identifier, arrWidth):
 		tempScope = self.mainSymbTbl[self.currScope]['identifier']
 		self.mainSymbTbl[self.currScope]['offset'] +=  arrWidth

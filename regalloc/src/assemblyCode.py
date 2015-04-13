@@ -54,5 +54,15 @@ class AssemblyCode:
 			self.freeRegister.append(register)
 
 	def addInAddrDescriptor(self, function, ST):
-		
+		self.addrDescriptor = {}
+		temporary = ST.getIdentifiers(function)
+		for identifier in temporary:
+			self.addrDescriptor[identifier] = None
 
+		print self.addrDescriptor
+
+	def getRegister(self, temporary):
+		if temporary in self.regDetail.values():
+			register = self.addrDescriptor[temporary]
+		else:
+			

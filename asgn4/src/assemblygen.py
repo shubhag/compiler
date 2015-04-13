@@ -391,7 +391,7 @@ def genCode(inputfile):
 			if line[3] == 'PARAM':
 				offset = getOffset(line[0], function, ST)
 				typeId = ST.getTypeAssembly(line[0], function)
-				if line[0][0] == '*' or typeId.split('_')[0] == 'array':
+				if line[0][0] == '*' or ST.ifClassArray(typeId):
 					# AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
 					# AC.addCommand(['pushl','(%ebx)','']) 
 					if function == mainFunction:
@@ -416,6 +416,8 @@ def genCode(inputfile):
 			if line[3] == 'RETURN':
 				offset = getOffset(line[0], function, ST)
 				AC.addCommand(['movl', str(offset)+'(%esp)', '%eax' ])
+				if line[0][0] == '*':
+					AC.addCommand(['movl','(%eax)','%eax'])	
 				
 				AC.addCommand(['addl', '$'+ str(TAC.code[function][0][2]), '%esp'])
 				AC.addCommand(['popl', '%ebp', '' ])
