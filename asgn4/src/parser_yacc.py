@@ -756,7 +756,7 @@ def p_arrayaccess(p):
 				TAC.emit(temp1, p[1]['tempVar'], p[3]['tempVar'], '+' )
 				TAC.emit(temp1 ,temp1, width,'*' )
 				temp = ST.getTemp()
-				temp[0] = '*'
+				temp = '*' + temp
 				ST.addTempAttr(temp, 'int')
 				if not output:
 					TAC.emit(temp, p[1]['arrayAdd'], temp1, '+*')
@@ -833,7 +833,7 @@ def p_MethodCall(p):
 				TAC.emit(p[1].split('.')[0], '','','PARAM')
 				TAC.emit('Main.'+className+'.'+p[1].split('.')[1], 4,temp,'CALL')
 				# TAC.emit(4, '','','POP')
-			methodtype = ST.getReturntype(p[1].split('.')[1])
+			methodtype = ST.getReturntypeClass(p[1].split('.')[1], 'Main.'+className)
 			p[0] = {
 				'type' : methodtype,
 				'tempVar' : temp
@@ -929,14 +929,15 @@ def p_ClassAllocationExpression(p):
 								| NEW TypeName '('              ')' '''
 	# if len(p) == 5:
 	offset = ST.checkForClass(p[2])
+	print offset, '932'
 	if len(p) == 5 :
+		# temp = ST.getTemp()
+		# ST.addTempAttr(temp, 'int')
+		# TAC.emit(temp ,'',offset,'=')
+		# TAC.emit(temp,'','','PARAM')
 		temp = ST.getTemp()
-		ST.addTempAttr(temp, 'int')
-		TAC.emit(temp ,'',offset,'=')
-		TAC.emit(temp,'','','PARAM')
-		temp = ST.getTemp()
-		ST.addTempAttr(temp, 'int')
-		TAC.emit('_ALLOC',4,temp,'CALL')
+		ST.addTempArrayAttr(temp, offset, p[2])
+		# TAC.emit('_ALLOC',4,temp,'CALL')
 		# TAC.emit(4,'','','POP')
 		p[0] = {
 			'type': p[2],

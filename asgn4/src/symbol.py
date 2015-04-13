@@ -124,6 +124,10 @@ class symbTbl:
 		if function.has_key(funcName):
 			return function[funcName]['returnType']
 
+	def getReturntypeClass(self, funcName, className):
+		function = self.mainSymbTbl[className]['functions']
+		if function.has_key(funcName):
+			return function[funcName]['returnType']
 	#to get the current scope name 
 	def getCurrScopeName(self):
 		return self.currScope

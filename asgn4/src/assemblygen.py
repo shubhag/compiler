@@ -5,13 +5,14 @@ import sys
 import pprint
 
 def getOffset(temp, Function, ST):
+	global count
 	# print temp,'8'
 	if temp[0] == '_' or temp[0] == '*':
 		# print '\n', temp,'\n'
 		# print ST.mainSymbTbl[Function]['temp'], "9"
-		offset = ST.mainSymbTbl[Function]['temp'][temp]['offset']
+		offset = ST.mainSymbTbl[Function]['temp'][temp]['offset'] + count * 4
 	else:
-		offset = ST.mainSymbTbl[Function]['identifier'][temp]['offset']
+		offset = ST.mainSymbTbl[Function]['identifier'][temp]['offset'] + count * 4
 	return offset
 
 def insertLabel(ST, TAC):
@@ -27,6 +28,7 @@ def insertLabel(ST, TAC):
 	return label
 
 def genCode(inputfile):
+	global count
 	ST, TAC = runParser(inputfile)
 	AC = AssemblyCode.AssemblyCode(ST,TAC)
 	ST.printSymbTbl()
@@ -55,6 +57,7 @@ def genCode(inputfile):
 
 
 		lineno = -1
+		count = 0
 		for line in TAC.code[function]:
 			# if line[0]:
 			# 	offset = getOffset(line[0], function, ST)
@@ -66,13 +69,14 @@ def genCode(inputfile):
 				# if function != mainFunction:
 				AC.addCommand(['pushl', '%ebp' , ''])
 				AC.addCommand(['movl', '%esp','%ebp'])
-
+				# count += 1
 	
 				AC.addCommand(['subl', '$'+ str(line[2]) , '%esp'])
 
 			if line[3] == 'EndFunc':
 				AC.addCommand(['popl', '%ebp' , ''])
 				AC.addCommand(['jmp', 'exit' , ''])
+				# count -= 	1
 
 			if line[3] == '=':
 				offset = getOffset(line[0], function, ST)
@@ -390,19 +394,23 @@ def genCode(inputfile):
 				if line[0][0] == '*' or typeId.split('_')[0] == 'array':
 					# AC.addCommand(['movl', str(offset)+'(%esp)', '%ebx'])
 					# AC.addCommand(['pushl','(%ebx)','']) 
-					AC.addCommand(['movl', '%esp', '%eax'])
-					AC.addCommand(['addl', '$'+str(offset),'%eax'])	
-					AC.addCommand(['pushl','%eax',''])	
-
+					if function == mainFunction:
+						AC.addCommand(['movl', '%esp', '%eax'])
+						AC.addCommand(['addl', '$'+str(offset),'%eax'])	
+						AC.addCommand(['pushl','%eax',''])
+					else:
+						AC.addCommand(['pushl', str(offset)+'(%esp)',''])
 				else:
 					AC.addCommand(['pushl', str(offset)+'(%esp)',''])
+				count += 1
 
 			if line[3] == 'CALL':
 				if line[0] != '_ALLOC':
 					# AC.addCommand(['pushl', '$'+str(line[1]),''])
 					AC.addCommand(['call', line[0] ,''])
-					offset2 = getOffset(line[2], function, ST)
 					AC.addCommand(['addl', '$'+ str(line[1]) , '%esp'])
+					count -= int(line[1])/4
+					offset2 = getOffset(line[2], function, ST)
 					AC.addCommand(['movl', '%eax' ,str(offset2)+'(%esp)' ])
 
 			if line[3] == 'RETURN':
@@ -412,6 +420,8 @@ def genCode(inputfile):
 				AC.addCommand(['addl', '$'+ str(TAC.code[function][0][2]), '%esp'])
 				AC.addCommand(['popl', '%ebp', '' ])
 				AC.addCommand(['ret', '', '' ])
+				count -= 1
+				count -= int(TAC.code[function][0][2])/4
 
 			if line[3] == '+*':
 				offset = getOffset(line[0], function, ST)
@@ -443,4 +453,5 @@ def genCode(inputfile):
 	AC.printToFile()
 
 if __name__ == '__main__':
+	count = 0
 	genCode(sys.argv[1])
