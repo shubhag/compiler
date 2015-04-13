@@ -9,19 +9,11 @@ movl %esp, %ebp
 subl $56, %esp
 movl 20(%esp), %eax
 movl %eax, 28(%esp)
-movl $28, %eax
-subl $8, %eax
-addl %esp, %eax
-movl %eax, 32(%esp)
 movl $1, %eax
 movl %eax, 36(%esp)
 movl 36(%esp), %eax
 movl 32(%esp), %ebx
 movl %eax, (%ebx)
-movl $28, %eax
-subl $8, %eax
-addl %esp, %eax
-movl %eax, 40(%esp)
 movl $4, %eax
 movl %eax, 44(%esp)
 movl 40(%esp), %ebx
@@ -34,9 +26,14 @@ movl $1, %eax
 movl %eax, 52(%esp)
 movl 52(%esp), %eax
 movl %eax, 8(%esp)
-pushl 12(%esp)
-call print_int
-popl %eax
+pushl 8(%esp)
+pushl 16(%esp)
+pushl 36(%esp)
+call Main.employee.hello
+addl $12, %esp
+movl %eax, 56(%esp)
+movl 56(%esp), %eax
+movl %eax, 8(%esp)
 popl %ebp
 jmp exit
 

@@ -629,7 +629,7 @@ def p_primaryexpr(p):
 		temp = ST.getTemp()
 		temp = '*'+ temp
 		ST.addTempAttr(temp, typeId)
-		TAC.emit(temp,p[1].split('.')[0], offset,'-*' )
+		TAC.emit(temp,p[1].split('.')[0], offset,'-	*' )
 		p[0] = {
 			'type' : typeId,
 			'tempVar' : temp

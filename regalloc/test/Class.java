@@ -20,7 +20,7 @@ public class Class {
       abc.b = 1;
       c = abc.b + 4;
       a = 1;
-      System.out.println(c);
+      // System.out.println(c);
       // a =abc.hello(a,c);
       // c = hello(a,c);
     }

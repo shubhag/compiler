@@ -1,0 +1,16 @@
+Features Implemented
+
+1 - Assignment
+2 - Declaration
+3 - if_else, nested if,Switch cases
+4 - for loop,while loop, do while loop,Break, Continue , Nested loops
+5 - Multidimensional Array Initialization and Access
+6 - Basic class implemetation like instantiation and access of member functions and data members of an object
+
+-------------------------------------------------------------------------------------------
+How to Run
+
+cd asgn3
+make
+python bin/parser_yacc.py test/test.java
+
