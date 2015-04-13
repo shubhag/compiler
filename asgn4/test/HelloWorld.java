@@ -42,6 +42,9 @@ public class HelloWorld {
       // a = newmain(arr, b , d);
       // System.out.println(a);
       // System.out.println(arr[0]);
+      // int a;
+      a = 8;
+      b = a;
       System.out.println("HelloWorld");
       // employee abc ;
     }
