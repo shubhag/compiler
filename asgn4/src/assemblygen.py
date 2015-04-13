@@ -117,7 +117,7 @@ def genCode(inputfile):
 					AC.addCommand(['pushl', '$'+str(length) , ''])
 					AC.addCommand(['call','print_string',''])		
 					AC.addCommand(['addl','$8','%esp'])	
-					
+						
 			if line[3] == '+':
 				offset = getOffset(line[0], function, ST)
 				offset1 = getOffset(line[1], function, ST)
