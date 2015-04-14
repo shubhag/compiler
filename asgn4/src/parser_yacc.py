@@ -1458,9 +1458,10 @@ def p_AssignmentExpression(p):
 			type1 = ST.getIdAttr(p[1], 'type')
 			tempVar1 = p[1]
 		else:
-			raise Exception("Left hand side of assignment must be an Identifier")
-			# type1 = p[1]['type']
-			# tempVar1 = p[1]['tempVar']
+			type1 = p[1]['type']
+			tempVar1 = p[1]['tempVar']
+			if type1 in ['boolean', 'char', 'int', 'float', 'String'] and tempVar1[0]!='*' :
+				raise Exception("Left hand side of assignment must be an Identifier")
 
 		if type(p[3]) is not dict:
 			type2 = ST.getIdAttr(p[3], 'type')

@@ -2,22 +2,20 @@ public class HelloWorld {
 
    // int globl;
 
-    //  public static int newmain(int[] a , int b, int c) {
-    //   // System.out.println(a[2]);
-    //   // a[1] = 23;
-    //   System.out.println(c);
-    //   b = 9;
-    //   a[0] = 7;
-    //   // System.out.println(a[1]);
-    //   System.out.println(a[0]);
-    //   // System.out.println(a[4]);
-    //   // if(a>1000){
-    //   //    return a;
-    //   // }
-    //   // a = newmain(a+2);
-    //   // return 2;
-    //   return b;
-    // }
+     public static int newmain( int b, int c) {
+      // System.out.println(a[2]);
+      // a[1] = 23;
+      System.out.println(c);
+      b = 9;
+      // System.out.println(a[1]);
+      // System.out.println(a[4]);
+      // if(a>1000){
+      //    return a;
+      // }
+      // a = newmain(a+2);
+      // return 2;
+      return b;
+    }
 
     public static void main(String[] args, int a , int b) {
     // hello(true);
@@ -39,13 +37,15 @@ public class HelloWorld {
       // a = 10;
       // b = 1111;
       // int d = 1100;
-      // a = newmain(arr, b , d);
+      b = 2;
+      int d = 3;
+      a = newmain( b , d);
       // System.out.println(a);
       // System.out.println(arr[0]);
       // int a;
-      a = 8;
-      b = a;
-      System.out.println("HelloWorld");
+      // a = 8;
+      // b = a;
+      System.out.println(a);
       // employee abc ;
     }
 
